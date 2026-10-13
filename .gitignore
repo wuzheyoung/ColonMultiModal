@@ -1,0 +1,69 @@
+# ========================
+# 1. 数据和权重（核心需求）
+# ========================
+# 数据集文件夹 (根据你的截图)
+data/
+_archive_tcga/
+backup_round5_mri3/
+cache_hos/
+
+# 模型权重和检查点
+checkpoints_hos/
+models/
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.h5
+*.onnx
+*.weights
+
+# 常见医学图像/数据格式 (根据你项目名推断)
+*.nii
+*.nii.gz
+*.dcm
+*.npz
+*.mat
+*.csv
+*.xlsx
+
+# ========================
+# 2. 训练日志和输出图表
+# ========================
+logs/
+plots_hos/
+*.log
+
+# ========================
+# 3. Python 环境与缓存
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+*.egg-info/
+.ipynb_checkpoints/
+
+# ========================
+# 4. IDE 和系统文件
+# ========================
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# ========================
+# 5. AI 助手配置 (截图里看到的，通常不需要上传)
+# ========================
+.agents/
+.claude/
+.clinerules/
+
+# ========================
+# 6. 环境变量与密钥
+# ========================
+.env
+*.local
