@@ -1,0 +1,452 @@
+=== CT
+100_p                        n=93    mod=CT  desc=5mm Abdomen, iDose (6)   pid=QG12336696     name=LIN GUI RO date=20250417 ser#301  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+100_z                        n=93    mod=CT  desc=A 5mm, iDose (3)         pid=QG12336696     name=LIN GUI RO date=20250417 ser#601  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+101_p                        n=63    mod=CT  desc=5mm Pelvis, iDose (3)    pid=QG12338331     name=KAI BAI LI date=20250419 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+101_z                        n=63    mod=CT  desc=A 5mm, iDose (3)         pid=QG12338331     name=KAI BAI LI date=20250419 ser#501  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+102_p                        n=73    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12335885     name=ZHOU MIN B date=20250415 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+102_z                        n=73    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=QG12335885     name=ZHOU MIN B date=20250415 ser#8    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+107_p                        n=84    mod=CT  desc=Body 5.0                 pid=QG12339444     name=XIA YUN FE date=20250423 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+107_z                        n=84    mod=CT  desc=Body 5.0 CE              pid=QG12339444     name=XIA YUN FE date=20250423 ser#4    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+113_p                        n=54    mod=CT  desc=5.0 x 5.0 Soft           pid=QG12337961     name=LU XING XI date=20250418 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+114_p                        n=68    mod=CT  desc=5mm Pelvis, iDose (6)    pid=K06521769      name=ZHANG WEN  date=20250508 ser#301  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+114_z                        n=68    mod=CT  desc=A 5mm, iDose (3)         pid=K06521769      name=ZHANG WEN  date=20250508 ser#601  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+116_p                        n=148   mod=CT  desc=5mm Abdomen, iDose (6)   pid=QG12342203     name=SHI WEN LI date=20250430 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+116_z                        n=148   mod=CT  desc=A 5mm, iDose (3)         pid=QG12342203     name=SHI WEN LI date=20250430 ser#501  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+119_p                        n=104   mod=CT  desc=5mm Media , iDose (3)    pid=S01373013      name=SHEN JIAN  date=20250424 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+119_z                        n=63    mod=CT  desc=A 5mm, iDose (3)         pid=S01373013      name=SHEN JIAN  date=20250424 ser#501  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+123_p                        n=65    mod=CT  desc=Non Contrast  5.0  Br40  pid=QG12349218     name=LIU GUO AN date=20250519 ser#10   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+123_z                        n=65    mod=CT  desc=Arterial Phase  5.0  Br4 pid=QG12349218     name=LIU GUO AN date=20250519 ser#12   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+127_p                        n=120   mod=CT  desc=5.0 x 5.0_Soft           pid=QG12330272     name=ZHU CUI YI date=20250519 ser#203  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+128_p                        n=68    mod=CT  desc=5mm Pelvis, iDose (6)    pid=QG12350065     name=WEI BO=$) date=20250521 ser#301  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+131_p                        n=76    mod=CT  desc=5mm ABD, iDose (3)       pid=QG12351076     name=YUAN MEI L date=20250522 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+133_p                        n=49    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=M01397687      name=XU YU GEN= date=20250523 ser#10   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+133_z                        n=49    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=M01397687      name=XU YU GEN= date=20250523 ser#13   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+134_p                        n=57    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12316216     name=HUANG YONG date=20250528 ser#10   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+134_z                        n=60    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=QG12316216     name=HUANG YONG date=20250528 ser#13   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+137_p                        n=73    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12351851     name=CHEN GUO Z date=20250527 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+137_z                        n=77    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=QG12351851     name=CHEN GUO Z date=20250527 ser#8    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+140_p                        n=60    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12354276     name=SHI XING C date=20250603 ser#10   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+140_z                        n=60    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=QG12354276     name=SHI XING C date=20250603 ser#13   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+142_p                        n=52    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12355930     name=MAO YOU DO date=20250605 ser#10   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+142_z                        n=52    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=QG12355930     name=MAO YOU DO date=20250605 ser#13   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+143_p                        n=70    mod=CT  desc=Body 5.0                 pid=QG12335316     name=XUE JIAN H date=20250601 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+143_z                        n=58    mod=CT  desc=Body 5.0 CE              pid=QG12335316     name=XUE JIAN H date=20250601 ser#6    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+145_p                        n=60    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12352619     name=LU SHU LIN date=20250527 ser#10   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+145_z                        n=62    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=QG12352619     name=LU SHU LIN date=20250527 ser#13   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+147_p                        n=59    mod=CT  desc=5mm Abdomen, iDose (6)   pid=QG12347811     name=GUO DAO QI date=20250516 ser#301  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+147_z                        n=59    mod=CT  desc=A 5mm, iDose (3)         pid=QG12347811     name=GUO DAO QI date=20250516 ser#601  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+149_p                        n=51    mod=CT  desc=5mm Abdomen, iDose (6)   pid=QG12355868     name=SHI HAN FA date=20250607 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+149_z                        n=51    mod=CT  desc=A 5mm, iDose (3)         pid=QG12355868     name=SHI HAN FA date=20250607 ser#501  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+14_p                         n=60    mod=CT  desc=Body 5.0 CE              pid=F02244198      name=LIANG YI M date=20241205 ser#7    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+14_z                         n=369   mod=CT  desc=Body 1.0 CE              pid=F02244198      name=LIANG YI M date=20241205 ser#11   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+152_p                        n=95    mod=CT  desc=Body 5.0                 pid=06783804       name=WANG ZHAO  date=20250609 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+152_z                        n=58    mod=CT  desc=Body 5.0 CE              pid=06783804       name=WANG ZHAO  date=20250609 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+160_p                        n=72    mod=CT  desc=5mm ABD, iDose (3)       pid=QG12342936     name=JIN SHAO C date=20250619 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+161_p                        n=64    mod=CT  desc=5mm Pelvis, iDose (6)    pid=QG12361343     name=REN ZHENG  date=20250620 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+161_z                        n=64    mod=CT  desc=A 5mm, iDose (3)         pid=QG12361343     name=REN ZHENG  date=20250620 ser#501  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+16_p                         n=505   mod=CT  desc=A 1mm , iDose (5)        pid=QG12303519     name=NI YU MING date=20250110 ser#602  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+19_p                         n=265   mod=CT  desc=A 1mm , iDose (5)        pid=QG12291773     name=HONG ZU SI date=20250111 ser#502  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+1_QG12455983                 n=98    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12455983     name=CHEN YU JI date=20260305 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+21_p                         n=63    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12307767     name=GUO FENG= date=20250122 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+21_z                         n=63    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=QG12307767     name=GUO FENG= date=20250122 ser#8    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+23_p                         n=63    mod=CT  desc=Body 5.0                 pid=QG12308323     name=KE REN LIN date=20250127 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+23_z                         n=626   mod=CT  desc=Body 1.0 CE              pid=QG12308323     name=KE REN LIN date=20250127 ser#11   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+25_p                         n=135   mod=CT  desc=Thorax  5.0  Br40  3     pid=M0102571X      name=LIU ZHU LI date=20250122 ser#4    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+27_p                         n=116   mod=CT  desc=5mm Abdomen, iDose (3)   pid=M02368087      name=CHEN REN X date=20250123 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+28_p                         n=71    mod=CT  desc=5mm Abdomen, iDose (3)   pid=QG12308237     name=DAI XIU ZH date=20250206 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+2_N01022751                  n=75    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=N01022751      name=CHEN FU MI date=20251107 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+31_p                         n=64    mod=CT  desc=5mm Abdomen, iDose (3)   pid=QG12306446     name=XU XIAO BA date=20250120 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+35_p                         n=79    mod=CT  desc=Non Contrast  5.0  Br40  pid=QG12314557     name=CHEN YA YU date=20250220 ser#10   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+35_z                         n=71    mod=CT  desc=Thorax  5.0  Br40  3     pid=QG12314557     name=CHEN YA YU date=20250220 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+38_p                         n=104   mod=CT  desc=                         pid=K00111048      name=YE HUI DI= date=20250103 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+39_p                         n=392   mod=CT  desc=DE_Abd_NC  1.0  Br36  3  pid=QG12280625     name=ZHOU GANG= date=20241225 ser#900  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+3_QG12479734                 n=67    mod=CT  desc=5mm Pelvis, iDose (6)    pid=QG12479734     name=WANG JIA Z date=20260429 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+3_p                          n=57    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12261993     name=ZHANG JI L date=20241224 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+3_z                          n=57    mod=CT  desc=DE_Abd_P  5.0  Br40  3   pid=QG12261993     name=ZHANG JI L date=20241224 ser#11   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+40_p                         n=72    mod=CT  desc=Body 5.0 CE              pid=K06992931      name=ZHAO SHENG date=20250221 ser#4    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+43_p                         n=112   mod=CT  desc=                         pid=J503DCFE3      name=WANG CHANG date=20241129 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+46_p                         n=74    mod=CT  desc=5mm Abdomen, iDose (3)   pid=QG12317382     name=TANG GUI L date=20250226 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+49_p                         n=111   mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12317204     name=YANG ZHENG date=20250227 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+4_QG12425897                 n=63    mod=CT  desc=5mm Pelvis, iDose (6)    pid=QG12425897     name=WANG ZHI M date=20251208 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+5_QG12447866                 n=71    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12447866     name=LI LIANG H date=20260514 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+68_p                         n=81    mod=CT  desc=Body 5.0                 pid=QG12325456     name=ZHANG JUN= date=20250318 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+68_z                         n=501   mod=CT  desc=Body 1.0 CE              pid=QG12325456     name=ZHANG JUN= date=20250318 ser#8    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+6_QG12446259                 n=88    mod=CT  desc=Abdomen NC 5.00 Br44 Q3  pid=QG12446259     name=HU HONG FE date=20260202 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+71_p                         n=62    mod=CT  desc=A 5mm, iDose (3)         pid=QG12325890     name=WANG QIAO  date=20250319 ser#601  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+72_p                         n=72    mod=CT  desc=Non Contrast  5.0  Br40  pid=K00837412      name=GUO XIN XI date=20250320 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+72_z                         n=72    mod=CT  desc=Arterial Phase  5.0  Br4 pid=K00837412      name=GUO XIN XI date=20250320 ser#6    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+73_p                         n=108   mod=CT  desc=Body 5.0                 pid=QG12326910     name=TANG LAI D date=20250321 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+73_z                         n=669   mod=CT  desc=Body 1.0 CE              pid=QG12326910     name=TANG LAI D date=20250321 ser#8    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+79_p                         n=73    mod=CT  desc=5mm Abdomen, iDose (6)   pid=QG12329661     name=YUE BAO HU date=20250328 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+79_z                         n=73    mod=CT  desc=A 5mm, iDose (3)         pid=QG12329661     name=YUE BAO HU date=20250328 ser#501  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+81_p                         n=79    mod=CT  desc=Body 5.0                 pid=QG12330531     name=NI SU MEI= date=20250331 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+81_z                         n=79    mod=CT  desc=Body 5.0 CE              pid=QG12330531     name=NI SU MEI= date=20250331 ser#4    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+83_p                         n=132   mod=CT  desc=                         pid=QG12333415     name=XU SHUI GE date=20250406 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+84_p                         n=67    mod=CT  desc=5mm Abdomen, iDose (6)   pid=QG12332721     name=ZHU DA ZHO date=20250408 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+84_z                         n=67    mod=CT  desc=A 5mm, iDose (3)         pid=QG12332721     name=ZHU DA ZHO date=20250408 ser#501  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+85_p                         n=79    mod=CT  desc=5mm Abdomen, iDose (6)   pid=QG12333900     name=SU HONG YU date=20250411 ser#301  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+86_p                         n=139   mod=CT  desc=Body 5.0                 pid=M02894802      name=GUI LI FAN date=20250408 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+87_p                         n=66    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12334681     name=CAO HAI HU date=20250411 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+87_z                         n=66    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=QG12334681     name=CAO HAI HU date=20250411 ser#7    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+8_p                          n=297   mod=CT  desc=Non Contrast  1.0  Br40  pid=QG12295829     name=GU CUI LIA date=20241219 ser#4    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+91_z                         n=49    mod=CT  desc=A 5mm, iDose (3)         pid=QG12335520     name=CUI WEN LI date=20250414 ser#501  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+94_p                         n=97    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=QG12337815     name=WANG YU LI date=20250417 ser#5    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+94_z                         n=103   mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=QG12337815     name=WANG YU LI date=20250417 ser#8    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+96_p                         n=78    mod=CT  desc=5.0 x 5.0 Soft           pid=QG12293277     name=HE WAN ZHE date=20250416 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+97_p                         n=63    mod=CT  desc=5mm Pelvis, iDose (3)    pid=10900337       name=WANG HONG  date=20250409 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+97_z                         n=63    mod=CT  desc=A 5mm, iDose (3)         pid=10900337       name=WANG HONG  date=20250409 ser#501  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+99_p                         n=50    mod=CT  desc=DE_Abd_NC  5.0  Br40  3  pid=K02654820      name=DAI HUA TI date=20250417 ser#10   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+99_z                         n=50    mod=CT  desc=DE_Abd_A  5.0  Br40  3   pid=K02654820      name=DAI HUA TI date=20250417 ser#13   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+QG12497657                   n=4015  mod=CT  desc=Abdomen NC 1.00 Br40 Q3  pid=QG12497657     name=LIU LONG B date=20260612 ser#3    rows= oneSeries=False ts=1.2.840.10008.1.2.2
+=== MRI
+102_c                        n=72    mod=MR  desc=WATER:Ax LAVA-FLEX+c     pid=QG12335885     name=ZHOU MIN B date=20250415 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+102_d                        n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12335885     name=ZHOU MIN B date=20250415 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+102_t                        n=20    mod=MR  desc=OSag  T2                 pid=QG12335885     name=ZHOU MIN B date=20250415 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+103_d                        n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12337055     name=SHAO YE MI date=20250416 ser#11   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+103_t                        n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12337055     name=SHAO YE MI date=20250416 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+104_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12337699     name=LU JING JU date=20250418 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+104_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12337699     name=LU JING JU date=20250418 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+104_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12337699     name=LU JING JU date=20250418 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+105_d                        n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12337798     name=LU XIU PIN date=20250422 ser#7    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+105_t                        n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12337798     name=LU XIU PIN date=20250422 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+106_c                        n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12337969     name=QIAN REN D date=20250421 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+106_d                        n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=QG12337969     name=QIAN REN D date=20250421 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+106_t                        n=18    mod=MR  desc=Sag T2 Prop              pid=QG12337969     name=QIAN REN D date=20250421 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+108_d                        n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12339511     name=ZHANG JIN  date=20250424 ser#8    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+108_t                        n=15    mod=MR  desc=t2_tse_sag               pid=QG12339511     name=ZHANG JIN  date=20250424 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+109_c                        n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12+ pid=QG12340181     name=LIU XIN QU date=20250422 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+109_d                        n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12340181     name=LIU XIN QU date=20250422 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+109_t                        n=20    mod=MR  desc=OSag  T2                 pid=QG12340181     name=LIU XIN QU date=20250422 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+10_d                         n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12302750     name=YUE FU GEN date=20250108 ser#8    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+10_t                         n=15    mod=MR  desc=t2_tse_sag               pid=QG12302750     name=YUE FU GEN date=20250108 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+110_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12342071     name=LIU GUO FU date=20250430 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+110_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12342071     name=LIU GUO FU date=20250430 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+110_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12342071     name=LIU GUO FU date=20250430 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+111_c                        n=116   mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12342129     name=XIONG GUAN date=20250428 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+111_d                        n=80    mod=MR  desc=Ax DWI 1000              pid=QG12342129     name=XIONG GUAN date=20250428 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+111_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12342129     name=XIONG GUAN date=20250428 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+112_t                        n=15    mod=MR  desc=t2_tse_sag               pid=QG12344264     name=BAO ZHAO G date=20250506 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+115_d                        n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12329211     name=WEI AI YUN date=20250506 ser#7    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+115_t                        n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12329211     name=WEI AI YUN date=20250506 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+118_d                        n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12339451     name=CHEN ZHI H date=20250425 ser#7    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+118_t                        n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12339451     name=CHEN ZHI H date=20250425 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+119_c                        n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=S01373013      name=SHEN JIAN  date=20250425 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+119_d                        n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=S01373013      name=SHEN JIAN  date=20250425 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+119_t                        n=18    mod=MR  desc=Sag T2 Prop              pid=S01373013      name=SHEN JIAN  date=20250425 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+11_c                         n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12302014     name=ZHOU ZONG  date=20250106 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+11_d                         n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=QG12302014     name=ZHOU ZONG  date=20250106 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+11_t                         n=18    mod=MR  desc=Sag T2 Prop              pid=QG12302014     name=ZHOU ZONG  date=20250106 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+121_c                        n=72    mod=MR  desc=WATER:Ax LAVA-FLEX+c     pid=QG12347478     name=TANG DA BI date=20250515 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+121_d                        n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12347478     name=TANG DA BI date=20250515 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+121_t                        n=20    mod=MR  desc=OSag  T2                 pid=QG12347478     name=TANG DA BI date=20250515 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+122_c                        n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12+ pid=QG12346834     name=WANG HAI J date=20250518 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+122_d                        n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12346834     name=WANG HAI J date=20250518 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+122_t                        n=20    mod=MR  desc=OSag  T2                 pid=QG12346834     name=WANG HAI J date=20250518 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+124_t                        n=22    mod=MR  desc=t2_tse_fs_sag_320        pid=P0947997X      name=QU YAO=$) date=20250520 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+125_c                        n=100   mod=MR  desc=smDIXON_FA12-W           pid=QG12348364     name=SHENG WEI  date=20250515 ser#1002 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+125_d                        n=36    mod=MR  desc=sDWI_b1000               pid=QG12348364     name=SHENG WEI  date=20250515 ser#604  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+125_t                        n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12348364     name=SHENG WEI  date=20250515 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+126_c                        n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12350069     name=SHEN CUI P date=20250520 ser#1801 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+126_d                        n=72    mod=MR  desc=DWI_b0-1000              pid=QG12350069     name=SHEN CUI P date=20250520 ser#1101 rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+126_t                        n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12350069     name=SHEN CUI P date=20250520 ser#801  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+127_c                        n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12330272     name=ZHU CUI YI date=20250329 ser#20   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+127_d                        n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12330272     name=ZHU CUI YI date=20250329 ser#11   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+127_t                        n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12330272     name=ZHU CUI YI date=20250329 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+129_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12350380     name=ZHENG BIN= date=20250523 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+129_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12350380     name=ZHENG BIN= date=20250523 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+129_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12350380     name=ZHENG BIN= date=20250523 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+130_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12339480     name=ZHU YI JUN date=20250422 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+130_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12339480     name=ZHU YI JUN date=20250422 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+130_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12339480     name=ZHU YI JUN date=20250422 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+131_c                        n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12351076     name=YUAN MEI L date=20250522 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+131_d                        n=60    mod=MR  desc=Ax rFOV Focus MUSE b50/1 pid=QG12351076     name=YUAN MEI L date=20250522 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+131_t                        n=18    mod=MR  desc=Sag T2 Prop              pid=QG12351076     name=YUAN MEI L date=20250522 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+132_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12352468     name=WAN MEI YI date=20250528 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+132_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12352468     name=WAN MEI YI date=20250528 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+132_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12352468     name=WAN MEI YI date=20250528 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+133_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=M01397687      name=XU YU GEN= date=20250523 ser#12   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+133_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=M01397687      name=XU YU GEN= date=20250523 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+133_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=M01397687      name=XU YU GEN= date=20250523 ser#4    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+134_c                        n=92    mod=MR  desc=WATER:Ax LAVA-FLEX+c     pid=QG12316216     name=HUANG YONG date=20250528 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+134_d                        n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12316216     name=HUANG YONG date=20250528 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+134_t                        n=20    mod=MR  desc=OSag  T2                 pid=QG12316216     name=HUANG YONG date=20250528 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+135_c                        n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12353265     name=ZHU ZHENG  date=20250527 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+135_d                        n=60    mod=MR  desc=Ax rFOV Focus MUSE b50/1 pid=QG12353265     name=ZHU ZHENG  date=20250527 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+135_t                        n=18    mod=MR  desc=Sag T2 Prop              pid=QG12353265     name=ZHU ZHENG  date=20250527 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+136_d                        n=36    mod=MR  desc=sDWI_b1000               pid=QG12350972     name=LU JIN HUA date=20250522 ser#604  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+136_t                        n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12350972     name=LU JIN HUA date=20250522 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+137_d                        n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12351851     name=CHEN GUO Z date=20250527 ser#9    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+137_t                        n=15    mod=MR  desc=t2_tse_sag               pid=QG12351851     name=CHEN GUO Z date=20250527 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+138_c                        n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12+ pid=QG12339726     name=WU XIN CHE date=20250424 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+138_d                        n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12339726     name=WU XIN CHE date=20250424 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+138_t                        n=20    mod=MR  desc=OSag  T2                 pid=QG12339726     name=WU XIN CHE date=20250424 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+139_c                        n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12327285     name=XU LIANG M date=20250529 ser#901  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+139_d                        n=36    mod=MR  desc=sDWI_b1000               pid=QG12327285     name=XU LIANG M date=20250529 ser#604  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+139_t                        n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12327285     name=XU LIANG M date=20250529 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+13_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=P09200959      name=GU JU FANG date=20250103 ser#12   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+13_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=P09200959      name=GU JU FANG date=20250103 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+13_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=P09200959      name=GU JU FANG date=20250103 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+140_d                        n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12354276     name=SHI XING C date=20250603 ser#9    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+140_t                        n=15    mod=MR  desc=t2_tse_sag               pid=QG12354276     name=SHI XING C date=20250603 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+141_c                        n=88    mod=MR  desc=WATER:Ax LAVA-FLEX+c     pid=P08512985      name=ZHOU ZHI C date=20250529 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+141_d                        n=52    mod=MR  desc=OAx DWI B=1000           pid=P08512985      name=ZHOU ZHI C date=20250529 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+141_t                        n=20    mod=MR  desc=OSag  T2                 pid=P08512985      name=ZHOU ZHI C date=20250529 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+142_c                        n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12355930     name=MAO YOU DO date=20250605 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+142_d                        n=60    mod=MR  desc=Ax rFOV Focus MUSE b50/1 pid=QG12355930     name=MAO YOU DO date=20250605 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+142_t                        n=18    mod=MR  desc=Sag T2 Prop              pid=QG12355930     name=MAO YOU DO date=20250605 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+143_d                        n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12335316     name=XUE JIAN H date=20250601 ser#8    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+143_t                        n=15    mod=MR  desc=t2_tse_sag               pid=QG12335316     name=XUE JIAN H date=20250601 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+144_c                        n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12338765     name=YANG HONG  date=20250604 ser#20   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+144_d                        n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12338765     name=YANG HONG  date=20250604 ser#11   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+144_t                        n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12338765     name=YANG HONG  date=20250604 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+145_c                        n=89    mod=MR  desc=mDIXON-W+C               pid=QG12352619     name=LU SHU LIN date=20250527 ser#701  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+145_d                        n=32    mod=MR  desc=sDWI_b1000               pid=QG12352619     name=LU SHU LIN date=20250527 ser#503  rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+145_t                        n=24    mod=MR  desc=sT2W_TSE_Spair           pid=QG12352619     name=LU SHU LIN date=20250527 ser#202  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+146_c                        n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12+ pid=K01138541      name=WEI JIANG  date=20250605 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+146_d                        n=44    mod=MR  desc=OAx DWI B=1000           pid=K01138541      name=WEI JIANG  date=20250605 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+146_t                        n=20    mod=MR  desc=OSag  T2                 pid=K01138541      name=WEI JIANG  date=20250605 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+147_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12347811     name=GUO DAO QI date=20250516 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+147_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12347811     name=GUO DAO QI date=20250516 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+147_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12347811     name=GUO DAO QI date=20250516 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+148_c                        n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12328605     name=SHAO JIAN  date=20250515 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+148_d                        n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=QG12328605     name=SHAO JIAN  date=20250515 ser#4    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+148_t                        n=18    mod=MR  desc=Sag T2 Prop              pid=QG12328605     name=SHAO JIAN  date=20250515 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+14_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=F02244198      name=LIANG YI M date=20241205 ser#11   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+14_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=F02244198      name=LIANG YI M date=20241205 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+150_d                        n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12356152     name=ZHANG YONG date=20250606 ser#9    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+150_t                        n=15    mod=MR  desc=t2_tse_sag               pid=QG12356152     name=ZHANG YONG date=20250606 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+151_c                        n=92    mod=MR  desc=WATER:Ax LAVA-FLEX+c     pid=M02250986      name=HOU ZHEN Y date=20250523 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+151_d                        n=44    mod=MR  desc=OAx DWI B=1000           pid=M02250986      name=HOU ZHEN Y date=20250523 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+151_t                        n=20    mod=MR  desc=OSag  T2                 pid=M02250986      name=HOU ZHEN Y date=20250523 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+152_c                        n=72    mod=MR  desc=WATER:Ax LAVA-FLEX+c     pid=06783804       name=WANG ZHAO  date=20250609 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+152_d                        n=44    mod=MR  desc=OAx DWI B=1000           pid=06783804       name=WANG ZHAO  date=20250609 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+152_t                        n=20    mod=MR  desc=OSag  T2                 pid=06783804       name=WANG ZHAO  date=20250609 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+153_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12339957     name=ZHENG XIA  date=20250606 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+153_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12339957     name=ZHENG XIA  date=20250606 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+153_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12339957     name=ZHENG XIA  date=20250606 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+154_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12352649     name=ZHU LIN XI date=20250528 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+154_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12352649     name=ZHU LIN XI date=20250528 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+154_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12352649     name=ZHU LIN XI date=20250528 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+155_c                        n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12359600     name=SHEN JIAN  date=20250614 ser#16   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+155_d                        n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12359600     name=SHEN JIAN  date=20250614 ser#8    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+155_t                        n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12359600     name=SHEN JIAN  date=20250614 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+156_d                        n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12359700     name=XUE YU SHU date=20250616 ser#9    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+156_t                        n=15    mod=MR  desc=t2_tse_sag               pid=QG12359700     name=XUE YU SHU date=20250616 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+157_c                        n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12359501     name=ZHAO XIANG date=20250614 ser#16   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+157_d                        n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12359501     name=ZHAO XIANG date=20250614 ser#8    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+157_t                        n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12359501     name=ZHAO XIANG date=20250614 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+158_d                        n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12357312     name=ZHONG CONG date=20250611 ser#10   rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+158_t                        n=15    mod=MR  desc=t2_tse_sag               pid=QG12357312     name=ZHONG CONG date=20250611 ser#4    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+159_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12360413     name=CHEN SHI Z date=20250618 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+159_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12360413     name=CHEN SHI Z date=20250618 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+159_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12360413     name=CHEN SHI Z date=20250618 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+15_c                         n=72    mod=MR  desc=WATER:Ax LAVA-FLEX+c     pid=QG12270146     name=LU YA YING date=20250110 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+15_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12270146     name=LU YA YING date=20250110 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+15_t                         n=20    mod=MR  desc=OSag  T2                 pid=QG12270146     name=LU YA YING date=20250110 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+160_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12342936     name=JIN SHAO C date=20250619 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+160_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12342936     name=JIN SHAO C date=20250619 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+162_c                        n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12350383     name=JIANG WEI  date=20250523 ser#11   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+162_d                        n=66    mod=MR  desc=Ax DWI 1000              pid=QG12350383     name=JIANG WEI  date=20250523 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+162_t                        n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12350383     name=JIANG WEI  date=20250523 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+17_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=K0159423X      name=ZHONG WEI  date=20250109 ser#12   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+17_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=K0159423X      name=ZHONG WEI  date=20250109 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+17_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=K0159423X      name=ZHONG WEI  date=20250109 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+18_d                         n=36    mod=MR  desc=sDWI_b1000               pid=QG12305037     name=MA BAO ZHE date=20250114 ser#604  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+18_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12305037     name=MA BAO ZHE date=20250114 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+19_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12291773     name=HONG ZU SI date=20250111 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+19_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=QG12291773     name=HONG ZU SI date=20250111 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+19_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12291773     name=HONG ZU SI date=20250111 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+1_c                          n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12293640     name=XU JIN XIU date=20241213 ser#1101 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+1_d                          n=36    mod=MR  desc=sDWI_b1000               pid=QG12293640     name=XU JIN XIU date=20241213 ser#704  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+1_t                          n=36    mod=MR  desc=Ax T2 FSE                pid=QG12293640     name=XU JIN XIU date=20241213 ser#501  rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+21_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12307767     name=GUO FENG= date=20250122 ser#1001 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+21_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12307767     name=GUO FENG= date=20250122 ser#201  rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+22_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=K03280963      name=GAO JIAN P date=20250122 ser#11   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+22_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=K03280963      name=GAO JIAN P date=20250122 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+22_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=K03280963      name=GAO JIAN P date=20250122 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+24_d                         n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12308218     name=HE CHANG M date=20250125 ser#9    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+24_t                         n=15    mod=MR  desc=t2_tse_sag               pid=QG12308218     name=HE CHANG M date=20250125 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+26_c                         n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12306765     name=LI CHENG H date=20250124 ser#20   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+26_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12306765     name=LI CHENG H date=20250124 ser#11   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+26_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12306765     name=LI CHENG H date=20250124 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+28_d                         n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12308237     name=DAI XIU ZH date=20250207 ser#9    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+28_t                         n=15    mod=MR  desc=t2_tse_sag               pid=QG12308237     name=DAI XIU ZH date=20250207 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+29_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12272199     name=XU EN JIN= date=20250205 ser#12   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+29_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=QG12272199     name=XU EN JIN= date=20250205 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+29_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12272199     name=XU EN JIN= date=20250205 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+2_c                          n=250   mod=MR  desc=mDIXON-W+C               pid=QG12295374     name=ZHAN QIAO  date=20241218 ser#701  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+2_d                          n=72    mod=MR  desc=DWI_b0-1000              pid=QG12295374     name=ZHAN QIAO  date=20241218 ser#601  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+2_t                          n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12295374     name=ZHAN QIAO  date=20241218 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+30_c                         n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12272042     name=LI LIANG S date=20250113 ser#16   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+30_d                         n=60    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12272042     name=LI LIANG S date=20250113 ser#7    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+30_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12272042     name=LI LIANG S date=20250113 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+31_d                         n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12306446     name=XU XIAO BA date=20250119 ser#9    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+31_t                         n=15    mod=MR  desc=t2_tse_sag               pid=QG12306446     name=XU XIAO BA date=20250119 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+32_c                         n=92    mod=MR  desc=WATER:Ax LAVA-FLEX+c     pid=QG12310721     name=FAN BING X date=20250209 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+32_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12310721     name=FAN BING X date=20250209 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+32_t                         n=20    mod=MR  desc=OSag  T2                 pid=QG12310721     name=FAN BING X date=20250209 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+33_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12283418     name=ZHOU ZONG  date=20250207 ser#11   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+33_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=QG12283418     name=ZHOU ZONG  date=20250207 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+33_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12283418     name=ZHOU ZONG  date=20250207 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+34_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12314184     name=GUO ZI JIE date=20250219 ser#901  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+34_d                         n=36    mod=MR  desc=sDWI_b1000               pid=QG12314184     name=GUO ZI JIE date=20250219 ser#504  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+34_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12314184     name=GUO ZI JIE date=20250219 ser#201  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+36_c                         n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12314479     name=GUO DE ZHO date=20250219 ser#15   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+36_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12314479     name=GUO DE ZHO date=20250219 ser#7    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+36_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12314479     name=GUO DE ZHO date=20250219 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+37_c                         n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12314212     name=YU JIN DI= date=20250218 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+37_d                         n=40    mod=MR  desc=DW_Synthetic: Ax DWI b0- pid=QG12314212     name=YU JIN DI= date=20250218 ser#300  rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+37_t                         n=18    mod=MR  desc=Sag T2 Prop              pid=QG12314212     name=YU JIN DI= date=20250218 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+38_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=K00111048      name=YE HUI DI= date=20250111 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+38_t                         n=20    mod=MR  desc=OSag  T2                 pid=K00111048      name=YE HUI DI= date=20250111 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+39_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12280625     name=ZHOU GANG= date=20241225 ser#1001 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+39_d                         n=72    mod=MR  desc=DWI_b0-1000              pid=QG12280625     name=ZHOU GANG= date=20241225 ser#601  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+39_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12280625     name=ZHOU GANG= date=20241225 ser#201  rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+3_c                          n=92    mod=MR  desc=FAT: Ax LAVA-FA12 +C     pid=QG12261993     name=ZHANG JI L date=20241224 ser#1200 rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+3_d                          n=70    mod=MR  desc=Ax DWI Focus b0-1000     pid=QG12261993     name=ZHANG JI L date=20241224 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+3_t                          n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12261993     name=ZHANG JI L date=20241224 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+41_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12278243     name=FEI CHUN M date=20250225 ser#1001 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+41_d                         n=50    mod=MR  desc=sDWI_b1000               pid=QG12278243     name=FEI CHUN M date=20250225 ser#604  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+41_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12278243     name=FEI CHUN M date=20250225 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+42_d                         n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12316659     name=GU CUI PIN date=20250222 ser#7    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+42_t                         n=15    mod=MR  desc=t2_tse_sag               pid=QG12316659     name=GU CUI PIN date=20250222 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+43_c                         n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=J503DCFE3      name=WANG CHANG date=20250227 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+43_d                         n=40    mod=MR  desc=DW_Synthetic: Ax DWI b0- pid=J503DCFE3      name=WANG CHANG date=20250227 ser#300  rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+43_t                         n=18    mod=MR  desc=Sag T2 Prop              pid=J503DCFE3      name=WANG CHANG date=20250227 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+44_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12265516     name=YE WAN LI= date=20250120 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+44_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=QG12265516     name=YE WAN LI= date=20250120 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+44_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12265516     name=YE WAN LI= date=20250120 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+45_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12318454     name=QU ZHEN CH date=20250227 ser#1101 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+45_d                         n=36    mod=MR  desc=sDWI_b1000               pid=QG12318454     name=QU ZHEN CH date=20250227 ser#704  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+45_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12318454     name=QU ZHEN CH date=20250227 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+46_c                         n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12317382     name=TANG GUI L date=20250225 ser#19   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+46_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12317382     name=TANG GUI L date=20250225 ser#11   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+46_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12317382     name=TANG GUI L date=20250225 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+47_c                         n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12315963     name=YANG DONG  date=20250223 ser#19   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+47_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12315963     name=YANG DONG  date=20250223 ser#11   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+47_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12315963     name=YANG DONG  date=20250223 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+48_c                         n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA2+C pid=10733664       name=ZHAO SHUAN date=20250227 ser#12   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+48_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=10733664       name=ZHAO SHUAN date=20250227 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+48_t                         n=20    mod=MR  desc=OSag  T2                 pid=10733664       name=ZHAO SHUAN date=20250227 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+4_c                          n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12287655     name=ZHANG HE P date=20241204 ser#17   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+4_t                          n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12287655     name=ZHANG HE P date=20241204 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+50_c                         n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12+ pid=QG12318745     name=SHI YING= date=20250228 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+50_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12318745     name=SHI YING= date=20250228 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+50_t                         n=20    mod=MR  desc=OSag  T2                 pid=QG12318745     name=SHI YING= date=20250228 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+51_c                         n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12319156     name=YE JUE DON date=20250302 ser#20   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+51_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12319156     name=YE JUE DON date=20250302 ser#11   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+51_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12319156     name=YE JUE DON date=20250302 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+52_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=M18076150      name=LIN YAN=$ date=20250226 ser#1001 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+52_d                         n=36    mod=MR  desc=sDWI_b1000               pid=M18076150      name=LIN YAN=$ date=20250226 ser#604  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+52_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=M18076150      name=LIN YAN=$ date=20250226 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+53_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12306863     name=ZHU LIANG  date=20250121 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+53_t                         n=20    mod=MR  desc=OSag  T2                 pid=QG12306863     name=ZHU LIANG  date=20250121 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+54_c                         n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12+ pid=QG12318733     name=ZHOU QUAN  date=20250302 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+54_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12318733     name=ZHOU QUAN  date=20250302 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+54_t                         n=20    mod=MR  desc=OSag  T2                 pid=QG12318733     name=ZHOU QUAN  date=20250302 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+55_t                         n=22    mod=MR  desc=t2_tse_fs_sag_320        pid=QG12322110     name=SUN YONG L date=20250310 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+56_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=B01714507      name=NI MEI JUA date=20250307 ser#12   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+56_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=B01714507      name=NI MEI JUA date=20250307 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+56_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=B01714507      name=NI MEI JUA date=20250307 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+57_c                         n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12319018     name=REN BING L date=20250302 ser#21   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+57_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12319018     name=REN BING L date=20250302 ser#12   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+57_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12319018     name=REN BING L date=20250302 ser#3    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+58_c                         n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12+ pid=QG12319140     name=LV QI HUAI date=20250302 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+58_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12319140     name=LV QI HUAI date=20250302 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+58_t                         n=20    mod=MR  desc=OSag  T2                 pid=QG12319140     name=LV QI HUAI date=20250302 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+59_c                         n=100   mod=MR  desc=smDIXON_FA12-W           pid=QG12322059     name=ZHANG JIAN date=20250307 ser#1102 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+59_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12322059     name=ZHANG JIAN date=20250307 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+5_d                          n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12295380     name=MAO MEI PI date=20241226 ser#8    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+5_t                          n=15    mod=MR  desc=t2_tse_sag               pid=QG12295380     name=MAO MEI PI date=20241226 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+60_c                         n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12323302     name=WANG FEI= date=20250312 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+60_d                         n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=QG12323302     name=WANG FEI= date=20250312 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+60_t                         n=18    mod=MR  desc=Sag T2 Prop              pid=QG12323302     name=WANG FEI= date=20250312 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+61_d                         n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12323070     name=FU CHUN XI date=20250312 ser#7    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+61_t                         n=15    mod=MR  desc=t2_tse_sag               pid=QG12323070     name=FU CHUN XI date=20250312 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+62_c                         n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=Q1329916X      name=YANG TIAN  date=20250313 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+62_d                         n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=Q1329916X      name=YANG TIAN  date=20250313 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+62_t                         n=18    mod=MR  desc=Sag T2 Prop              pid=Q1329916X      name=YANG TIAN  date=20250313 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+63_d                         n=50    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12324959     name=XIA MENG H date=20250314 ser#7    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+63_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12324959     name=XIA MENG H date=20250314 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+64_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12320591     name=REN JIN CA date=20250306 ser#11   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+64_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=QG12320591     name=REN JIN CA date=20250306 ser#7    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+64_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12320591     name=REN JIN CA date=20250306 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+66_t                         n=15    mod=MR  desc=t2_tse_sag               pid=QG12325308     name=YANG XIU Y date=20250317 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+67_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12325872     name=CHEN YING= date=20250318 ser#1101 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+67_d                         n=36    mod=MR  desc=sDWI_b1000               pid=QG12325872     name=CHEN YING= date=20250318 ser#704  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+67_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12325872     name=CHEN YING= date=20250318 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+68_c                         n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12325456     name=ZHANG JUN= date=20250317 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+68_d                         n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=QG12325456     name=ZHANG JUN= date=20250317 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+68_t                         n=18    mod=MR  desc=Sag T2 Prop              pid=QG12325456     name=ZHANG JUN= date=20250317 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+69_c                         n=100   mod=MR  desc=mDIXON_FA2+C             pid=QG12325751     name=WU LI BANG date=20250320 ser#1201 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+69_d                         n=36    mod=MR  desc=sDWI_b1000               pid=QG12325751     name=WU LI BANG date=20250320 ser#704  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+69_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12325751     name=WU LI BANG date=20250320 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+6_c                          n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12296753     name=JIN SHAO J date=20241220 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+6_d                          n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=QG12296753     name=JIN SHAO J date=20241220 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+6_t                          n=18    mod=MR  desc=Sag T2 Prop              pid=QG12296753     name=JIN SHAO J date=20241220 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+70_c                         n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12083941     name=WANG YING= date=20250320 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+70_d                         n=60    mod=MR  desc=Ax rFOV DWI b0-1000      pid=QG12083941     name=WANG YING= date=20250320 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+70_t                         n=18    mod=MR  desc=Sag T2 Prop              pid=QG12083941     name=WANG YING= date=20250320 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+74_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12326179     name=BAO XUE QI date=20250319 ser#1101 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+74_d                         n=72    mod=MR  desc=DWI_b0-1000              pid=QG12326179     name=BAO XUE QI date=20250319 ser#701  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+76_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=10839583       name=CHENG QIU  date=20250325 ser#1001 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+76_d                         n=72    mod=MR  desc=DWI_b0-1000              pid=10839583       name=CHENG QIU  date=20250325 ser#601  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+77_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=10509807       name=BIAN QIN D date=20250326 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+77_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=10509807       name=BIAN QIN D date=20250326 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+77_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=10509807       name=BIAN QIN D date=20250326 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+78_c                         n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12328311     name=LU ZHENG Y date=20250324 ser#19   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+78_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12328311     name=LU ZHENG Y date=20250324 ser#11   rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+78_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12328311     name=LU ZHENG Y date=20250324 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+79_c                         n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12+ pid=QG12329661     name=YUE BAO HU date=20250328 ser#11   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+79_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12329661     name=YUE BAO HU date=20250328 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+79_t                         n=20    mod=MR  desc=OSag  T2                 pid=QG12329661     name=YUE BAO HU date=20250328 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+7_c                          n=100   mod=MR  desc=smDIXON_FA12-W           pid=QG12291341     name=SHEN XIAO  date=20241216 ser#1102 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+7_t                          n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12291341     name=SHEN XIAO  date=20241216 ser#301  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+80_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=J20453566      name=SHAO CHAO  date=20250311 ser#801  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+80_d                         n=72    mod=MR  desc=DWI_b0-1000              pid=J20453566      name=SHAO CHAO  date=20250311 ser#501  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+80_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=J20453566      name=SHAO CHAO  date=20250311 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+81_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12330531     name=NI SU MEI= date=20250330 ser#7    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+81_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12330531     name=NI SU MEI= date=20250330 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+82_c                         n=100   mod=MR  desc=smDIXON_FA12-W           pid=QG12329539     name=FU GUO QIN date=20250328 ser#1202 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+82_d                         n=36    mod=MR  desc=sDWI_b1000               pid=QG12329539     name=FU GUO QIN date=20250328 ser#704  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+82_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12329539     name=FU GUO QIN date=20250328 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+83_d                         n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12333415     name=XU SHUI GE date=20250407 ser#9    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+83_t                         n=15    mod=MR  desc=t2_tse_sag               pid=QG12333415     name=XU SHUI GE date=20250407 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+84_c                         n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12  pid=QG12332721     name=ZHU DA ZHO date=20250408 ser#4    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+84_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12332721     name=ZHU DA ZHO date=20250408 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+84_t                         n=20    mod=MR  desc=OSag  T2                 pid=QG12332721     name=ZHU DA ZHO date=20250408 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+85_c                         n=100   mod=MR  desc=mDIXON_FA12+C            pid=QG12333900     name=SU HONG YU date=20250410 ser#1001 rows= oneSeries=True ts=1.2.840.10008.1.2.2
+85_d                         n=36    mod=MR  desc=sDWI_b1000               pid=QG12333900     name=SU HONG YU date=20250410 ser#604  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+85_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12333900     name=SU HONG YU date=20250410 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+87_d                         n=22    mod=MR  desc=ep2d_diff_b1000_p2       pid=QG12334681     name=CAO HAI HU date=20250411 ser#8    rows=À oneSeries=True ts=1.2.840.10008.1.2.2
+87_t                         n=15    mod=MR  desc=t2_tse_sag               pid=QG12334681     name=CAO HAI HU date=20250411 ser#2    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+88_c                         n=72    mod=MR  desc=t1_vibe_dixon_tra_bh_FA1 pid=QG12314447     name=PAN JIN XI date=20250224 ser#16   rows= oneSeries=True ts=1.2.840.10008.1.2.2
+88_d                         n=40    mod=MR  desc=ep2d_diff_stir_b0_1000_p pid=QG12314447     name=PAN JIN XI date=20250224 ser#7    rows=Ð oneSeries=True ts=1.2.840.10008.1.2.2
+88_t                         n=23    mod=MR  desc=t2_tse_sag_p2_320        pid=QG12314447     name=PAN JIN XI date=20250224 ser#2    rows=@ oneSeries=True ts=1.2.840.10008.1.2.2
+89_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12328676     name=CHEN XIU M date=20250325 ser#11   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+89_d                         n=56    mod=MR  desc=Ax DWI Focus b0-1000     pid=QG12328676     name=CHEN XIU M date=20250325 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+89_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12328676     name=CHEN XIU M date=20250325 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+90_c                         n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=QG12333670     name=DENG QIN H date=20250409 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+90_d                         n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=QG12333670     name=DENG QIN H date=20250409 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+90_t                         n=18    mod=MR  desc=Sag T2 Prop              pid=QG12333670     name=DENG QIN H date=20250409 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+91_c                         n=72    mod=MR  desc=WATER:Ax LAVA-FLEX-FA12+ pid=QG12335520     name=CUI WEN LI date=20250411 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+91_d                         n=44    mod=MR  desc=OAx DWI B=1000           pid=QG12335520     name=CUI WEN LI date=20250411 ser#4    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+91_t                         n=20    mod=MR  desc=OSag  T2                 pid=QG12335520     name=CUI WEN LI date=20250411 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+92_c                         n=92    mod=MR  desc=WATER: BH Ax T1 LAVA Fle pid=V10270907      name=GUO YI QIN date=20250409 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+92_d                         n=80    mod=MR  desc=Ax DWI b0-1000 large cov pid=V10270907      name=GUO YI QIN date=20250409 ser#3    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+92_t                         n=18    mod=MR  desc=Sag T2 Prop              pid=V10270907      name=GUO YI QIN date=20250409 ser#2    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+93_c                         n=100   mod=MR  desc=smDIXON_FA12-W           pid=QG12321801     name=GU JIN BO= date=20250401 ser#902  rows= oneSeries=True ts=1.2.840.10008.1.2.2
+93_d                         n=36    mod=MR  desc=sDWI_b1000               pid=QG12321801     name=GU JIN BO= date=20250401 ser#504  rows=à oneSeries=True ts=1.2.840.10008.1.2.2
+93_t                         n=24    mod=MR  desc=T2W_TSE_sag              pid=QG12321801     name=GU JIN BO= date=20250401 ser#201  rows=0 oneSeries=True ts=1.2.840.10008.1.2.2
+95_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12335011     name=HUA HAI JU date=20250412 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+95_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=QG12335011     name=HUA HAI JU date=20250412 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+95_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12335011     name=HUA HAI JU date=20250412 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+96_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12293277     name=HE WAN ZHE date=20250416 ser#9    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+96_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=QG12293277     name=HE WAN ZHE date=20250416 ser#6    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+96_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12293277     name=HE WAN ZHE date=20250416 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+98_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=QG12332835     name=ZHANG YI M date=20250416 ser#11   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+98_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=QG12332835     name=ZHANG YI M date=20250416 ser#8    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+98_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=QG12332835     name=ZHANG YI M date=20250416 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2
+99_c                         n=92    mod=MR  desc=WATER: Ax LAVA-FA12 +C   pid=K02654820      name=DAI HUA TI date=20250417 ser#10   rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+99_d                         n=66    mod=MR  desc=Ax DWI 1000              pid=K02654820      name=DAI HUA TI date=20250417 ser#5    rows=? oneSeries=True ts=1.2.840.10008.1.2.2
+99_t                         n=19    mod=MR  desc=Sag T2  PROPELLER        pid=K02654820      name=DAI HUA TI date=20250417 ser#3    rows= oneSeries=True ts=1.2.840.10008.1.2.2

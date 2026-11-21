@@ -1,23 +1,25 @@
 # 文件清单与分类（FILE INVENTORY）
 
-> 最后更新: 2026-09-29。与 `PROJECT_OVERVIEW.md`（项目级梳理）配套，本文是**文件级**索引。
-> 分类标记: ✅核心代码 ｜ 🛠工具/辅助 ｜ 📦产物 ｜ 📜历史 ｜ 🗑临时可清理 ｜ ⚠️注意
+> **阶段快照：2026-09-29 / 文件级索引** — 本文记录该阶段状态，内容不代表当前状态。
+> 当前状态见 [README.md](../README.md) 与 [FIXES_2026-11-20.md](FIXES_2026-11-20.md)；数据规模与口径已变更，文中数字不可直接引用。
+> 2026-11-21 已删除全部实验权重（`checkpoints_*` / `archive` / `logs`），涉及 `.pth` 的命令需重跑生成。
+> 相关快照：[文件清单](FILE_INVENTORY.md) · [项目总览](PROJECT_OVERVIEW.md) · [进度汇报](PROGRESS_REPORT_HOS.md) · [优化路线图](OPTIMIZATION_ROADMAP.md)
 
 ---
 
-## 0. 统计概览
+## 0. 统计概览（以下为 2026-09-29 快照，已被上表说明取代）
 
 | 范围 | 数量 | 说明 |
 |---|---|---|
-| Python 源文件 | 34 | 核心 5 包 25 + 入口/工具 9；一次性脚本×5 已归档 `logs/archive/_tmp/20260929_cleanup/` |
-| Notebook | 0（根目录） | 4 个历史探索已归档 `_tmp/20260929_cleanup/`（均未进主线） |
+| Python 源文件 | 34 | 核心 5 包 25 + 入口/工具 9；一次性脚本已归档 `archive/` |
+| Notebook | 0（根目录） | 历史探索已归档（均未进主线） |
 | 数据 csv | 13 | `data/`（划分含 4-seed 版本） |
-| 缓存 npy | 194 | `cache_hos/`（约 1.6GB 级） |
-| checkpoint | 8 | `checkpoints_hos/`（resnet10 T/N×8；其中 s42 为 round5 三序列 285MB，s0/1/7 为 round4 单序列 170MB） |
-| 训练图 | 12 | `plots_hos/`（T/N 曲线 + 混淆矩阵） |
-| 日志 | 55 + 27 | `logs/` 55 文件 + `logs/archive/_tmp/20260929_cleanup/` 27 文件（含 2026-09-29 消融分析脚本×2 + round5 旧 csv 备份 + 冒烟脚本） |
-| 归档目录 | 5 + 1 | `round1-5` + `_tmp/`（2026-09-29 清理桶） |
-| TCGA 历史 | 19 | `_archive_tcga/`（2.19GB；cmb 影像 93GB 已删，仅留 metadata 0.9MB） |
+| 缓存 npy | 194 | `cache_hos/`（当前 544，含 CT/MRI 双类） |
+| checkpoint | 8 | 当时 `checkpoints_hos/`（现已移入 `archive/checkpoints_early/checkpoints_hos/`） |
+| 训练图 | 12 | 当时 `plots_hos/`（现为 `plots_hos_full/`） |
+| 日志 | 55 + 27 | 当时 `logs/`（当前 300+） |
+| 归档目录 | 5 + 1 | 当时 `logs/archive/round1-5`（现为 `results/roundN/`） |
+| TCGA 历史 | 19 | `archive/tcga/_archive_tcga/` |
 
 ---
 
@@ -51,25 +53,25 @@
 | `trainer.py` | `Trainer` | fit/validate/predict_proba；模态 dropout；多任务+重建 loss；**T/N 双 best 独立跟踪**(round3 修复)；阈值校准接口；round6：MixUp（`cfg.mixup`，batch 内插值作用于 main/n/aux）+ freeze 前缀修正（兼容 `mri_backbones.*` 与共享模式，`relu`→`act`） |
 | `__init__.py` | 导出 `Trainer` | |
 
-### 1.5 utils/ — 通用 ✅
+### 1.5 utils/ — 通用 ✅（当前实际只含前 4 行）
 | 文件 | 关键符号 | 用途 | 状态 |
 |---|---|---|---|
 | `metrics.py` | `compute_metrics`, `calibrate_binary_threshold` | 指标 + 阈值扫描校准 | ✅在用 |
 | `logger.py` | `setup_logger` | 文件+控制台日志 | ✅在用 |
 | `visualize.py` | `plot_curves`, `plot_confusion_matrix` | 训练曲线/混淆矩阵 | ✅在用 |
-| `build_hos_dataset.py` | — | 构建 `hos_pairs.csv`（DICOM→NIfTI + xlsx 临床/病理对齐） | 🛠重跑需确认规则 |
-| `build_hos_testset.py` | — | 构建 CT-only 外部测试集 csv | 🛠历史 |
-| `convert_dcm_to_nifti.py` | — | DICOM→NIfTI 转换 | 🛠被 build_hos_dataset 调用 |
-| `build_tcga_index.py` / `split_tcga.py` / `make_kfold.py` | — | TCGA 配对/划分/K 折 | 📜TCGA 时代 |
-| `scan_modalities.py` | — | CMB-CRC 元数据配对 | 📜早期 CMB |
-| `filter_cmb_data.py` / `filter_patients.py` | — | 数据清洗 | 📜一次性 |
 | `__init__.py` | 导出 metrics/logger/visualize 的 5 个函数 | | |
+
+> 以下脚本**实际位于 `tools/`**（本表旧位置有误）：`build_hos_dataset.py`（构建 hos_pairs.csv）、
+> `build_hos_testset.py`（历史，产出 `hos_ct_test.csv` 已不存在）、`convert_dcm_to_nifti.py`、
+> `build_hos_batch2_csv.py` / `build_hos_batch3_csv.py`（第二/三批合并，已加备份+幂等保护）、
+> `expand_ct_series_csv.py`、`build_tcga_index.py` / `split_tcga.py` / `make_kfold.py`（TCGA 时代）、
+> `scan_modalities.py`、`filter_cmb_data.py`、`filter_patients.py`。
 
 ## 2. 入口与工具脚本 ✅/🛠
 | 文件 | 用途 | 状态 |
 |---|---|---|
 | `train_hos_seeds.py` | **当前主入口**：多 seed 分层划分+训练+校准+汇总；CLI `--epochs --val-ratio --seeds --fusion --backbone --no-clinical`；round6 新增 `--kfold N`（StratifiedKFold CV）、`--split-seed`（seed 共用划分）、`--mixup`、`--label-smoothing`、`--freeze-low`、`--share-backbone` | ✅在用 |
-| `train_hos.py` | 旧单 seed 入口（被 seeds 版取代） | 🛠保留/可弃 |
+| `archive/scripts_legacy/scripts_legacy/train_hos.py` | 旧单 seed 入口（被 seeds 版取代，已归档） | 📜历史 |
 | `tools/build_det_cache.py` | 确定性预处理缓存构建（`cache_hos/*.npy`，含 mtime 版本 key，增量友好） | ✅在用 |
 | `tools/_ensemble_eval.py` | **round6 A2**：seed 集成评估（多 checkpoint 在固定 val 上平均 softmax + 阈值校准 → `logs/ensemble_summary.json`） | ✅新增 |
 | `tools/_probe_monai.py` | 验证 MONAI 组件可用性 | 🗑临时探针 |
@@ -101,16 +103,16 @@
 | `hos_pairs_raw.csv` | 临床原始值备份（复查用） |
 | `hos_train/val.csv` | 默认 seed42 划分（train_test_split 0.2） |
 | `hos_train/val_s{0,1,7}.csv` | round4 用 4-seed 划分（42/0/1/7，分层按 T×N） |
-| `hos_ct_test.csv` | CT-only 外部测试（stage2/3，label=-1 表示 OOD） |
+| `hos_ct_test.csv` | ❌ 已不存在（历史 CT-only 外部测试集） |
 
 ### cache_hos/ — 确定性预处理缓存
 194 个 `.npy`（CT: 1×96³ / MRI: **3×96³** float32，round5 三序列对齐卷）。key=sha1(路径+mtime+size)；MRI key 含 t/c/d 三路径+mtime。训练只读缓存输出再增强 → **增强改动无需重建缓存**；新增样本自动增量。
 
-### checkpoints_hos/ — 权重
+### checkpoints_hos/ — 权重（已于 2026-11-21 删除）
 | 文件 | 归属 |
 |---|---|
-| `best_model_hos_s{42,0,1,7}.pth` | resnet10 T-best（162.8MB×4，round4） |
-| `best_model_n_hos_s{42,0,1,7}.pth` | resnet10 N-best（round3 修复后新增） |
+| `best_model_hos_s{42,0,1,7}.pth` | resnet10 T-best（162.8MB×4，round4；已删除） |
+| `best_model_n_hos_s{42,0,1,7}.pth` | resnet10 N-best（round3 修复后新增；已删除） |
 
 ⚠️ **同名覆盖**：每次训练覆盖 `s{seed}`，重要轮次先归档备份。
 ⚠️ **round5 结构变更**：MRI 端改三 backbone，round4 及之前的权重（单 MRI backbone）与新结构**不兼容**，重训后覆盖。

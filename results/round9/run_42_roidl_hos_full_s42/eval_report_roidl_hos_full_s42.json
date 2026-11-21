@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "branch": "hos_full",
+    "run": "roidl",
+    "tag": "hos_full",
+    "seed": 42,
+    "time": "2026-11-05 00:27:50"
+  },
+  "params": {
+    "backbone": "medicalnet10 + avgpool",
+    "roi": "64^3 (mask centroid)",
+    "mask": "Task010",
+    "lr": 0.0001,
+    "lr_n": 0.0003,
+    "head_width": 256,
+    "epochs": 60,
+    "n_train": 72,
+    "n_val": 21
+  },
+  "result": {
+    "best_epoch": 32,
+    "best_macro_f1": 0.6100795865058899,
+    "best_acc": 0.8095238208770752,
+    "best_epoch_n": 29,
+    "best_macro_f1_n": 0.5714285969734192,
+    "calT": {
+      "threshold": 0.25,
+      "macro_f1": 0.6100795755968169,
+      "recall": [
+        0.75,
+        0.6470588235294118
+      ]
+    },
+    "calN": {
+      "threshold": 0.2,
+      "macro_f1": 0.5714285714285714,
+      "recall": [
+        0.9090909090909091,
+        0.3
+      ]
+    }
+  }
+}

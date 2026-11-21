@@ -31,6 +31,10 @@ from monai.transforms import (
     RandGaussianNoise, RandCoarseDropout,
 )
 
+# MRI 三序列通道固定顺序（与 models/network.py 的 _SEQ_ORDER 保持一致）：
+# loader 输出、缓存卷、mri_seq_available 均按此顺序；单序列子集只取对应下标切片。
+_SEQ_ORDER = ("t", "c", "d")
+
 
 def _ct_deterministic(spatial_size):
     # 先 HU 窗裁剪到软组织范围，CropForeground 去背景，最后前景 z-score
@@ -278,7 +282,14 @@ class CRCMultiModalDataset(Dataset):
     def __init__(self, csv_path, label_col="label", spatial_size=(96, 96, 96),
                  num_clinical=1, clinical_cols=None, multi_task=False,
                  secondary_label_col="label_N", is_train=True, cache=True,
-                 disk_cache_dir=None):
+                 disk_cache_dir=None, mri_seqs=("t", "c", "d"), ct_seq="auto",
+                 use_aug=True, consist_modal=None, lesion_dir=None, lesion_size=64,
+                 mri_lesion_dir=None, mri_lesion_size=64, mri_ring_dir=None):
+        """consist_modal: 'mri'/'ct'/None —— round9 C2 一致性正则:
+        训练时对该模态卷做第二次独立增强, 返回 {modal}_second 副本
+        (主增强 vs 副本增强 的特征一致性约束, 增强不变性防过拟合)。
+        lesion_dir: round9 F1 病灶融合分支——Task010 mask 目录 (data/masks_task010),
+        质心中心裁剪 lesion_size³ 卷作为病灶分支输入 (无 mask 样本零卷 + 标志 False)。"""
         self.df = pd.read_csv(csv_path)
         self.label_col = label_col
         self.secondary_label_col = secondary_label_col if multi_task else None
@@ -290,11 +301,27 @@ class CRCMultiModalDataset(Dataset):
         self.ct_det = _ct_deterministic(self.spatial_size)
         # round5: MRI 改三序列对齐管线（_mri_seqs_deterministic），不再用单序列 _mri_deterministic
         self.mri_det = None
-        self.augment = _random_augment() if is_train else None
+        self.augment = _random_augment() if (is_train and use_aug) else None  # round8: use_aug 开关
+        self.consist_modal = consist_modal  # round9 C2: 一致性正则模态 (None/'mri'/'ct')
+        # round9 F1: 病灶分支输入 (Task010 mask 质心 64³ 裁剪)
+        self.lesion_dir = lesion_dir
+        self.lesion_size = lesion_size
+        self.mri_lesion_dir = mri_lesion_dir
+        self.mri_lesion_size = mri_lesion_size
+        self.mri_ring_dir = mri_ring_dir  # round9 Day1⑤: 若设置, mri_lesion 卷用 ring mask (肠周/系膜)
+        self._lesion_cache = {}  # pid -> roi [1,lesion,lesion,lesion] np or None
+        self._mri_lesion_cache = {}  # pid -> roi [1,L,L,L] np or None (round9 MRI-t ROI)
+        self._mri_ring_cache = {}  # pid -> roi [1,L,L,L] np or None (Day1⑤ ring: 肠周/系膜)
         # 缓存确定性预处理结果（train / val 均可缓存；train 的随机增强在运行时另做）
         self._cache = {} if cache else None
         # 持久化磁盘缓存: 跨进程复用确定性预处理, 跳过重复解压/重采样
         self.disk = _DetDiskCache(disk_cache_dir, self.spatial_size) if disk_cache_dir else None
+        # round7: MRI 序列子集（如 ("t",) 单序列分支）。缓存/全量卷按 _SEQ_ORDER 存 [t,c,d]，
+        #          这里只记录子集下标，读取后做通道切片（磁盘缓存 key 不变，可复用全量缓存）。
+        self.mri_seqs = tuple(mri_seqs)
+        self._mri_idx = [_SEQ_ORDER.index(s) for s in self.mri_seqs]
+        # round7: CT 序列选择（plain=平扫 / enhanced=增强 / auto=沿用原 ct_path 优先级）
+        self.ct_seq = ct_seq
 
     def __len__(self):
         return len(self.df)
@@ -303,8 +330,17 @@ class CRCMultiModalDataset(Dataset):
         return torch.zeros(1, *self.spatial_size, dtype=torch.float32)
 
     def _zero_mri(self):
-        """三序列 MRI 全 0 张量 [3, D, H, W]（round5）。"""
+        """MRI 全 0 张量 [3, D, H, W]（恒为全量三通道；子集由网络按 _SEQ_ORDER 索引取通道）。"""
         return torch.zeros(3, *self.spatial_size, dtype=torch.float32)
+
+    def _pick_ct_path(self, row):
+        """按 ct_seq 选择 CT 序列路径（plain / enhanced / auto）。"""
+        key = {"plain": "ct_path_plain", "enhanced": "ct_path_enhanced",
+               "auto": "ct_path"}.get(self.ct_seq, "ct_path")
+        v = row.get(key, "")
+        if not isinstance(v, str):
+            return ""
+        return v
 
     def _load_det(self, path, pipeline):
         img = pipeline(path)
@@ -336,9 +372,108 @@ class CRCMultiModalDataset(Dataset):
             vec = [0.0] * self.num_clinical
         return torch.tensor(vec, dtype=torch.float32)
 
+    def _load_mri_lesion_roi(self, pid, mri_vol, ring=False):
+        """round9 MRI-t ROI: total_mr t 结肠 mask (masks_totalseg_mr_t/{pid}/colon.nii.gz)
+        质心定位 → 从 MRI t 通道卷中心裁剪 lesion_size³。
+        ring=True: 先二值膨胀 2 层取环 (肠周/系膜区域) 再质心定位 (Day1⑤ N 头 ring 嵌入)。
+        mri_vol: np [3,96,96,96] 缓存卷, t 通道=索引 0 (_SEQ_ORDER=('t','c','d'))。
+        返回 (roi [1,L,L,L] np.float32, has_mask bool); 无 mask/空 mask → (None, False)。"""
+        if self.mri_lesion_dir is None:
+            return None, False
+        cache = self._mri_ring_cache if ring else self._mri_lesion_cache
+        if pid in cache:
+            roi = cache[pid]
+            return roi, roi is not None
+        import nibabel as nib
+        from monai.transforms import Resize
+        p = os.path.join(self.mri_lesion_dir, pid, "colon.nii.gz")
+        roi = None
+        has = False
+        if os.path.exists(p):
+            try:
+                m = nib.load(p).get_fdata()
+            except Exception:
+                m = None
+            if m is not None and float((m > 0).sum()) > 0:
+                L = self.mri_lesion_size
+                m3 = Resize(spatial_size=self.spatial_size, mode="nearest")(
+                    m[None].astype(np.float32))[0]  # [96,96,96]
+                if ring:
+                    from scipy.ndimage import binary_dilation
+                    d = binary_dilation(m3 > 0, iterations=2)
+                    m3 = (d & ~(m3 > 0)).astype(np.float32)  # 膨胀取环
+                idx = np.argwhere(m3 > 0)
+                if idx.size == 0:
+                    cache[pid] = None
+                    return None, False
+                cen = idx.mean(axis=0).astype(int)
+                half = L // 2
+                t = mri_vol[0] if mri_vol.ndim == 4 else mri_vol  # t 通道 [96,96,96]
+                roi = np.zeros((L, L, L), dtype=np.float32)
+                z0, z1 = max(0, cen[0] - half), min(96, cen[0] + half)
+                y0, y1 = max(0, cen[1] - half), min(96, cen[1] + half)
+                x0, x1 = max(0, cen[2] - half), min(96, cen[2] + half)
+                if z1 <= z0 or y1 <= y0 or x1 <= x0:
+                    cache[pid] = None
+                    return None, False
+                src = t[z0:z1, y0:y1, x0:x1]
+                oz0 = max(0, half - cen[0]); oy0 = max(0, half - cen[1]); ox0 = max(0, half - cen[2])
+                roi[oz0:oz0 + (z1 - z0), oy0:oy0 + (y1 - y0), ox0:ox0 + (x1 - x0)] = src
+                roi = roi[None]  # [1,L,L,L]
+                has = True
+        cache[pid] = roi
+        return roi, has
+
+    def _load_lesion_roi(self, pid, ct_vol):
+        """Task010 mask 质心定位 → 从 CT 卷中心裁剪 lesion_size³ (含边界上下文)。
+        ct_vol: np [96,96,96] 确定性 CT 卷 (或 [1,96,96,96], 自动 squeeze)。
+        返回 (roi [1,L,L,L] np.float32, has_mask bool); 无 mask/空 mask → (None, False)。
+        结果按 pid 内存缓存 (确定性, 与增强无关)。"""
+        if self.lesion_dir is None:
+            return None, False
+        if pid in self._lesion_cache:
+            roi = self._lesion_cache[pid]
+            return roi, roi is not None
+        import nibabel as nib
+        from monai.transforms import Resize
+        p = os.path.join(self.lesion_dir, f"{pid}.nii.gz")
+        roi = None
+        has = False
+        if os.path.exists(p):
+            try:
+                m = nib.load(p).get_fdata()
+            except Exception:
+                m = None
+            if m is not None and float((m > 0).sum()) > 0:
+                L = self.lesion_size
+                m3 = Resize(spatial_size=self.spatial_size, mode="nearest")(
+                    m[None].astype(np.float32))[0]  # [96,96,96]
+                idx = np.argwhere(m3 > 0)
+                if idx.size == 0:          # 重采样后空 mask (极小/全背景) → 无病灶
+                    self._lesion_cache[pid] = None
+                    return None, False
+                cen = idx.mean(axis=0).astype(int)
+                half = L // 2
+                ct = ct_vol[0] if ct_vol.ndim == 4 else ct_vol  # [96,96,96]
+                roi = np.zeros((L, L, L), dtype=np.float32)
+                z0, z1 = max(0, cen[0] - half), min(96, cen[0] + half)
+                y0, y1 = max(0, cen[1] - half), min(96, cen[1] + half)
+                x0, x1 = max(0, cen[2] - half), min(96, cen[2] + half)
+                if z1 <= z0 or y1 <= y0 or x1 <= x0:   # 质心异常(越界/nan) → 无病灶
+                    self._lesion_cache[pid] = None
+                    return None, False
+                src = ct[z0:z1, y0:y1, x0:x1]
+                oz0 = max(0, half - cen[0]); oy0 = max(0, half - cen[1]); ox0 = max(0, half - cen[2])
+                roi[oz0:oz0 + (z1 - z0), oy0:oy0 + (y1 - y0), ox0:ox0 + (x1 - x0)] = src
+                roi = roi[None]  # [1,L,L,L]
+                has = True
+        self._lesion_cache[pid] = roi
+        return roi, has
+
     def __getitem__(self, idx):
         row = self.df.iloc[idx]
-        ct_avail = bool(row.get("ct_available", True)) and isinstance(row["ct_path"], str) and os.path.exists(str(row["ct_path"]))
+        ct_path = self._pick_ct_path(row)
+        ct_avail = isinstance(ct_path, str) and bool(ct_path) and os.path.exists(ct_path)
         # round5: MRI 三序列路径 + 逐序列可用性（兼容旧单列 mri_path/mri_available）
         t_path = row.get("mri_path_t", row.get("mri_path", ""))
         c_path = row.get("mri_path_c", "")
@@ -349,21 +484,38 @@ class CRCMultiModalDataset(Dataset):
             bool(row.get("mri_available_d", True)) and isinstance(d_path, str) and os.path.exists(d_path),
         ]
         mri_avail = any(seq_avail)
+        # round7: 序列子集可用性（顺序与网络 mri_sequences 对齐）
+        # 注: mri 卷保持全量 [3, D, H, W] 输出（不切片），子集通道由网络按 _SEQ_ORDER 索引提取，
+        #     避免 [3,D,H,W] 与 [B,n_seq,D,H,W] 维度语义混淆。
+        sub_avail = [seq_avail[i] for i in self._mri_idx]
+        mri_avail_out = any(sub_avail)
 
+        # round9 F1: 病灶分支输入 —— Task010 mask 质心从 CT 卷裁剪 (无 mask 零卷)
+        lesion_roi = None
+        lesion_has = False
+        # round9 MRI-t ROI: total_mr t 结肠 mask 质心裁剪 (t 通道 = 缓存卷索引 0)
+        mri_lesion_roi = None
+        mri_lesion_has = False
         # 确定性预处理（内存缓存优先, 其次磁盘缓存, 最后实时计算并落盘）
         if self._cache is not None and idx in self._cache:
             ct, mri = self._cache[idx]
+            if self.mri_lesion_dir is not None and mri_avail and mri is not None:
+                mri_lesion_roi, mri_lesion_has = self._load_mri_lesion_roi(
+                    str(row.get("patient_id", "")), np.ascontiguousarray(mri.cpu().numpy()),
+                    ring=(self.mri_ring_dir is not None))
         else:
             ct = self._zero_volume() if not ct_avail else None
             mri = self._zero_mri() if not mri_avail else None
             if ct_avail:
                 if self.disk is not None:
-                    cached, hit = self.disk.get(row["ct_path"])
+                    cached, hit = self.disk.get(ct_path)
                     ct = cached if hit else None
                 if ct is None:
-                    ct = self._load_det(row["ct_path"], self.ct_det)
+                    ct = self._load_det(ct_path, self.ct_det)
                     if self.disk is not None:
-                        self.disk.put(row["ct_path"], ct)
+                        self.disk.put(ct_path, ct)
+            if ct_avail and ct is not None:
+                lesion_roi, lesion_has = self._load_lesion_roi(str(row.get("patient_id", "")), ct)
             if mri_avail:
                 mri_key = _det_cache_key_mri(t_path, c_path, d_path, self.spatial_size)
                 if self.disk is not None:
@@ -377,15 +529,60 @@ class CRCMultiModalDataset(Dataset):
                     )
                     if self.disk is not None:
                         self.disk.put_vol(mri_key, mri)
+                # round7: 磁盘缓存即全量 [3,D,H,W] 卷；子集通道由网络按 _SEQ_ORDER 索引提取，无需切片
+            # round9 MRI-t ROI: total_mr t 结肠 mask 质心裁剪 (t 通道 = 缓存卷索引 0)
+            if self.mri_lesion_dir is not None and mri_avail and mri is not None:
+                mri_lesion_roi, mri_lesion_has = self._load_mri_lesion_roi(
+                    str(row.get("patient_id", "")), np.ascontiguousarray(mri.cpu().numpy()),
+                    ring=(self.mri_ring_dir is not None))
             if self._cache is not None:
                 self._cache[idx] = (ct, mri)
 
         # 随机增强（训练时每次现做，不缓存）
+        mri_second = ct_second = None
         if self.augment is not None:
             if ct_avail:
-                ct = torch.as_tensor(np.ascontiguousarray(self.augment(ct)), dtype=torch.float32)
-            if mri_avail:
-                mri = torch.as_tensor(np.ascontiguousarray(self.augment(mri)), dtype=torch.float32)
+                ct_pre = ct
+                ct = torch.as_tensor(np.ascontiguousarray(self.augment(ct_pre)), dtype=torch.float32)
+                if self.consist_modal == "ct":
+                    ct_second = torch.as_tensor(
+                        np.ascontiguousarray(self.augment(ct_pre)), dtype=torch.float32)
+            elif self.consist_modal == "ct":
+                ct_second = ct  # 不可用样本: 零卷副本 (trainer 端由 ct_mask 排除)
+            if mri_avail_out:
+                mri_pre = mri
+                mri = torch.as_tensor(np.ascontiguousarray(self.augment(mri_pre)), dtype=torch.float32)
+                if self.consist_modal == "mri":
+                    mri_second = torch.as_tensor(
+                        np.ascontiguousarray(self.augment(mri_pre)), dtype=torch.float32)
+            elif self.consist_modal == "mri":
+                mri_second = mri  # 不可用样本: 零卷副本
+
+        # round9 F1: 病灶分支输出 (无 mask/无 CT → 零卷 [1,L,L,L] + 标志 False)
+        if self.lesion_dir is not None:
+            if lesion_has and lesion_roi is not None:
+                ct_lesion = torch.as_tensor(np.ascontiguousarray(lesion_roi), dtype=torch.float32)
+                lesion_available = True
+            else:
+                L = self.lesion_size
+                ct_lesion = torch.zeros(1, L, L, L, dtype=torch.float32)
+                lesion_available = False
+        else:
+            ct_lesion = None
+            lesion_available = False
+
+        # round9 MRI-t ROI 分支输出 (无 mask/无 MRI → 零卷 [1,L,L,L] + 标志 False)
+        if self.mri_lesion_dir is not None:
+            if mri_lesion_has and mri_lesion_roi is not None:
+                mri_lesion = torch.as_tensor(np.ascontiguousarray(mri_lesion_roi), dtype=torch.float32)
+                mri_lesion_available = True
+            else:
+                L = self.mri_lesion_size
+                mri_lesion = torch.zeros(1, L, L, L, dtype=torch.float32)
+                mri_lesion_available = False
+        else:
+            mri_lesion = None
+            mri_lesion_available = False
 
         return {
             "ct": ct,
@@ -394,20 +591,40 @@ class CRCMultiModalDataset(Dataset):
             "label": torch.tensor(self._label(row), dtype=torch.long),
             "label_secondary": torch.tensor(self._secondary_label(row), dtype=torch.long),
             "ct_available": torch.tensor(ct_avail, dtype=torch.bool),
-            "mri_available": torch.tensor(mri_avail, dtype=torch.bool),
-            "mri_seq_available": torch.tensor(seq_avail, dtype=torch.bool),
+            "mri_available": torch.tensor(mri_avail_out, dtype=torch.bool),
+            "mri_seq_available": torch.tensor(sub_avail, dtype=torch.bool),
             "patient_id": str(row.get("patient_id", idx)),
+            "ct_second": ct if ct_second is None else ct_second,
+            "mri_second": mri if mri_second is None else mri_second,
+            "ct_lesion": ct_lesion,
+            "lesion_available": torch.tensor(lesion_available, dtype=torch.bool),
+            "mri_lesion": mri_lesion,
+            "mri_lesion_available": torch.tensor(mri_lesion_available, dtype=torch.bool),
         }
 
 
 def build_dataloaders(cfg, train_csv=None, val_csv=None):
     disk_cache_dir = getattr(cfg, "disk_cache_dir", None) or "./cache_hos"
+    mri_seqs = tuple(getattr(cfg, "mri_sequences", ("t", "c", "d")))
+    ct_seq = getattr(cfg, "ct_seq", "auto")
+    use_aug = getattr(cfg, "use_augmentation", True)  # round8: 训练增强开关
+    consist_modal = getattr(cfg, "consist_modal", None)  # round9 C2: 一致性正则模态
+    lesion_dir = getattr(cfg, "lesion_dir", None)  # round9 F1: 病灶分支 mask 目录
+    lesion_size = getattr(cfg, "lesion_size", 64)
+    mri_lesion_dir = getattr(cfg, "mri_lesion_dir", None)  # round9 MRI-t ROI: total_mr t 结肠 mask
+    mri_lesion_size = getattr(cfg, "mri_lesion_size", 64)
+    mri_ring_dir = getattr(cfg, "mri_ring_dir", None)  # Day1⑤: ring mask 开关 (膨胀 2 层取环)
     train_ds = CRCMultiModalDataset(
         train_csv or cfg.train_csv, label_col=cfg.label_col, spatial_size=cfg.spatial_size,
         num_clinical=cfg.num_clinical, clinical_cols=getattr(cfg, "clinical_cols", None),
         multi_task=getattr(cfg, "multi_task", False),
         secondary_label_col=getattr(cfg, "secondary_label_col", "label_N"),
         is_train=True, disk_cache_dir=disk_cache_dir,
+        mri_seqs=mri_seqs, ct_seq=ct_seq, use_aug=use_aug,
+        consist_modal=consist_modal,
+        lesion_dir=lesion_dir, lesion_size=lesion_size,
+        mri_lesion_dir=mri_lesion_dir, mri_lesion_size=mri_lesion_size,
+        mri_ring_dir=mri_ring_dir,
     )
     val_ds = CRCMultiModalDataset(
         val_csv or cfg.val_csv, label_col=cfg.label_col, spatial_size=cfg.spatial_size,
@@ -415,6 +632,10 @@ def build_dataloaders(cfg, train_csv=None, val_csv=None):
         multi_task=getattr(cfg, "multi_task", False),
         secondary_label_col=getattr(cfg, "secondary_label_col", "label_N"),
         is_train=False, disk_cache_dir=disk_cache_dir,
+        mri_seqs=mri_seqs, ct_seq=ct_seq,
+        lesion_dir=lesion_dir, lesion_size=lesion_size,
+        mri_lesion_dir=mri_lesion_dir, mri_lesion_size=mri_lesion_size,
+        mri_ring_dir=mri_ring_dir,
     )
     num_workers = getattr(cfg, "num_workers", 0)
     pin = getattr(cfg, "pin_memory", False)

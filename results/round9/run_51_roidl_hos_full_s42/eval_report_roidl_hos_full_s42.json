@@ -1,0 +1,44 @@
+{
+  "meta": {
+    "branch": "hos_full",
+    "run": "roidl",
+    "tag": "hos_full",
+    "seed": 42,
+    "time": "2026-11-08 03:11:58"
+  },
+  "params": {
+    "backbone": "medicalnet10 + avgpool",
+    "roi": "64^3 (mask centroid)",
+    "mask": "total_mr t colon",
+    "mode": "mri_t",
+    "lr": 0.0001,
+    "lr_n": 0.0003,
+    "head_width": 256,
+    "epochs": 60,
+    "n_train": 217,
+    "n_val": 63
+  },
+  "result": {
+    "best_epoch": 21,
+    "best_macro_f1": 0.620373010635376,
+    "best_acc": 0.6984127163887024,
+    "best_epoch_n": 30,
+    "best_macro_f1_n": 0.5842180252075195,
+    "calT": {
+      "threshold": 0.7,
+      "macro_f1": 0.5970930232558139,
+      "recall": [
+        0.47368421052631576,
+        0.7272727272727273
+      ]
+    },
+    "calN": {
+      "threshold": 0.3,
+      "macro_f1": 0.5675057208237986,
+      "recall": [
+        0.6,
+        0.5357142857142857
+      ]
+    }
+  }
+}

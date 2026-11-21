@@ -1,0 +1,39 @@
+{
+  "meta": {
+    "branch": "hos_full",
+    "run": "2p5d",
+    "tag": "hos_full",
+    "seed": 42,
+    "time": "2026-10-31 02:30:39"
+  },
+  "params": {
+    "backbone": "resnet18x4(2.5D ImageNet)",
+    "lr": 0.0001,
+    "lr_n": 0.0003,
+    "head_width": 256,
+    "pool": "gem3",
+    "epochs": 60,
+    "z_slice": [
+      46,
+      47,
+      48
+    ]
+  },
+  "result": {
+    "best_epoch": 1,
+    "best_macro_f1": 0.6296296119689941,
+    "best_acc": 0.7222222089767456,
+    "best_epoch_n": 26,
+    "best_macro_f1_n": 0.578125,
+    "calT": {
+      "threshold": 0.75,
+      "macro_f1": null,
+      "recall": null
+    },
+    "calN": {
+      "threshold": 0.45,
+      "macro_f1": null,
+      "recall": null
+    }
+  }
+}

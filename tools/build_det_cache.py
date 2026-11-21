@@ -26,7 +26,13 @@ from data_loader.loader import (_ct_deterministic, _mri_seqs_deterministic,
 
 
 def main():
+    import argparse
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--csv", default=None, help="默认 config.hos.train_csv (data/hos_pairs.csv)")
+    args = ap.parse_args()
     cfg = HosConfig()
+    if args.csv:
+        cfg.train_csv = args.csv
     cache_dir = getattr(cfg, "disk_cache_dir", None) or "./cache_hos"
     disk = _DetDiskCache(cache_dir, cfg.spatial_size)
     ct_det = _ct_deterministic(cfg.spatial_size)
@@ -37,9 +43,13 @@ def main():
     total = t0 = 0
     t0 = time.time()
     for i, row in df.iterrows():
-        # CT: 单卷单路径缓存
-        ct_path = row.get("ct_path", "")
-        if isinstance(ct_path, str) and ct_path and os.path.exists(ct_path):
+        # CT: 单卷单路径缓存（round7: 平扫/增强双序列列一并缓存，key 按路径区分）
+        ct_paths = []
+        for col in ("ct_path", "ct_path_plain", "ct_path_enhanced"):
+            p = row.get(col, "")
+            if isinstance(p, str) and p and os.path.exists(p):
+                ct_paths.append(p)
+        for ct_path in ct_paths:
             cached, hit = disk.get(ct_path)
             if not hit:
                 t = torch.as_tensor(np.ascontiguousarray(ct_det(ct_path)), dtype=torch.float32)
@@ -62,7 +72,7 @@ def main():
                 t = torch.as_tensor(np.ascontiguousarray(vol), dtype=torch.float32)
                 disk.put_vol(mri_key, t)
                 total += 1
-        if total % 20 == 0:
+        if total and total % 20 == 0:
             print(f"[{time.time() - t0:.0f}s] cached {total} volumes", flush=True)
     print(f"done. total cached = {total}  elapsed = {time.time() - t0:.0f}s", flush=True)
 

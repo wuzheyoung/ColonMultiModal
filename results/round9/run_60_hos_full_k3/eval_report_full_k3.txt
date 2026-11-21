@@ -1,0 +1,63 @@
+==============================================================================
+HOS 分支训练评估报告
+==============================================================================
+  分支      : full
+  实验标识  : k3   tag=full
+  split_seed: 42
+  生成时间  : 2026-11-10 02:02:58
+
+==============================================================================
+[1] 训练参数
+==============================================================================
+  模型: backbone=medicalnet18  pretrained=True  fusion=multi(stages=2)
+         self_attn=True(1层/4头)  imputer=True(dim=256)
+  MRI  : sequences=['t', 'c', 'd']  share_backbone=False
+  CT   : ct_seq=auto  spatial=[96, 96, 96]  num_clinical=7
+  优化 : epochs=30  batch_size=8  lr=0.0001  weight_decay=0.0005  optimizer=AdamW
+  调度 : CosineAnnealingLR  amp=True  device=cuda
+  正则 : mixup=0.0(α=0.2)  label_smoothing=0.1  focal=False(γ=2.0)  head_dropout=0.5
+  加权 : class_weight=inverse
+  多任务: loss_weights={'aux': 0.3, 'rec': 0.5}  modality_dropout={'ct_only': 0.2, 'mri_only': 0.15, 'both': 0.65}
+  冻结 : ['conv1', 'bn1', 'relu', 'maxpool', 'layer1', 'layer2', 'layer3']
+
+==============================================================================
+[2] 数据划分
+==============================================================================
+  train_csv = ./data/hos_full_kfold_f3_train.csv   n=285  label_T={1: 203, 0: 82}
+  val_csv   = ./data/hos_full_kfold_f3_val.csv   n=71  label_T={1: 51, 0: 20}
+
+==============================================================================
+[3] 训练结果 (best 模型)
+==============================================================================
+  T: best_epoch=3  macro_f1=0.6019  acc=0.7465
+  N: best_epoch=22  macro_f1=0.5337
+
+==============================================================================
+[4.0] 任务 T 评估 (71 例, 分布 {'pT1-2': 20, 'pT3-4': 51})
+==============================================================================
+  accuracy=0.7042  macro_f1=0.6019  macro_precision=0.6173  macro_recall=0.5966
+  AUC_ROC=0.6431  AUC_PR(AP)=0.8372  weighted_f1=0.6900
+  每类: pT1-2(P=0.467/R=0.350/F1=0.400)  pT3-4(P=0.768/R=0.843/F1=0.804)
+  混淆矩阵(行=真, 列=预测): [[7, 13], [8, 43]]
+  阈值0.5: macro_f1=0.6019  acc=0.7042  recall=[0.35, 0.8431]
+  阈值校准: 阈值=0.5  macro_f1=0.6019  accuracy=0.7042  per_class_recall=[0.35, 0.8431]
+
+==============================================================================
+[4.1] 任务 N 评估 (71 例, 分布 {'pN0': 39, 'pN+': 32})
+==============================================================================
+  accuracy=0.5352  macro_f1=0.5337  macro_precision=0.5345  macro_recall=0.5349
+  AUC_ROC=0.4591  AUC_PR(AP)=0.4561  weighted_f1=0.5363
+  每类: pN0(P=0.583/R=0.538/F1=0.560)  pN+(P=0.486/R=0.531/F1=0.507)
+  混淆矩阵(行=真, 列=预测): [[21, 18], [15, 17]]
+  阈值0.5: macro_f1=0.5337  acc=0.5352  recall=[0.5385, 0.5312]
+  阈值校准: 阈值=0.5  macro_f1=0.5337  accuracy=0.5352  per_class_recall=[0.5385, 0.5312]
+
+==============================================================================
+[5] 输出文件
+==============================================================================
+  checkpoint      : ./checkpoints_hos_full\best_model_hos_full_k3.pth
+  training_curves : ./plots_hos_full\training_curves_hos_full_k3.png
+  confusion_matrix: ./plots_hos_full\confusion_matrix_hos_full_k3.png
+  roc_pr          : ./plots_hos_full\roc_pr_full_k3.png
+  report_txt      : ./logs\eval_report_full_k3.txt
+  report_json     : ./logs\eval_report_full_k3.json

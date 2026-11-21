@@ -1,0 +1,19 @@
+raw_ct_dirs: patients=64
+raw_mr_dirs: patients=131
+nifti_ct: patients=58
+nifti_mr: patients=131
+nifti_b2: patients=206
+
+raw_ct: dirs=99 loose=12 files=14426
+raw_mr: dirs=351 loose=0 files=17597
+nifti_ct: files=98 patients=59
+nifti_mr: files=351 patients=131
+nifti_b2: files=612 patients=206
+
+CT  raw_only=1 nii_only=0 both=98
+  raw_only: QG12497657
+  nii_only: 
+MRI raw_only=0 nii_only=0 both=351
+  raw_only: 
+  nii_only: 
+b2 overlap with nifti CT/MRI keys: 283

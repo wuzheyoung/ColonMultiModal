@@ -1,0 +1,81 @@
+﻿ M README.md
+ D _eval_best.py
+ D _eval_fast.py
+ M config/__init__.py
+ M config/hos.py
+ M data_loader/loader.py
+ M docs/FILE_INVENTORY.md
+ M docs/OPTIMIZATION_ROADMAP.md
+ M docs/PROJECT_OVERVIEW.md
+ D test_hos_ct.py
+ M tools/_ensemble_eval.py
+ M tools/_probe_augment.py
+ M tools/build_det_cache.py
+ D train_hos.py
+ M train_hos_seeds.py
+ M trainers/trainer.py
+ M utils/__init__.py
+ D utils/build_hos_dataset.py
+ D utils/build_hos_testset.py
+ D utils/build_tcga_index.py
+ D utils/convert_dcm_to_nifti.py
+AM utils/eval_report.py
+ D utils/filter_cmb_data.py
+ D utils/filter_patients.py
+ D utils/make_kfold.py
+ D utils/scan_modalities.py
+ D utils/split_tcga.py
+?? 2026-11-21/
+?? archive/
+?? cache_crcfound/
+?? docs/FIXES_2026-11-20.md
+?? docs/PROGRESS_REPORT_HOS.md
+?? docs/WORKLOG_2026-11-21.md
+?? plots_hos_full/
+?? plots_roi_check_20261120/
+?? pretrained/
+?? results/
+?? skills/
+?? third_party/
+?? tools/_verify_n_options.py
+?? tools/aggregate_roidl_kfold.py
+?? tools/analyze_cam.py
+?? tools/build_hos_batch2_csv.py
+?? tools/build_hos_batch3_csv.py
+?? tools/build_hos_dataset.py
+?? tools/build_hos_testset.py
+?? tools/build_n4_cache.py
+?? tools/build_tcga_index.py
+?? tools/check_cache_coverage.py
+?? tools/convert_batch2_to_nifti.py
+?? tools/convert_dcm_to_nifti.py
+?? tools/crcfound_features.py
+?? tools/ensemble_modalities.py
+?? tools/ensemble_seeds.py
+?? tools/ensemble_snapshot.py
+?? tools/eval_tta.py
+?? tools/expand_ct_series_csv.py
+?? tools/filter_cmb_data.py
+?? tools/filter_patients.py
+?? tools/hos_identity.py
+?? tools/make_branch_subsets.py
+?? tools/make_kfold.py
+?? tools/ml_extended.py
+?? tools/probe_epoch.py
+?? tools/probe_fold1.py
+?? tools/radiomics_experiment.py
+?? tools/report_run.py
+?? tools/roi_experiment.py
+?? tools/run_task010_seg.py
+?? tools/run_totalseg_colon.py
+?? tools/s0_vis_roi.py
+?? tools/scan_modalities.py
+?? tools/smoke_single_modal.py
+?? tools/smoke_uncertainty.py
+?? tools/split_tcga.py
+?? tools/stress_data_path.py
+?? tools/train_2p5d.py
+?? tools/train_mil.py
+?? tools/train_roi_dl.py
+?? tools/verify_hos_pairs.py
+?? tools/visualize_cam.py

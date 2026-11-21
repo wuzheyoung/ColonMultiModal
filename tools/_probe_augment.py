@@ -2,7 +2,10 @@
 """临时探针: 验证强化数据增强管线可跑通 (shape/NaN/DataLoader)。"""
 import os
 import sys
-sys.path.insert(0, os.getcwd())
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, ROOT)
+os.chdir(ROOT)  # 统一相对路径 (cache_hos / data/*.csv) 的基准
 
 import torch
 from config.hos import HosConfig
@@ -17,11 +20,12 @@ ds = CRCMultiModalDataset(
     is_train=True, disk_cache_dir="./cache_hos",
 )
 print("dataset len:", len(ds))
+n_mri = len(getattr(cfg, "mri_sequences", ("t", "c", "d")))  # loader 输出 [C,D,H,W], C=序列数
 for k in range(8):
     d = ds[(k * 7) % len(ds)]
     ct, mri = d["ct"], d["mri"]
     assert ct.shape == (1, *cfg.spatial_size), ct.shape
-    assert mri.shape == (1, *cfg.spatial_size), mri.shape
+    assert mri.shape == (n_mri, *cfg.spatial_size), mri.shape
     assert torch.isfinite(ct).all() and torch.isfinite(mri).all()
     nnz = lambda t: (t.abs() > 1e-6).float().mean().item()
     print(f"idx={(k*7)%len(ds)}  ct[mean={ct.mean():.3f} std={ct.std():.3f} nnz={nnz(ct):.3f}]  "

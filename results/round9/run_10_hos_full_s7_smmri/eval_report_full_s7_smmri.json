@@ -1,0 +1,234 @@
+{
+  "meta": {
+    "branch": "full",
+    "run": "s7_smmri",
+    "tag": "full",
+    "split_seed": null,
+    "time": "2026-10-30 04:11:00"
+  },
+  "params": {
+    "backbone_name": "medicalnet18",
+    "pretrained_backbone": true,
+    "fusion_mode": "multi",
+    "num_fuse_stages": 2,
+    "use_self_attn": true,
+    "self_attn_layers": 1,
+    "self_attn_heads": 4,
+    "use_imputer": true,
+    "imputer_hidden_dim": 256,
+    "mri_share_backbone": false,
+    "mri_sequences": [
+      "t",
+      "c",
+      "d"
+    ],
+    "ct_seq": "auto",
+    "spatial_size": [
+      96,
+      96,
+      96
+    ],
+    "num_clinical": 7,
+    "epochs": 60,
+    "batch_size": 8,
+    "lr": 0.0001,
+    "weight_decay": 0.0005,
+    "optimizer": "AdamW",
+    "scheduler": "CosineAnnealingLR",
+    "use_amp": true,
+    "device": "cuda",
+    "mixup": 0.0,
+    "mixup_alpha": 0.2,
+    "label_smoothing": 0.1,
+    "use_focal_loss": false,
+    "focal_gamma": 2.0,
+    "class_weight_mode": "inverse",
+    "head_dropout": 0.5,
+    "loss_weights": {
+      "aux": 0.3,
+      "rec": 0.5
+    },
+    "modality_dropout": {
+      "ct_only": 1.0,
+      "mri_only": 0.0,
+      "both": 0.0
+    },
+    "single_modal": "mri",
+    "num_tasks": 2,
+    "freeze_backbone_layers": [
+      "conv1",
+      "bn1",
+      "relu",
+      "maxpool",
+      "layer1",
+      "layer2",
+      "layer3"
+    ],
+    "calibrate_thresholds": true
+  },
+  "data": {
+    "train_csv": "./data/hos_full_train_s7.csv",
+    "val_csv": "./data/hos_full_val_s7.csv",
+    "train_n": 284,
+    "val_n": 72,
+    "train_label_T": {
+      "1": 203,
+      "0": 81
+    },
+    "val_label_T": {
+      "1": 51,
+      "0": 21
+    }
+  },
+  "result": {
+    "best_epoch": 26,
+    "best_macro_f1": 0.5523831452912733,
+    "best_acc": 0.7083333333333334,
+    "best_epoch_n": 50,
+    "best_macro_f1_n": 0.5032467532467533
+  },
+  "tasks": {
+    "T": {
+      "accuracy": 0.625,
+      "macro_f1": 0.5523831452912733,
+      "macro_precision": 0.5518181818181818,
+      "macro_recall": 0.5532212885154062,
+      "weighted_f1": 0.6275040294727147,
+      "auc_roc": 0.5639589169000934,
+      "auc_pr": 0.754280402830261,
+      "per_class": [
+        {
+          "class": "pT1-2",
+          "precision": 0.36363636363636365,
+          "recall": 0.38095238095238093,
+          "f1": 0.37209302325581395
+        },
+        {
+          "class": "pT3-4",
+          "precision": 0.74,
+          "recall": 0.7254901960784313,
+          "f1": 0.7326732673267327
+        }
+      ],
+      "confusion_matrix": [
+        [
+          8,
+          13
+        ],
+        [
+          14,
+          37
+        ]
+      ],
+      "n_samples": 72,
+      "class_dist": {
+        "pT1-2": 21,
+        "pT3-4": 51
+      },
+      "default_threshold_0.5": {
+        "macro_f1": 0.5523831452912733,
+        "accuracy": 0.625,
+        "per_class_recall": [
+          0.381,
+          0.7255
+        ]
+      },
+      "calibrated": {
+        "threshold": 0.45,
+        "metrics": {
+          "accuracy": 0.6805555555555556,
+          "macro_f1": 0.5817125536751705,
+          "per_class_recall": [
+            0.3333333333333333,
+            0.8235294117647058
+          ],
+          "confusion_matrix": [
+            [
+              7,
+              14
+            ],
+            [
+              9,
+              42
+            ]
+          ]
+        }
+      }
+    },
+    "N": {
+      "accuracy": 0.5277777777777778,
+      "macro_f1": 0.5032467532467533,
+      "macro_precision": 0.5104166666666666,
+      "macro_recall": 0.509375,
+      "weighted_f1": 0.5155122655122655,
+      "auc_roc": 0.43046874999999996,
+      "auc_pr": 0.43766116823440804,
+      "per_class": [
+        {
+          "class": "pN0",
+          "precision": 0.5625,
+          "recall": 0.675,
+          "f1": 0.6136363636363636
+        },
+        {
+          "class": "pN+",
+          "precision": 0.4583333333333333,
+          "recall": 0.34375,
+          "f1": 0.39285714285714285
+        }
+      ],
+      "confusion_matrix": [
+        [
+          27,
+          13
+        ],
+        [
+          21,
+          11
+        ]
+      ],
+      "n_samples": 72,
+      "class_dist": {
+        "pN0": 40,
+        "pN+": 32
+      },
+      "default_threshold_0.5": {
+        "macro_f1": 0.5032467532467533,
+        "accuracy": 0.5277777777777778,
+        "per_class_recall": [
+          0.675,
+          0.3438
+        ]
+      },
+      "calibrated": {
+        "threshold": 0.5,
+        "metrics": {
+          "accuracy": 0.5277777777777778,
+          "macro_f1": 0.5032467532467533,
+          "per_class_recall": [
+            0.675,
+            0.34375
+          ],
+          "confusion_matrix": [
+            [
+              27,
+              13
+            ],
+            [
+              21,
+              11
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "files": {
+    "checkpoint": "./checkpoints_hos_full\\best_model_hos_full_s7_smmri.pth",
+    "training_curves": "./plots_hos_full\\training_curves_hos_full_s7_smmri.png",
+    "confusion_matrix": "./plots_hos_full\\confusion_matrix_hos_full_s7_smmri.png",
+    "roc_pr": "./plots_hos_full\\roc_pr_full_s7_smmri.png",
+    "report_txt": "./logs\\eval_report_full_s7_smmri.txt",
+    "report_json": "./logs\\eval_report_full_s7_smmri.json"
+  }
+}

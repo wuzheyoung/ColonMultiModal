@@ -1,7 +1,9 @@
 # ColonMultiModal 项目总览
 
-> 最后更新: 2026-09-29（round4 归档后）。仓库非 git 管理，变更以 `logs/archive/roundN_*` 归档。
-> 本文件是对整个代码库与实验脉络的静态梳理，随项目演进需同步更新。
+> **阶段快照：2026-09-29 / round4 归档后** — 本文记录该阶段状态，内容不代表当前状态。
+> 当前状态见 [README.md](../README.md) 与 [FIXES_2026-11-20.md](FIXES_2026-11-20.md)；数据规模与口径已变更，文中数字不可直接引用。
+> 2026-11-21 已删除全部实验权重（`checkpoints_*` / `archive` / `logs`），涉及 `.pth` 的命令需重跑生成。
+> 相关快照：[文件清单](FILE_INVENTORY.md) · [项目总览](PROJECT_OVERVIEW.md) · [进度汇报](PROGRESS_REPORT_HOS.md) · [优化路线图](OPTIMIZATION_ROADMAP.md)
 
 ---
 
@@ -9,7 +11,7 @@
 
 结直肠癌（CRC）术前多模态分期系统：融合 **CT + MRI 影像 + 临床血液指标**，双任务预测病理分期：
 
-| 任务 | 标签 | 类别 | 分布（154 有效样本） |
+| 任务 | 标签 | 类别 | 分布（round4 时期 154 有效样本；当前见 README） |
 |---|---|---|---|
 | 主任务 T | `label_T` | pT1-2 (0) vs pT3-4 (1) | 43 : 111 |
 | 次任务 N | `label_N` | pN0 (0) vs pN+ (1) | 85 : 69 |
@@ -37,22 +39,22 @@ ColonMultiModal/
 ├── utils/
 │   ├── metrics.py       compute_metrics + calibrate_binary_threshold
 │   ├── logger.py        setup_logger
-│   └── ...              数据构建/格式转换/扫描工具（历史辅助）
+│   └── ...              可视化/报告辅助（数据构建/格式转换/扫描工具实际在 tools/）
 ├── tools/
 │   ├── build_det_cache.py   确定性预处理磁盘缓存构建（cache_hos/*.npy）
+│   ├── train_*.py           各类实验脚本（radiomics / MIL / 2.5D / ROI-DL / CRCFound）
 │   └── _probe_*.py          临时验证探针（可删）
-├── train_hos.py         单 seed 训练入口（旧）
 ├── train_hos_seeds.py   多 seed 训练 + 校准 + 汇总（当前主入口）
-├── data/                hos_pairs.csv + 各 seed 分层划分（hos_train/val_s{seed}.csv）
-├── cache_hos/           确定性预处理缓存（194 卷 .npy，命中即免解压/重采样）
-├── checkpoints_hos/     best_model[_n]_hos_s{seed}.pth（当前为 resnet10 权重）
-├── plots_hos/           training_curves / confusion_matrix_hos_s{seed}.png
-├── logs/
-│   ├── crc_seed*.log    各 seed 训练日志
-│   ├── seed_summary.json  最近一次多 seed 汇总
-│   └── archive/roundN_*/   每轮实验归档（日志/plots/权重/划分/汇总 json）
-├── _archive_tcga/       TCGA 时代（已瘦身：tcga CT 外部验证数据 + cmb 元数据 + 旧代码）
-└── logs/archive/_tmp/   2026-09-29 清理桶（一次性脚本/notebook/运行输出，可逆）
+├── data/                hos_pairs.csv + 各 seed 分层划分（hos_{branch}_{train/val}_s{seed}.csv）
+├── cache_hos/           确定性预处理缓存（当前 544 个 .npy）
+├── checkpoints_hos_full/  空（权重已于 2026-11-21 删除）
+├── plots_hos_full/      训练曲线 / 混淆矩阵图
+├── logs/                训练日志 + eval_report_*.json/txt（300+ 文件）
+├── results/round9/      每轮实验归档 run_NN_<tag>/（编号原子占位）
+├── archive/             旧分支/早期权重/TCGA 时代产物
+│   ├── scripts_legacy/scripts_legacy/train_hos.py   旧单 seed 入口
+│   ├── checkpoints_early/checkpoints_hos/           round5 及更早权重（已删除）
+│   └── tcga/_archive_tcga/                          TCGA 外部验证数据
 ```
 
 > 文件级逐文件索引（分类/状态/可清理项）见 [`FILE_INVENTORY.md`](FILE_INVENTORY.md)。

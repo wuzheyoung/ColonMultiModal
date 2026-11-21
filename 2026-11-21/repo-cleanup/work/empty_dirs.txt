@@ -1,0 +1,11 @@
+.agents
+.git/objects/info
+.git/objects/pack
+.git/refs/tags
+.screenshots/.tmp
+2026-11-21/repo-cleanup/outputs
+plots_hos
+pretrained/Task010_Colon
+pretrained/_nnunet_tmp/nnUNet_cropped_data
+pretrained/_nnunet_tmp/nnUNet_raw_data
+pretrained/_nnunet_tmp/preprocessed

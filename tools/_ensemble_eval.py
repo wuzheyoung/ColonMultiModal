@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# 2026-11-21 权重清理: 本脚本默认引用的实验 ckpt 已删除, 需先重跑生成; 暂不可直接执行。
 """round6 A2: seed 集成评估 —— 多个 checkpoint 在固定 val 上平均 softmax 概率,
 再校准阈值, 报告集成 T/N macro-F1 与各成员指标对比。
 

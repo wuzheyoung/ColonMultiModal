@@ -1,0 +1,823 @@
+{
+  "root": "d:\\PyFile\\ColonMultiModal",
+  "generated": "2026-11-21 15:04:01",
+  "totals": {
+    "files": 37796,
+    "bytes": 144622323978,
+    "gb": 134.69
+  },
+  "top_level": [
+    {
+      "name": "results",
+      "type": "dir",
+      "bytes": 56623025626,
+      "files": 1044,
+      "pct": 39.15234112446811
+    },
+    {
+      "name": "data",
+      "type": "dir",
+      "bytes": 32643853811,
+      "files": 33992,
+      "pct": 22.571794528738035
+    },
+    {
+      "name": "checkpoints_hos_full",
+      "type": "dir",
+      "bytes": 19086076614,
+      "files": 148,
+      "pct": 13.197185668862147
+    },
+    {
+      "name": "pretrained",
+      "type": "dir",
+      "bytes": 17411063347,
+      "files": 198,
+      "pct": 12.038987390113146
+    },
+    {
+      "name": "archive",
+      "type": "dir",
+      "bytes": 8886372347,
+      "files": 243,
+      "pct": 6.144537096742961
+    },
+    {
+      "name": "cache_hos",
+      "type": "dir",
+      "bytes": 4062777344,
+      "files": 544,
+      "pct": 2.8092325114468712
+    },
+    {
+      "name": "logs",
+      "type": "dir",
+      "bytes": 3935997321,
+      "files": 579,
+      "pct": 2.7215696807629404
+    },
+    {
+      "name": "cache_crcfound",
+      "type": "dir",
+      "bytes": 1216366720,
+      "files": 145,
+      "pct": 0.8410642883771071
+    },
+    {
+      "name": "checkpoints_hos",
+      "type": "dir",
+      "bytes": 687873660,
+      "files": 2,
+      "pct": 0.47563449478563186
+    },
+    {
+      "name": "plots_hos_full",
+      "type": "dir",
+      "bytes": 60806633,
+      "files": 65,
+      "pct": 0.042045122307154965
+    },
+    {
+      "name": "third_party",
+      "type": "dir",
+      "bytes": 3110420,
+      "files": 356,
+      "pct": 0.0021507191382660663
+    },
+    {
+      "name": ".git",
+      "type": "dir",
+      "bytes": 1784988,
+      "files": 257,
+      "pct": 0.0012342409877686194
+    },
+    {
+      "name": "2026-11-21",
+      "type": "dir",
+      "bytes": 1103006,
+      "files": 48,
+      "pct": 0.0007626803177134601
+    },
+    {
+      "name": "tools",
+      "type": "dir",
+      "bytes": 662169,
+      "files": 79,
+      "pct": 0.0004578608487170551
+    },
+    {
+      "name": "plots_roi_check_20261120",
+      "type": "dir",
+      "bytes": 406868,
+      "files": 5,
+      "pct": 0.0002813313939429523
+    },
+    {
+      "name": "README.md",
+      "type": "file",
+      "bytes": 139099,
+      "files": 1,
+      "pct": 9.61808634890695e-05
+    },
+    {
+      "name": "docs",
+      "type": "dir",
+      "bytes": 130744,
+      "files": 6,
+      "pct": 9.040374708671451e-05
+    },
+    {
+      "name": "models",
+      "type": "dir",
+      "bytes": 129968,
+      "files": 17,
+      "pct": 8.986717708932045e-05
+    },
+    {
+      "name": "README.md.gbk_backup",
+      "type": "file",
+      "bytes": 124105,
+      "files": 1,
+      "pct": 8.581316949302992e-05
+    },
+    {
+      "name": "__pycache__",
+      "type": "dir",
+      "bytes": 104188,
+      "files": 9,
+      "pct": 7.204143671197616e-05
+    },
+    {
+      "name": "trainers",
+      "type": "dir",
+      "bytes": 103744,
+      "files": 6,
+      "pct": 7.173443016707544e-05
+    },
+    {
+      "name": "utils",
+      "type": "dir",
+      "bytes": 100445,
+      "files": 16,
+      "pct": 6.945331622196842e-05
+    },
+    {
+      "name": "data_loader",
+      "type": "dir",
+      "bytes": 80067,
+      "files": 6,
+      "pct": 5.536282214091638e-05
+    },
+    {
+      "name": "train_hos_seeds.py",
+      "type": "file",
+      "bytes": 67697,
+      "files": 1,
+      "pct": 4.680950916699285e-05
+    },
+    {
+      "name": ".idea",
+      "type": "dir",
+      "bytes": 20036,
+      "files": 10,
+      "pct": 1.3854016066736617e-05
+    },
+    {
+      "name": "config",
+      "type": "dir",
+      "bytes": 16434,
+      "files": 9,
+      "pct": 1.136339089842032e-05
+    },
+    {
+      "name": "skills",
+      "type": "dir",
+      "bytes": 12134,
+      "files": 2,
+      "pct": 8.390129314922244e-06
+    },
+    {
+      "name": "_wire_mri_lesion.py",
+      "type": "file",
+      "bytes": 5152,
+      "files": 1,
+      "pct": 3.5623822507400203e-06
+    },
+    {
+      "name": "_smoke_n_lesion.py",
+      "type": "file",
+      "bytes": 3082,
+      "files": 1,
+      "pct": 2.1310679535676907e-06
+    },
+    {
+      "name": "_smoke_mri_lesion.py",
+      "type": "file",
+      "bytes": 2547,
+      "files": 1,
+      "pct": 1.7611388960859533e-06
+    },
+    {
+      "name": ".clinerules",
+      "type": "dir",
+      "bytes": 1442,
+      "files": 1,
+      "pct": 9.970798147451685e-07
+    },
+    {
+      "name": ".gitignore",
+      "type": "file",
+      "bytes": 1125,
+      "files": 1,
+      "pct": 7.778882049849617e-07
+    },
+    {
+      "name": "_wire_hos.py",
+      "type": "file",
+      "bytes": 1067,
+      "files": 1,
+      "pct": 7.377837464168481e-07
+    },
+    {
+      "name": ".claude",
+      "type": "dir",
+      "bytes": 28,
+      "files": 1,
+      "pct": 1.9360773101847934e-08
+    },
+    {
+      "name": ".agents",
+      "type": "dir",
+      "bytes": 0,
+      "files": 0,
+      "pct": 0.0
+    },
+    {
+      "name": ".screenshots",
+      "type": "dir",
+      "bytes": 0,
+      "files": 0,
+      "pct": 0.0
+    },
+    {
+      "name": "plots_hos",
+      "type": "dir",
+      "bytes": 0,
+      "files": 0,
+      "pct": 0.0
+    }
+  ],
+  "largest_files": [
+    {
+      "bytes": 5003911923,
+      "mb": 4772.1,
+      "path": "pretrained/nnUNet/Task010_Colon.zip"
+    },
+    {
+      "bytes": 4015899493,
+      "mb": 3829.9,
+      "path": "pretrained/CRCFound/checkpoint-999.pth"
+    },
+    {
+      "bytes": 753973445,
+      "mb": 719.0,
+      "path": "pretrained/SwinUNETR/ssl_pretrained_weights.pth"
+    },
+    {
+      "bytes": 641125066,
+      "mb": 611.4,
+      "path": "results/round9/run_44_hos_full_s42/best_model_n_hos_full_s42.pth"
+    },
+    {
+      "bytes": 641124312,
+      "mb": 611.4,
+      "path": "results/round9/run_52_hos_full_s42/best_model_hos_full_s42.pth"
+    },
+    {
+      "bytes": 641123800,
+      "mb": 611.4,
+      "path": "results/round9/run_44_hos_full_s42/best_model_hos_full_s42.pth"
+    },
+    {
+      "bytes": 641123800,
+      "mb": 611.4,
+      "path": "results/round9/run_43_hos_full_s42/best_model_hos_full_s42.pth"
+    },
+    {
+      "bytes": 641123679,
+      "mb": 611.4,
+      "path": "results/round9/run_59_hos_full_k2/best_model_hos_full_k2.pth"
+    },
+    {
+      "bytes": 641123679,
+      "mb": 611.4,
+      "path": "results/round9/run_58_hos_full_k1/best_model_hos_full_k1.pth"
+    },
+    {
+      "bytes": 641123679,
+      "mb": 611.4,
+      "path": "results/round9/run_57_hos_full_k0/best_model_hos_full_k0.pth"
+    },
+    {
+      "bytes": 641123679,
+      "mb": 611.4,
+      "path": "results/round9/run_56_hos_full_k0/best_model_hos_full_k0.pth"
+    },
+    {
+      "bytes": 641123679,
+      "mb": 611.4,
+      "path": "results/round9/run_55_hos_full_k0/best_model_hos_full_k0.pth"
+    },
+    {
+      "bytes": 641123679,
+      "mb": 611.4,
+      "path": "results/round9/run_54_hos_full_k0/best_model_hos_full_k0.pth"
+    },
+    {
+      "bytes": 641123679,
+      "mb": 611.4,
+      "path": "results/round9/run_53_hos_full_k0/best_model_hos_full_k0.pth"
+    },
+    {
+      "bytes": 641123167,
+      "mb": 611.4,
+      "path": "results/round9/run_50_hos_full_k4/best_model_hos_full_k4.pth"
+    }
+  ],
+  "duplicates": [
+    {
+      "bytes_each": 285678359,
+      "sha256": "cb7653038ab692ec",
+      "paths": [
+        "archive/backup_round5/backup_round5_mri3/best_model_n_hos_s42.pth",
+        "archive/checkpoints_early/checkpoints_hos/best_model_n_hos_s42.pth"
+      ]
+    },
+    {
+      "bytes_each": 285677481,
+      "sha256": "132f2a64d64f7f50",
+      "paths": [
+        "archive/backup_round5/backup_round5_mri3/best_model_hos_s42.pth",
+        "archive/checkpoints_early/checkpoints_hos/best_model_hos_s42.pth"
+      ]
+    },
+    {
+      "bytes_each": 172874,
+      "sha256": "e3f6d3184bb85903",
+      "paths": [
+        "archive/plots_early/plots_hos/training_curves_hos_s0.png",
+        "archive/results_early/results_hos/training_curves_hos_s0.png"
+      ]
+    },
+    {
+      "bytes_each": 155389,
+      "sha256": "272c488db99aa62b",
+      "paths": [
+        "archive/plots_early/plots_hos/training_curves_hos_s7.png",
+        "archive/results_early/results_hos/training_curves_hos_s7.png"
+      ]
+    },
+    {
+      "bytes_each": 149212,
+      "sha256": "abc96add44598d0d",
+      "paths": [
+        "archive/plots_early/plots_hos/training_curves_hos.png",
+        "archive/results_early/results_hos/training_curves_hos.png"
+      ]
+    },
+    {
+      "bytes_each": 148953,
+      "sha256": "8718854a1db97290",
+      "paths": [
+        "archive/plots_early/plots_hos/training_curves_hos_s1.png",
+        "archive/results_early/results_hos/training_curves_hos_s1.png"
+      ]
+    },
+    {
+      "bytes_each": 145260,
+      "sha256": "2f69c8f37b10c09b",
+      "paths": [
+        "archive/plots_early/plots_hos/training_curves_hos_s42.png",
+        "archive/results_early/results_hos/training_curves_hos_s42.png"
+      ]
+    },
+    {
+      "bytes_each": 25289,
+      "sha256": "10644c30acbb65a2",
+      "paths": [
+        "archive/plots_early/plots_hos/confusion_matrix_hos_s42.png",
+        "archive/results_early/results_hos/confusion_matrix_hos_s42.png"
+      ]
+    },
+    {
+      "bytes_each": 24214,
+      "sha256": "d550f5ebff4916ea",
+      "paths": [
+        "archive/plots_early/plots_hos/confusion_matrix_hos_s0.png",
+        "archive/results_early/results_hos/confusion_matrix_hos_s0.png"
+      ]
+    },
+    {
+      "bytes_each": 23463,
+      "sha256": "52edcb1dea2e7eb0",
+      "paths": [
+        "archive/plots_early/plots_hos/confusion_matrix_hos_s1.png",
+        "archive/results_early/results_hos/confusion_matrix_hos_s1.png"
+      ]
+    },
+    {
+      "bytes_each": 23211,
+      "sha256": "c034e345c7efc000",
+      "paths": [
+        "archive/plots_early/plots_hos/confusion_matrix_hos_s7.png",
+        "archive/results_early/results_hos/confusion_matrix_hos_s7.png"
+      ]
+    },
+    {
+      "bytes_each": 23140,
+      "sha256": "7c704853abad5033",
+      "paths": [
+        "archive/plots_early/plots_hos/confusion_matrix_hos.png",
+        "archive/results_early/results_hos/confusion_matrix_hos.png"
+      ]
+    }
+  ],
+  "dup_waste_bytes": 572246845,
+  "empty_dirs": [
+    ".agents",
+    ".git/objects/info",
+    ".git/objects/pack",
+    ".git/refs/tags",
+    ".screenshots/.tmp",
+    "2026-11-21/repo-cleanup/outputs",
+    "plots_hos",
+    "pretrained/Task010_Colon",
+    "pretrained/_nnunet_tmp/nnUNet_cropped_data",
+    "pretrained/_nnunet_tmp/nnUNet_raw_data",
+    "pretrained/_nnunet_tmp/preprocessed"
+  ],
+  "zero_byte_files": [
+    "logs/c2_unit_20261101_022222.log",
+    "logs/roidl_hos_full_s42_20261105_002252.log",
+    "logs/roidl_hos_full_s42_20261105_002320.log",
+    "logs/roidl_hos_full_s42_20261119_235052.log",
+    "logs/archive/round6_pre_reorg/batch2_convert.err.log",
+    "logs/archive/round6_pre_reorg/hos_20260918_150108.log",
+    "logs/archive/_tmp/20260929_cleanup/full_out.txt",
+    "logs/archive/_tmp/20260929_cleanup/r10_out.txt",
+    "results/round9/run_42_roidl_hos_full_s42/roidl_hos_full_s42_20261105_002252.log",
+    "results/round9/run_42_roidl_hos_full_s42/roidl_hos_full_s42_20261105_002320.log",
+    "results/round9/run_51_roidl_hos_full_s42/roidl_hos_full_s42_20261105_002252.log",
+    "results/round9/run_51_roidl_hos_full_s42/roidl_hos_full_s42_20261105_002320.log",
+    "third_party/nnUNet-1.7.1/documentation/__init__.py",
+    "third_party/nnUNet-1.7.1/documentation/amos2022/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/experiment_planning/alternative_experiment_planning/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/experiment_planning/alternative_experiment_planning/normalization/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/experiment_planning/alternative_experiment_planning/patch_size/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/experiment_planning/alternative_experiment_planning/pooling_and_convs/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/experiment_planning/alternative_experiment_planning/target_spacing/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/experiment_planning/old/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/experiment_planning/task_specific_planner/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/experiment_planning/task_specific_planner/amos2022/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/inference/amos2022/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/inference/pretrained_models/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/network_architecture/custom_modules/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/postprocessing/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/preprocessing/custom_preprocessors/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/learning_rate/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/competitions_with_custom_Trainers/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/competitions_with_custom_Trainers/BraTS2020/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/competitions_with_custom_Trainers/MMS/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/nnUNet_variants/architectural_variants/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/nnUNet_variants/benchmarking/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/nnUNet_variants/cascade/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/nnUNet_variants/copies/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/nnUNet_variants/data_augmentation/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/nnUNet_variants/loss_function/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/nnUNet_variants/miscellaneous/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/nnUNet_variants/optimizer_and_lr/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/nnUNet_variants/resampling/__init__.py",
+    "third_party/nnUNet-1.7.1/nnunet/training/optimizer/__init__.py"
+  ],
+  "pycache": {
+    "dirs": 23,
+    "files": 131,
+    "bytes": 969348
+  },
+  "docs": [
+    {
+      "path": "docs/FIXES_2026-11-20.md",
+      "bytes": 86039,
+      "mtime": "2026-11-21 01:08"
+    },
+    {
+      "path": "docs/FILE_INVENTORY.md",
+      "bytes": 12480,
+      "mtime": "2026-11-20 22:52"
+    },
+    {
+      "path": "docs/WORKLOG_2026-11-21.md",
+      "bytes": 9478,
+      "mtime": "2026-11-21 14:50"
+    },
+    {
+      "path": "docs/PROGRESS_REPORT_HOS.md",
+      "bytes": 9317,
+      "mtime": "2026-11-20 22:52"
+    },
+    {
+      "path": "docs/PROJECT_OVERVIEW.md",
+      "bytes": 8380,
+      "mtime": "2026-11-20 22:52"
+    },
+    {
+      "path": "docs/OPTIMIZATION_ROADMAP.md",
+      "bytes": 5050,
+      "mtime": "2026-11-20 22:52"
+    }
+  ],
+  "root_py": [
+    {
+      "path": "train_hos_seeds.py",
+      "bytes": 67697
+    },
+    {
+      "path": "_wire_mri_lesion.py",
+      "bytes": 5152
+    },
+    {
+      "path": "_smoke_n_lesion.py",
+      "bytes": 3082
+    },
+    {
+      "path": "_smoke_mri_lesion.py",
+      "bytes": 2547
+    },
+    {
+      "path": "_wire_hos.py",
+      "bytes": 1067
+    }
+  ],
+  "tools_py": [
+    {
+      "path": "tools/train_roi_dl.py",
+      "bytes": 92736,
+      "head": "﻿# -*- coding: utf-8 -*- \"\"\" round9-A ROI 内 DL 特征 (病灶级) 训练脚本。 - 动机: 病灶级 ROI 手工特征 (roi_experiment) N 仍≈随机 (val F1 0.40) → 手工统计拿不到 局部浸润信息 → 试深度特征: mask 中心裁剪 64³ 喂 3D ResNet。 - 输入: CT 确定性卷 [1,96,96,96] (cache_hos 缓存, 与 R5 相"
+    },
+    {
+      "path": "tools/radiomics_experiment.py",
+      "bytes": 23238,
+      "head": "\"\"\" round9-项1: 全体积影像组学 + 临床特征融合实验（对照 DL 基线 R5, 直击 N 短板）。 流程: 1. 特征提取: 复用 data_loader 确定性管线(含磁盘缓存 cache_hos) 取 CT + MRI(t/c/d) 的 96³ 卷, 每模态计算 一阶统计(11) + GLCM-3D(6) = 17 特征 × 4 模态 = 68 维,"
+    },
+    {
+      "path": "tools/train_2p5d.py",
+      "bytes": 19213,
+      "head": "# -*- coding: utf-8 -*- \"\"\" round9-2.5D 多平面训练脚本（不占用 3D 主流程）。 - 输入: CT 卷 [1,96,96,96] 与 MRI 三序列 [3,96,96,96]（复用 loader 的确定性磁盘缓存 cache_hos） - 2.5D: 各模态取轴位中间 3 张连续切片 (z=46,47,48) → [3,96,96] 多通道 - 主干: 4× torchvision ResNet1"
+    },
+    {
+      "path": "tools/train_mil.py",
+      "bytes": 18187,
+      "head": "# -*- coding: utf-8 -*- \"\"\" round9-C1 Patch-MIL 训练脚本（无 ROI 弱监督切块定位）。 - 动机: N 卡 0.51-0.58 = 全体积统计拿不到局部浸润信息 (CAM/radiomics/CRCFound 印证)。 MIL (多实例学习) 无需病灶标注: 把卷切块, 模型自己学哪些块对 N 判别重要 = 隐式定位。 - 输入: CT 卷 [1,96,96,96] (N 依赖 CT, "
+    },
+    {
+      "path": "tools/crcfound_features.py",
+      "bytes": 14626,
+      "head": "# -*- coding: utf-8 -*- \"\"\" CRCFound 特征判别力验证 (路径①, ~30min) ======================================= 用 CRCFound MAE 预训练 3D ViT (checkpoint-999.pth) 对 CT 提取全局特征, 再以经典 ML (LASSO-LR / HistGB) + DL 概率 stacking 评估 T/N 判别力。"
+    },
+    {
+      "path": "tools/build_hos_dataset.py",
+      "bytes": 11843,
+      "head": "# -*- coding: utf-8 -*- \"\"\" 构建 data/Hos 的多模态训练集 (CT + MRI + 临床 + 病理 T/N 标签)。 流程: 1. 将 data/Hos/CT 与 data/Hos/MRI 下每个 DICOM 目录转换为 NIfTI"
+    },
+    {
+      "path": "tools/roi_experiment.py",
+      "bytes": 9486,
+      "head": "# -*- coding: utf-8 -*- \"\"\"ROI 特征实验 (round9-ROI): 用 Task010 病灶 mask 提取 CT ROI 特征 + 临床 -> ML 判别力评估。 复用 radiomics_experiment 的 run_ml / _first_order / _glcm3d / run_stacking。 mask 与 CT 同为原始 nii.gz 空间(nnU-Net 输出=输入空间), 直接在原"
+    },
+    {
+      "path": "tools/ensemble_seeds.py",
+      "bytes": 8889,
+      "head": "\"\"\"S0: 多 seed 概率集成评估 (R5 配置 ckpt, split_seed=42 同一划分)。 对每个 seed 分别加载 T-best 与 N-best checkpoint, 对 val 前向取 softmax, 再对 4 个 seed 的概率做平均, 输出集成后的 T/N macro_f1 + 校准阈值与 recall, 同时列出各单 seed 指标便于对比。 用法: python tools/ensemble_se"
+    },
+    {
+      "path": "tools/build_hos_batch2_csv.py",
+      "bytes": 8795,
+      "head": "# -*- coding: utf-8 -*- \"\"\" 合并第二批 208 患者到 hos_pairs.csv (数据重构建)。 输入: - data/hos_pairs_raw.csv          第一批原始值(154 行)"
+    },
+    {
+      "path": "tools/eval_tta.py",
+      "bytes": 8769,
+      "head": "# -*- coding: utf-8 -*- \"\"\"round9 TTA (test-time augmentation) 评估: 验证时 3 变体翻转 softmax 平均。 用法: python tools/eval_tta.py [--ckpt-t ...] [--ckpt-n ...] [--branch full] [--split-seed 42] [--out logs/tta_full_s42.json] 不训练, 只"
+    },
+    {
+      "path": "tools/aggregate_roidl_kfold.py",
+      "bytes": 8352,
+      "head": "# -*- coding: utf-8 -*- \"\"\"离线汇总 ROI-DL 逐折 OOF (只读 CSV; 不加载模型/不读影像/不调用 GPU)。 输入: results/roidl_oof/{tag}_k{fold}_s{seed}.csv        (best ckpt 外折概率) results/roidl_oof/{tag}_k{fold}_s{seed}_last5.csv  (末 5 轮均值, 可选)"
+    },
+    {
+      "path": "tools/ensemble_modalities.py",
+      "bytes": 8155,
+      "head": "\"\"\"F2: 异构单模态模型概率融合评估 (round9 S8)。 CT-only (run_06 smct) 与 MRI-only (run_07 smmri) 各自独立训练的模型, 对同一 val 划分前向取 softmax, 做模态级概率融合 (平均 + 按单模型 val F1 加权), 输出融合后 T/N macro_f1 + 校准阈值与 recall, 同时列出各单模态指标。"
+    },
+    {
+      "path": "tools/probe_epoch.py",
+      "bytes": 7418,
+      "head": "# -*- coding: utf-8 -*- \"\"\"round8: 1-epoch 探针 —— 数据统计 + 单个训练/验证 epoch。 用途: 手动跑长训练前, 用 ~1-2 分钟快速摸清: - 数据规模 / T,N 标签分布 / CT、MRI 各序列可用性 - 训练 1 个 epoch 的 loss 分量(main/aux/rec)、lr、梯度 L2 范数、T 各类别 acc"
+    },
+    {
+      "path": "tools/build_hos_batch3_csv.py",
+      "bytes": 7185,
+      "head": "# -*- coding: utf-8 -*- \"\"\" A4: 合并第三批新数据到 hos_pairs.csv (数据重构建, 130 例待用户交付)。 输入(用户交付格式, 与 build_hos_batch2_csv.py 一致的管线): - data/hos_pairs_raw.csv               历史原始值(全量, 标准化前)"
+    },
+    {
+      "path": "tools/run_task010_seg.py",
+      "bytes": 7019,
+      "head": "# -*- coding: utf-8 -*- \"\"\"Task010_Colon 病灶分割推理 (round9-S10, nnU-Net v1 预训练权重) 对 full 分支全部有 CT 的样本跑 Task010_Colon 3d_fullres 5 折集成分割, 输出病灶 mask 到 data/masks_task010/{patient_id}.nii.gz, 并统计: - 每样本 mask 体素数 / 最大连通域 / 是否检出"
+    },
+    {
+      "path": "tools/s0_vis_roi.py",
+      "bytes": 6835,
+      "head": "\"\"\"S0: 坐标核查可视化 — 验证 ring mask 质心 64³ 裁剪与缓存卷解剖对齐。 对每个 pid: 1. 读缓存卷 MRI t 通道 [96,96,96] (模型实际输入灰度, 1mm+bbox+trilinear) 2. 读 ring mask → Resize 96³ nearest (模型实际用于质心定位) 3. crop_roi 质心 (与 train_roi_dl.py 完全同逻辑)"
+    },
+    {
+      "path": "tools/ml_extended.py",
+      "bytes": 6774,
+      "head": "# -*- coding: utf-8 -*- \"\"\" round9-S8-ML 扩展: 在 radiomics 特征 (logs/radiomics_full_features.csv, 356×75) 上跑更广的经典 ML 家族, 对照 LASSO-LR/HistGB (项1 已跑), 补论文方法学广度。 模型: XGBoost / LightGBM / SVM-RBF / RandomForest / ExtraTrees / N"
+    },
+    {
+      "path": "tools/build_tcga_index.py",
+      "bytes": 6480,
+      "head": "\"\"\" 扫描 TCGA nifti，为每个患者挑选主 CT 体积（体素数最大者），生成配对 CSV。 输入: data/tcga/tcga_coad/_nifti/<patient>/*.nii.gz data/tcga/tcga_read/_nifti/<patient>/*.nii.gz"
+    },
+    {
+      "path": "tools/visualize_cam.py",
+      "bytes": 6412,
+      "head": "\"\"\"Grad-CAM 热图可视化: 验证模型注意力是否聚焦肿瘤区域 (round9-CAM)。 用法: python tools/visualize_cam.py [--ckpt checkpoints_hos_full/best_model_hos_full_s42.pth] [--n-samples 6] [--out-dir plots_hos_full/cam] [--device cuda]"
+    },
+    {
+      "path": "tools/_ensemble_eval.py",
+      "bytes": 6371,
+      "head": "# -*- coding: utf-8 -*- \"\"\"round6 A2: seed 集成评估 —— 多个 checkpoint 在固定 val 上平均 softmax 概率, 再校准阈值, 报告集成 T/N macro-F1 与各成员指标对比。 用法: python tools/_ensemble_eval.py --ckpts checkpoints_hos/best_model_hos_s42.pth,checkpoints_ho"
+    },
+    {
+      "path": "tools/scan_modalities.py",
+      "bytes": 6177,
+      "head": "\"\"\" 扫描 CMB-CRC 影像元数据，为每个患者挑选最佳 CT / MRI series，生成配对 CSV。 数据来源: - digest xlsx: 含 Modality / SeriesDescription / ImageCount 等（每 series 一行） - metadata.csv: 含 SeriesInstanceUID → S5cmdManifestPath（series 文件夹绝对路径）"
+    },
+    {
+      "path": "tools/run_totalseg_colon.py",
+      "bytes": 5953,
+      "head": "# -*- coding: utf-8 -*- \"\"\"TotalSegmentator 结肠分割 (round9-ROI): 对 145 个有 CT 的样本分割结肠器官 mask。 用 total 任务(117 类) roi_subset=['colon'] (index 20), 权重在 pretrained/totalsegmentator (TOTALSEG_HOME_DIR)。输出 data/masks_totalseg/{pi"
+    },
+    {
+      "path": "tools/build_n4_cache.py",
+      "bytes": 5600,
+      "head": "\"\"\"⑤ N4 偏置场校正缓存预生成 (Day1 梯队-1, 2026-11-20)。 目的: 对全量 MRI 样本做 N4 偏置场校正 (SimpleITK N4BiasFieldCorrectionImageFilter), 再走与 loader 完全相同的 1mm 锚定网格/统一 bbox/zscore 管线, 输出到独立缓存目录 cache_hos_n4/, 供 train_roi_dl.py --cache-dir cache"
+    },
+    {
+      "path": "tools/convert_batch2_to_nifti.py",
+      "bytes": 5551,
+      "head": "# -*- coding: utf-8 -*- \"\"\" 第二批 DICOM -> NIfTI 转换。 目录结构: data/Hos/第二批/{1-100,101-200,201-}/<目录名>/*.dcm"
+    },
+    {
+      "path": "tools/ensemble_snapshot.py",
+      "bytes": 5104,
+      "head": "\"\"\"S9-⑤: Snapshot Ensemble 评估 (cosine warm restarts 周期快照的 softmax 平均)。 对给定快照 ckpt 列表 (T-best 各自权重即 snapshot_{tag}_s{seed}_ep{N}.pth), 每个快照对 val 前向取 softmax, 平均后输出 T/N macro_f1 + 校准。 用法: python tools/ensemble_snapshot.py "
+    },
+    {
+      "path": "tools/smoke_uncertainty.py",
+      "bytes": 4958,
+      "head": "# -*- coding: utf-8 -*- \"\"\"round9 S9-1 不确定性加权最小单元测试(CPU): 验证 log_var 可学习 + main 加权生效\"\"\" import sys, os, time sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) import torch import torch.nn as"
+    },
+    {
+      "path": "tools/stress_data_path.py",
+      "bytes": 4534,
+      "head": "# -*- coding: utf-8 -*- \"\"\"数据路径压力探针: 复现 V1 训练 epoch 7 后的偶发 CPU 卡死并定位肇事样本。 只跑数据集加载 + 随机增强 (与训练相同配置, 不碰 GPU 训练), 逐 batch 计时。 任何 batch 数据加载耗时超过 SLOW_S (默认 10s) 即 dump: - 该 batch 内各样本 idx / ct·mri 路径 / 体素统计 / 增强随机种子"
+    },
+    {
+      "path": "tools/hos_identity.py",
+      "bytes": 4118,
+      "head": "# -*- coding: utf-8 -*- \"\"\"住院号(PatientID) 校验工具：只读 DICOM 头 + 完整版收集表，供构建与校验脚本复用。\"\"\" import os import re import struct"
+    },
+    {
+      "path": "tools/convert_dcm_to_nifti.py",
+      "bytes": 4063,
+      "head": "\"\"\" 将 TCGA DICOM 转换为 NIfTI (.nii.gz)。 逐患者遍历，按 SeriesInstanceUID 分组，每个 series 输出一个 nii.gz。 内置处理同一 series 内切片尺寸不一致的情况（TCGA 常见：主体积与定位片 或不同重建混在同一 UID）：按 (Rows, Cols) 再分组，各自转换。"
+    },
+    {
+      "path": "tools/report_run.py",
+      "bytes": 3638,
+      "head": "# -*- coding: utf-8 -*- \"\"\"解析最新 eval_report_full_* (json+txt) 并输出标准化的 T/N 全指标汇报表。 用法 (Pytorch 环境): python tools/report_run.py [--path logs/eval_report_full_s42.json] \"\"\""
+    },
+    {
+      "path": "tools/check_cache_coverage.py",
+      "bytes": 3472,
+      "head": "# -*- coding: utf-8 -*- \"\"\"round8: 核对 cache_hos 是否覆盖 CSV 中所有样本的 CT/MRI 确定性缓存。 用法（Pytorch 环境）: D:\\\\Development\\\\miniconda\\\\envs\\\\Pytorch\\\\python.exe tools/check_cache_coverage.py D:\\\\Development\\\\miniconda\\\\envs\\\\Pytorch\\"
+    },
+    {
+      "path": "tools/build_det_cache.py",
+      "bytes": 3356,
+      "head": "# -*- coding: utf-8 -*- \"\"\"构建 Hos 确定性预处理磁盘缓存 (cache_hos/*.npy)。 确定性管线 (LoadImage->Spacing->归一化/裁剪->Resize->NormalizeIntensity) 输出与 运行时完全一致, 缓存后训练/验证直接读 .npy, 跳过每 seed 重复的解压与重采样。"
+    },
+    {
+      "path": "tools/split_tcga.py",
+      "bytes": 3189,
+      "head": "\"\"\" 按患者分层划分 TCGA CT 数据为 train / val（防数据泄漏）。 关键设计: - 划分单位是【患者】，不是 series。同一患者的所有 series 只会进同一侧， 避免\"同病人 series A 进 train、series B 进 val\"的泄漏导致指标虚高。"
+    },
+    {
+      "path": "tools/filter_patients.py",
+      "bytes": 3164,
+      "head": "\"\"\" 筛选 TCGA 患者文件夹：删除递归文件数不足阈值的文件夹（默认 < 10 个 dcm）。 用途: 从 IDC/TCIA 下载的 TCGA 数据，个别患者只有零星几个文件（定位片或下载不全）， 不足以构成有效影像，训练前先剔除。"
+    },
+    {
+      "path": "tools/expand_ct_series_csv.py",
+      "bytes": 2923,
+      "head": "# -*- coding: utf-8 -*- \"\"\"为 hos_pairs.csv 扩充 CT 平扫/增强双序列列（分支训练数据准备）。 背景: 原 csv 每行只存一个 ct_path（pick_series 优先 z > p > 特殊名）， 95 例平扫&增强双齐全患者的另一个序列被弃选，无法支撑 \"CT 平扫分支 / CT 增强分支\" 训练。"
+    },
+    {
+      "path": "tools/verify_hos_pairs.py",
+      "bytes": 2727,
+      "head": "# -*- coding: utf-8 -*- \"\"\"训练前数据自检：路径存在性 + 住院号配对状态。只读。 用法: python tools/verify_hos_pairs.py            # 校验 hos_pairs/master 及派生 CSV python tools/verify_hos_pairs.py --strict   # identity_conflict / 路径缺失 直接非零退出"
+    },
+    {
+      "path": "tools/probe_fold1.py",
+      "bytes": 2720,
+      "head": "# -*- coding: utf-8 -*- \"\"\"定位 5-fold 卡死源: 对 Fold 1 train+val 逐样本 GPU 前向, 报告每个样本耗时。 watchdog: 单样本前向 >60s → 打印 SUSPECT patient_id 并 os._exit(1)。 用法: D:\\\\Development\\\\miniconda\\\\envs\\\\Pytorch\\\\python.exe tools/probe_fold1.p"
+    },
+    {
+      "path": "tools/make_kfold.py",
+      "bytes": 2654,
+      "head": "\"\"\" 按患者分层生成 K 折交叉验证的 train/val csv（防数据泄漏）。 设计（与 split_tcga.py 一致的防泄漏原则）: - 划分单位是【患者】。StratifiedKFold 按患者的 label 分层，保证每折类别比例接近。 - 同一患者的所有 series 只会出现在某一折的 train 或 val，绝不跨折泄漏。"
+    },
+    {
+      "path": "tools/filter_cmb_data.py",
+      "bytes": 2454,
+      "head": "\"\"\" 筛选 data/cmb 文件夹下的数据： 删除直接包含的 .dcm 文件个数 <= 10 的文件夹（不计入子文件夹中的 .dcm 文件） \"\"\" import os"
+    },
+    {
+      "path": "tools/build_hos_testset.py",
+      "bytes": 2122,
+      "head": "\"\"\" 构建 data/Hos/CT 的 CT-only 测试集。 每个病例目录形如  <序号>_<病历号>/ 下含一个 series 的 .dcm 文件； 诊断（AJCC 分期）由用户根据 <序号>-BL.txt 判定后在下方 STAGE_MAP 给出。"
+    },
+    {
+      "path": "tools/analyze_cam.py",
+      "bytes": 2089,
+      "head": "\"\"\"分析 3D Grad-CAM 热图 (npy): 每样本报告 - 热图最大值所在轴向层 argmax_slice (0-95) - 最大层上高值区占比 hot% / 质心 / 离中心距离 / 集中度 conc 用法: python tools/analyze_cam.py [npy目录] [n样本] \"\"\" import sys, glob, os"
+    },
+    {
+      "path": "tools/make_branch_subsets.py",
+      "bytes": 2075,
+      "head": "# -*- coding: utf-8 -*- \"\"\"生成 7 个分支训练子集 csv（round7 分支实验数据准备）。 分支定义（基于 hos_pairs.csv 现有列，只过滤行、保留全部列）: mri_t / mri_d / mri_c   : MRI 单序列可用 mri_tdc                 : MRI t/c/d 三序列齐全"
+    },
+    {
+      "path": "tools/smoke_single_modal.py",
+      "bytes": 1995,
+      "head": "# -*- coding: utf-8 -*- \"\"\"round9-CAM 后: --single-modal 消融的纯逻辑冒烟（CPU 秒级, 不训练）。 验证: 1. _apply_single_modal(cfg, sm) → cfg.single_modal + modality_dropout p=1.0 + 后缀 2. Trainer._apply_single_modal 验证阶段掩码强制 (mri→丢弃CT / ct→丢"
+    },
+    {
+      "path": "tools/_probe_augment.py",
+      "bytes": 1780,
+      "head": "# -*- coding: utf-8 -*- \"\"\"临时探针: 验证强化数据增强管线可跑通 (shape/NaN/DataLoader)。\"\"\" import os import sys ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))"
+    },
+    {
+      "path": "tools/_verify_n_options.py",
+      "bytes": 1256,
+      "head": "\"\"\"round9 B 系列维度验证: n_modal / n_cascade / n_shallow_idx 组合前向 (CPU, 不训练)。\"\"\" import sys, time sys.path.insert(0, \".\") import torch from models.network import CRCMultiModalNet"
+    },
+    {
+      "path": "tools/_probe_monai.py",
+      "bytes": 539,
+      "head": "# -*- coding: utf-8 -*- \"\"\"临时探针: 确认 MONAI ResNetFeatures 支持的 block_names (resnet10?) 与 resnet10 预训练权重。\"\"\" import inspect import re import monai"
+    },
+    {
+      "path": "tools/_probe_resnet10.py",
+      "bytes": 515,
+      "head": "# -*- coding: utf-8 -*- \"\"\"临时探针: 验证 resnet10 模型可构建(含 MONAI pretrained 权重)。\"\"\" import sys sys.path.insert(0, r\"D:\\PyFile\\ColonMultiModal\")"
+    }
+  ],
+  "pycache_dirs": [
+    "2026-11-21/hos-data-inventory/work/__pycache__",
+    "__pycache__",
+    "archive/tcga/_archive_tcga/machine_learning/__pycache__",
+    "config/__pycache__",
+    "data_loader/__pycache__",
+    "logs/__pycache__",
+    "models/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/evaluation/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/inference/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/network_architecture/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/postprocessing/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/preprocessing/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/training/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/training/data_augmentation/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/training/dataloading/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/training/learning_rate/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/training/loss_functions/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/training/network_training/__pycache__",
+    "third_party/nnUNet-1.7.1/nnunet/utilities/__pycache__",
+    "tools/__pycache__",
+    "trainers/__pycache__",
+    "utils/__pycache__"
+  ]
+}

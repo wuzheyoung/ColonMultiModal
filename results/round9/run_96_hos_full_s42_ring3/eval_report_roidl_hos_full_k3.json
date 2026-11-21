@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "mode": "mri_t_ring",
+    "kfold": 5,
+    "fold": 3
+  },
+  "params": {
+    "mode": "mri_t_ring",
+    "epochs": 60,
+    "lr": 0.0001,
+    "lr_n": 0.0003
+  },
+  "result": {
+    "best_epoch": 11,
+    "best_macro_f1": 0.5625,
+    "best_epoch_n": 26,
+    "best_macro_f1_n": 0.5087719559669495,
+    "calT": {
+      "threshold": 0.65,
+      "macro_f1": 0.5059455312619869,
+      "recall": [
+        0.29411764705882354,
+        0.717948717948718
+      ]
+    },
+    "calN": {
+      "threshold": 0.25,
+      "macro_f1": 0.46360153256704983,
+      "recall": [
+        0.4375,
+        0.5
+      ]
+    }
+  }
+}
