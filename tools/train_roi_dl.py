@@ -528,6 +528,17 @@ def _augment_roi(v):
     return np.ascontiguousarray(v, dtype=np.float32)
 
 
+def _augment_roi_lr(v, n_img):
+    """A2 解剖保序弱增强: 仅左右镜像 (x 轴) + 图像通道强度抖动, 禁碰 SDF 通道。
+    v: [C,64,64,64]; 前 n_img 个通道为图像 (灰度), 其后为 SDF 通道。"""
+    v = np.asarray(v, dtype=np.float32)
+    if np.random.rand() < 0.5:
+        v = v[:, :, :, ::-1]  # 左右镜像 (x 轴翻转, 解剖保序)
+    if n_img > 0:
+        v[:n_img] = v[:n_img] * float(np.random.uniform(0.9, 1.1)) + float(np.random.uniform(-0.1, 0.1))
+    return np.ascontiguousarray(v, dtype=np.float32)
+
+
 _RAW_CLIN_DF = None
 
 
@@ -643,13 +654,15 @@ class DataROI:
 
     def __init__(self, csv_path, mode="ct", augment=False,
                  mask_geometry="aligned", roi_mask="centroid", cache_dir=None, sdf_channel=False,
-                 sdf_only=False):
+                 sdf_only=False, shared_roi=False, aug_lr=False):
         self.mode = mode
         self.augment = augment
+        self.aug_lr = bool(aug_lr)  # A2: 解剖保序弱增强 (仅左右镜像+图像通道强度抖动, 禁碰 SDF)
         self.mask_geometry = mask_geometry
         self.roi_mask = roi_mask
         self.sdf_channel = bool(sdf_channel or sdf_only)
         self.sdf_only = bool(sdf_only)  # 图像通道置零, 仅保留 SDF (形态捷径对照)
+        self.shared_roi = bool(shared_roi)  # A1: 多序列共用 mr_t 单一 bbox 中心 + 单一 SDF (消除通道错位)
         if self.sdf_channel and mask_geometry != "aligned":
             raise ValueError("--sdf-channel/--sdf-only 仅支持 --mask-geometry aligned (legacy 网格无物理间距)")
         if self.sdf_only and roi_mask == "binary_only":
@@ -700,6 +713,12 @@ class DataROI:
                       else [f"mr_{s}" for s in seqs] + (["task010"] if mode == "mri_tc_ct" else []) if seqs
                       else ["task010", "mr_c"] if mode == "mri_c_ct"
                       else None)
+        if self.shared_roi and mask_kinds:  # A1: 所有 mr_* 通道统一用 mr_t (bbox 中心/SDF 同源, 消除多序列通道错位)
+            mask_kinds = ["mr_t" if k.startswith("mr_") else k for k in mask_kinds]
+        # 图像通道数 (A2 弱增强强度抖动只碰图像通道, SDF 通道不碰)
+        self._n_img = (1 if mode == "ct"
+                       else 2 if mode == "mri_c_ct"
+                       else (len(seqs) + (1 if mode == "mri_tc_ct" else 0)) if seqs else 1)
         self._ct_flag = []  # mri_tc_ct: CT 病灶通道是否真实(1.0/0.0), 拼接进临床特征
         for _, row in self.df.iterrows():
             pid = str(row.get("patient_id", "")).strip()
@@ -879,7 +898,10 @@ class DataROI:
     def __getitem__(self, idx):
         vol = self._vols[idx]
         if self.augment and vol is not None:
-            vol = _augment_roi(vol)
+            if self.aug_lr:
+                vol = _augment_roi_lr(vol, self._n_img)
+            else:
+                vol = _augment_roi(vol)
         return (torch.as_tensor(np.ascontiguousarray(vol), dtype=torch.float32),
                 torch.tensor(self._clin[idx], dtype=torch.float32),
                 torch.tensor(self._lab_t[idx], dtype=torch.long),
@@ -956,7 +978,7 @@ def macro_f1(prob, y):
 class _SubDS(torch.utils.data.Dataset):
     """按索引子集 (用于 kfold 折内划分)。clin 若给定则覆盖 base 的临床向量 (折内标准化结果)。"""
     def __init__(self, base, idxs, lab_t=None, lab_n=None, lab_pt=None, augment=False,
-                 clin=None, pids=None):
+                 clin=None, pids=None, aug_lr=False):
         self.base, self.idxs = base, idxs
         self._lab_t = lab_t if lab_t is not None else []
         self._lab_n = lab_n if lab_n is not None else []
@@ -964,6 +986,8 @@ class _SubDS(torch.utils.data.Dataset):
         self._clin = None if clin is None else np.asarray(clin, dtype=np.float32)
         self._pids = list(pids) if pids is not None else []
         self.augment = augment
+        self.aug_lr = bool(aug_lr)
+        self._n_img = getattr(base, "_n_img", 1)
 
     def __len__(self):
         return len(self.idxs)
@@ -971,7 +995,10 @@ class _SubDS(torch.utils.data.Dataset):
     def __getitem__(self, i):
         vol, clin, lt, ln, lpt = self.base[self.idxs[i]]
         if self.augment and vol is not None:
-            vol = _augment_roi(vol)
+            if self.aug_lr:
+                vol = _augment_roi_lr(vol, self._n_img)
+            else:
+                vol = _augment_roi(vol)
         c = clin if self._clin is None else torch.as_tensor(self._clin[i], dtype=torch.float32)
         return (torch.as_tensor(np.ascontiguousarray(vol), dtype=torch.float32),
                 torch.as_tensor(c, dtype=torch.float32),
@@ -1423,6 +1450,10 @@ def main():
                     help="只监督 T 头 (N 头不参与 loss/不选 ckpt), 供 S1/S2 单任务对照")
     ap.add_argument("--aug", dest="aug", action="store_true",
                     help="ROI 随机增强 (翻转/旋转90°/强度扰动, 仅训练集; Day1 ① 梯队-1)")
+    ap.add_argument("--shared-roi", dest="shared_roi", action="store_true",
+                    help="A1: 多序列 (mri_tc/mri_all 等) 所有 mr_* 通道共用 mr_t 单一 bbox 中心 + 单一 SDF (消除 t/c bbox 中心错位)")
+    ap.add_argument("--aug-lr", dest="aug_lr", action="store_true",
+                    help="A2: 解剖保序弱增强 = 仅左右镜像 (x 轴翻转) + 图像通道强度抖动; SDF 通道不碰 (与 --aug 互斥, 用此代替 --aug)")
     ap.add_argument("--aux-pt", dest="aux_pt", action="store_true",
                     help="pT 四类辅助头 (pT1/2/3/4 → 4类 CE 联合训练, 逆频率权重; Day1 ③ 梯队-1)")
     ap.add_argument("--tn-hier", dest="tn_hier", action="store_true",
@@ -1439,7 +1470,12 @@ def main():
                     help="ROI 中心: centroid=mask 质心(历史口径, 不屏蔽图像); bbox=mask bbox 中心; masked=bbox 中心且只保留 mask 内体素; binary_only=bbox 中心且输入换成二值 mask 本身(形态捷径检验)")
     ap.add_argument("--cache-dir", default="cache_hos",
                     help="确定性预处理缓存目录 (默认 cache_hos; 传 cache_hos_n4 可复用 N4 缓存)")
+    ap.add_argument("--mask-mr-root", default=None,
+                    help="A3: MRI 结肠 mask 根目录覆盖 (默认 data/masks_totalseg_mr_{seq}; 传排斥版如 data/masks_totalseg_mr_t_excl)")
     args = ap.parse_args()
+    if args.mask_mr_root:
+        for seq in ("t", "c", "d"):
+            MASK_DIR_MR[seq] = os.path.join(ROOT, args.mask_mr_root)
     if args.n_only and args.t_only:
         ap.error("--n-only 与 --t-only 互斥")
     if args.only_fold >= 0 and args.kfold <= 0:
@@ -1478,14 +1514,17 @@ def main():
         if full_csv:
             # augment 由 _SubDS 统一控制, 底表不再增强 (否则训练折会双重增强)
             ds_all = DataROI(full_csv, mode=args.mode, augment=False, mask_geometry=args.mask_geometry,
-                             roi_mask=args.roi_mask, cache_dir=args.cache_dir, sdf_channel=args.sdf_channel, sdf_only=args.sdf_only)
+                             roi_mask=args.roi_mask, cache_dir=args.cache_dir, sdf_channel=args.sdf_channel,
+                             sdf_only=args.sdf_only, shared_roi=args.shared_roi, aug_lr=args.aug_lr)
         elif os.path.exists(train_csv) and os.path.exists(val_csv):
             logger.warning(f"[ROI] 未找到 {full_csv}, 回退拼接 {os.path.basename(train_csv)}+{os.path.basename(val_csv)}"
                            f" (仅对已存在的 seed 有效)")
             ds_all = DataROI(train_csv, mode=args.mode, augment=False, mask_geometry=args.mask_geometry,
-                             roi_mask=args.roi_mask, cache_dir=args.cache_dir, sdf_channel=args.sdf_channel, sdf_only=args.sdf_only)
+                             roi_mask=args.roi_mask, cache_dir=args.cache_dir, sdf_channel=args.sdf_channel,
+                             sdf_only=args.sdf_only, shared_roi=args.shared_roi, aug_lr=args.aug_lr)
             ds_b = DataROI(val_csv, mode=args.mode, augment=False, mask_geometry=args.mask_geometry,
-                           roi_mask=args.roi_mask, cache_dir=args.cache_dir, sdf_channel=args.sdf_channel, sdf_only=args.sdf_only)
+                           roi_mask=args.roi_mask, cache_dir=args.cache_dir, sdf_channel=args.sdf_channel,
+                           sdf_only=args.sdf_only, shared_roi=args.shared_roi, aug_lr=args.aug_lr)
             for attr in ("_vols", "_pids", "_clin", "_clin_raw", "_lab_t", "_lab_n", "_lab_pt", "_ct_flag"):
                 getattr(ds_all, attr).extend(getattr(ds_b, attr))
         else:
@@ -1543,7 +1582,8 @@ def main():
             # 折内标签必须切片: 旧版传全量 lab_*, 导致类别权重/辅助头统计混入验证折标签
             ds_tr_f = _SubDS(ds_all, tr_list,
                              lab_t=[lab_t[i] for i in tr_list], lab_n=[lab_n[i] for i in tr_list],
-                             lab_pt=[lab_pt[i] for i in tr_list], augment=args.aug,
+                             lab_pt=[lab_pt[i] for i in tr_list], augment=args.aug or args.aug_lr,
+                             aug_lr=args.aug_lr,
                              clin=z_tr, pids=[pids[i] for i in tr_list])
             ds_va_f = _SubDS(ds_all, va_list,
                              lab_t=[lab_t[i] for i in va_list], lab_n=[lab_n[i] for i in va_list],
@@ -1642,12 +1682,14 @@ def main():
     for p in (train_csv, val_csv):
         if not os.path.exists(p):
             raise SystemExit(f"单 seed 模式需要 {p} (可用 --seed 指定已存在的划分, 或用 --kfold + --kfold-csv)")
-    ds_tr = DataROI(train_csv, mode=args.mode, augment=args.aug,
+    ds_tr = DataROI(train_csv, mode=args.mode, augment=args.aug or args.aug_lr,
                     mask_geometry=args.mask_geometry, roi_mask=args.roi_mask, cache_dir=args.cache_dir,
-                    sdf_channel=args.sdf_channel, sdf_only=args.sdf_only)
+                    sdf_channel=args.sdf_channel, sdf_only=args.sdf_only,
+                    shared_roi=args.shared_roi, aug_lr=args.aug_lr)
     ds_va = DataROI(val_csv, mode=args.mode, augment=False,
                     mask_geometry=args.mask_geometry, roi_mask=args.roi_mask, cache_dir=args.cache_dir,
-                    sdf_channel=args.sdf_channel, sdf_only=args.sdf_only)
+                    sdf_channel=args.sdf_channel, sdf_only=args.sdf_only,
+                    shared_roi=args.shared_roi, aug_lr=args.aug_lr)
     prep = ClinPrep(ds_tr.clin_raw_matrix())  # 只用训练集统计, 验证集不参与
     ds_tr.set_clin(prep.transform(ds_tr.clin_raw_matrix()), zero=args.no_clinical)
     ds_va.set_clin(prep.transform(ds_va.clin_raw_matrix()), zero=args.no_clinical)

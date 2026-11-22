@@ -1,0 +1,17 @@
+{
+    "folder_with_segs_from_prev_stage": null,
+    "list_of_lists_or_source_folder": [
+        [
+            "D:\\PyFile\\ColonMultiModal\\data\\Hos\\_nifti\\MRI\\102_t.nii.gz"
+        ]
+    ],
+    "num_parts": 1,
+    "num_processes_preprocessing": 1,
+    "num_processes_segmentation_export": 1,
+    "output_folder_or_list_of_truncated_output_files": [
+        "D:\\PyFile\\ColonMultiModal\\outputs\\a3_test2\\102"
+    ],
+    "overwrite": true,
+    "part_id": 0,
+    "save_probabilities": false
+}

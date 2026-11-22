@@ -74,3 +74,20 @@ cache_crcfound/
 pretrained/
 *.zip
 *.model
+
+# ========================
+# 7. 双机迁移补充（2026-11-22）
+# ========================
+# 迁移包本身不入库
+migration_to_laptop/
+# 3D 图像体素缓存（npy/npz 图像张量）
+*.npy
+cache_*/
+# 其他医学影像格式
+*.mha
+*.mhd
+*.nrrd
+*.dicom
+# 旧 checkpoint / 实验权重目录
+checkpoints_*/
+results/round*/

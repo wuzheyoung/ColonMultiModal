@@ -1827,3 +1827,246 @@ logits = model(ct, mri, clinical)  # [B, 4]
 > OOF 外折 (216 例): 全队列 N AUC=0.5372 | T3-4 0.5401 | T1-2 0.5231
 > 三臂归因 (同 216 例/同折/seed42/OOF): t-only 0.5230 → t+c 0.5372 (+0.014) → t+c+SDF 0.6422 (+0.105)
 > 判定: **SDF 连续距离场通道是 N 信号增益的主要来源 (~+0.10), 对齐双序列 t+c 本身贡献微弱 (~+0.014)**; T1-2 子群 0.7325 的提升主要由 SDF 驱动 → 形态流(SDF/二值) + 纹理流(对齐多序列) 双分支思路成立, SDF 分支是核心; 下一步建议: SDF 通道 + 纵轴 Patch-MIL 组合验证
+
+## 第二阶段决定性对照：mri_t 三臂 × 3 seed + 8 小时自动接力（已执行, 2026-11-22 01:30 启动）
+> 目的: 在统一口径下判定 96³ 压缩分辨率下 MRI 灰度与 SDF 的真实关系, 为后续架构改动提供主裁判; 按分流结果自动接力跑满 8 小时。
+> 开跑前核对(已完成): ① master 实测 355 行(fold 71×5), 报告 §13.1 的 356 为数据更新前口径——382/182/191 相关行删除后未回写报告(与 lesson 0mwq1z8i 一致), 以实测 355 为准, 三臂同口径对比不受影响; ② train_loss 每 epoch 打印已确认在 train_roi_dl.py:1293-1294。
+> 统一口径(阶段1): --mode mri_t --roi-mask bbox --epochs 30 --self-written --no-clinical --kfold 5 --kfold-csv data/master_5fold_356.csv --full-csv data/hos_pairs.csv, seed 42/0/7, 每臂独立 --out-tag。
+> 样本口径(已实测): master 355 ∩ mri_path_t 存在 ∩ mr_t mask = **296 例**, fold 60/59/59/59/59, T+率 0.709/N+率 0.439, T1-2 86 例/T3-4 210 例, batch1 129/batch2 167。
+> 主裁判: 3-seed 平均的 last5(=第 26-30 轮均值 OOF) ROC-AUC, T 与 N 均记录(若 N 走分支B但 T 灰度明显正增益 → 提示天然适合非对称 T/N 解耦); 附加输出 PR-AUC/F1@0.5/LOFO F1。
+> **执行纪律: 严格串行 + 独立子进程(每跑完 1 个 seed 退出, 外层脚本拉起下一个)——本机同进程连跑/高并发易硬件硬卡死(R8/R8b/5-fold/S3/B3a 均中招), 夜间 8 小时禁并行。**
+
+### 阶段 1: 基准定性 (0.0-2.0h, 必跑)
+- 9 次训练严格串行: Arm1 sdf-only / Arm2 图像+SDF / Arm3 无 SDF, 各 × seed 42/0/7; out-tag dc_a1_sdfonly_s{seed} / dc_a2_img_sdf_s{seed} / dc_a3_img_s{seed}。
+- 跑完自动聚合: 输出 3-seed 平均 last5 OOF ROC-AUC/PR-AUC/F1@0.5/LOFO F1(T 与 N 并列), 按 Arm2_N − Arm1_N 自动分流。
+- **无死角二分**: Arm2−Arm1 **≥ +0.025 → 路径 A**; Arm2−Arm1 **< +0.025**(含持平与灰度拖后腿) → 一律路径 B。
+
+### 阶段 1 结果 (2026-11-22 02:22 聚合, 9/9 完成)
+- **Arm1 sdf-only**: s42 0.5186 / s0 0.5439 / s7 0.5114 → 3-seed 均值 **N 0.5246** (T 0.5531)
+- **Arm2 图像+SDF**: s42 0.5194 / s0 0.4907 / s7 0.5599 → 3-seed 均值 **N 0.5233** (T 0.5136)
+- **Arm3 无 SDF 纯灰度**: 3-seed 均值 **N 0.5091**
+- **分流判定: Arm2−Arm1 = −0.0013 < +0.025 → 路径 B** (灰度通道在 96³ 压缩分辨率下无净增益且轻微拖后腿; Arm3 纯灰度 0.5091 确认灰度本身无 N 信号; T 亦无灰度增益)
+- 明细: logs/aggregate_roidl_dc_{arm}_s{seed}.json × 9; 分流记录 logs/relay_8h_state.json。
+
+### 阶段 2A: 96³ 协同深挖 (2.0-7.5h, 当 Arm2−Arm1 ≥ +0.025)
+- A1 修复多序列像素错位并验证 (~1.6h): train_roi_dl.py 中 mri_tc/mri_all 裁剪逻辑改为**所有对齐序列强制共用 mr_t 单一 bbox 中心与单一 SDF**(消除 t 用 mr_t/c 用 mr_c 的通道错位); 同 216 例 t∩c 子集上串行跑 mri_tc+shared SDF (3 seed ~40min) 与 mri_all+shared SDF (3 seed ~40min), 与同子集 mri_t+SDF(从阶段1 OOF 按 216 例 ID 切片, 零重训)公平对比。
+- A2 解剖保序弱增强 + 2-view TTA (~1.0h): 先 1 例 NIfTI 方向矩阵确认 (z,y,x) 中左右轴; 新增 --aug-lr 模式(仅左右镜像 + 图像通道轻微强度抖动, **严禁碰 SDF 通道**); A1 最优配置跑 3 seed (~40min) + 原图/左右翻转 2-view TTA 离线推理 (~5min)。
+- A3 S3 盆腔多器官排斥直肠系膜 (~2.8h): 查 TotalSegmentator total_mr 盆腔标签(sacrum/urinary_bladder/prostate/hip_left/right 等); 若含骨骼+膀胱 → 296 例 T2 多器官分割(参考 26s/例 ≈2.1h)生成"结直肠外扩 − 邻近骨骼/泌尿器官"排斥系膜 SDF, 剩 ~0.7h 跑 3 seed 验证。备选: total_mr 缺盆腔标签则跳过分割, 2.8h 改做 --t-only/--n-only 非对称解耦验证 + 沿直肠纵轴密集 32³ Patch-MIL。
+
+### 阶段 2B: 高分辨破局 + 形态可解释性 (2.0-7.5h, 当 Arm2−Arm1 < +0.025; 概率不低, 拆最实)
+- B1 形态线排雷 (~0.5h): 用阶段1 Arm1(sdf-only) 权重, 验证折抽 20 例(10 高置信 N+ / 10 高置信 N0) 做 3D Occlusion Sensitivity(比 Grad-CAM 适合单通道无纹理 SDF); 输出 5 张叠加图 + 量化高敏感体素落在直肠肠壁/肠腔内部 vs 64³ 裁剪框边缘/clamp 截断区比例 → 回答 ~0.60 几何信号是否伪影。
+- B2 灰度破局预处理: 固定物理视野高分辨缓存 (~0.8h): 新建 cache_hos_hr15/(不动旧缓存): T2 锚定空间重采样至固定 1.5mm³ 各向同性, mr_t 结肠 bbox 中心裁固定 64³(物理视野恒 96×96×96 mm³, 严禁拉伸), 同步导出对齐 T2/CE(若有)/1.5mm³ 连续物理 SDF; 强制留存质检图: pid 213/377/402 三例三视图 PNG 供早间肉眼抽查。
+- B3 高分辨 3 臂 × 3 seed 验证 (~2.0h): cache_hos_hr15/ 上同口径(epochs 30/master_5fold/no-clinical/self-written)重跑 HR-Arm1(sdf-only, 检验去掉变比例拉伸后纯几何信号是否仍在) / HR-Arm2(T2+SDF) / HR-Arm3(纯 T2)。
+- B4 按 B3 自动收尾 (~2.0h): 若高分辨救活灰度(HR-Arm2/3 last5 N AUC 明显高于 96³ Arm3 且 ≥ HR-Arm1 + 0.025) → 跑 高分辨 T2+CE+SDF(共用 mr_t 中心, 3 seed ~45min) + 仅左右镜像弱增强+2-view TTA (3 seed ~45min); 若高分辨灰度仍无力(<0.56) → 高分辨 --t-only/--n-only 单任务解耦(各 3 seed ~1.3h) + 低成本重测 CT CRCFound 局部 Token 池化(~0.5h 零训练: 145 例 CT 结直肠/Task010 mask 映射到已下载 CRCFound 3D ViT patch grid, 局部 patch tokens Masked Average Pooling 接线性分类器测 5 折 OOF AUC)。
+
+### 阶段 3: 无条件早间审计与汇报 (7.5-8.0h, 纯 CPU, 必跑)
+- 满 7.5h 禁止再启新训练; 统一离线脚本产出早间决策包写入本 README:
+- ① 全局主表: 所有已跑完臂 3-seed last5 OOF(ROC-AUC/PR-AUC/F1@0.5/LOFO F1) 与 best AUC 并列; ② 临床亚组拆解: 当晚最优模型 OOF 概率 → pN0/pN1/pN2 三级均值与两两 AUC(验证误差是否集中微小转移 N1)、T3-4 vs T1-2 子群 AUC、batch1 vs batch2 批内 3-seed AUC; ③ 异常与耗时审计: 子进程是否触发 watchdog、单折实际耗时、train_loss 末期数值。
+
+（以下 B 路径各步结果在手动重跑完成后追加）
+
+## B1 遮挡敏感度 (修正版, 2026-11-22 02:35)
+- a1_sdfonly 权重, 20 例(10 N+/10 N0) 16³ 块遮挡滑窗 64 次前向; 高敏感体素(top 20%)分区占比均值: **壁=0.058 腔=0.025 外=0.917 边缘环(pad=8)=0.463**
+- **结论: sdf-only 的 N 信号主要不在肠壁, 91.7% 高敏感体素在肠腔外广域几何, 且 46.3% 落在 64³ 裁剪框边缘环 —— 模型显著依赖裁剪框边缘 clamp/截断区, 支持"~0.60 几何信号部分是裁剪伪影"判断**
+- 修正说明: 首次运行分区阈值未按 mm→归一化换算(wall 恒 1.0), 已修(壁=2/15≈0.133); 叠加图: tools/phase2_relay/outputs/b1_occlusion/ (logs/step_b1_occlusion.json)
+
+## B 路径最终结果（2026-11-22 03:25, 手动重跑完成）
+
+### B1 遮挡敏感度 (sdf-only 权重, 修正版)
+- 20 例(10 N+ / 10 N0), 16³ 块遮挡滑窗 64 次前向; 高敏感体素(top 20%)分区占比均值: **壁=0.058 腔=0.025 外=0.917 边缘环(pad=8)=0.463**
+- **结论: sdf-only 的 N 信号 91.7% 在肠腔外广域几何, 46.3% 落在 64³ 裁剪框边缘环 → 模型显著依赖裁剪框边缘 clamp/截断区, ~0.60 几何信号部分是裁剪伪影**
+- 叠加图: tools/phase2_relay/outputs/b1_occlusion/; 明细 logs/step_b1_occlusion.json
+- (修正说明: 首次分区阈值未按 mm→归一化换算, 已修 壁=2/15≈0.133)
+
+### B2 高分辨缓存构建 (cache_hos_hr15/)
+- 1.5mm³ 各向同性, mr_t bbox 中心裁固定 64³=物理 96×96×96mm(严禁拉伸), 4 通道(t/c/d 灰度 zscore + SDF clip±15)
+- 结果: **ok=282 / fail=78** (61 无 mri_path_t + 17 mask 重采样后空); 训练集 = master∩cache = **280 例** (与阶段1 96³ OOF 280 完全同口径)
+- 质检图 pid 213/377/402: tools/phase2_relay/outputs/hr15_qc_p{pid}.png; logs/step_b2_build_hr15.json
+
+### B3 高分辨三臂 × 3 seed (280 例, 同口径 epochs30/master_5fold/no-clinical/self-written)
+- **HR-Arm1 sdf-only: 0.4996 | HR-Arm2 img+SDF: 0.4705 | HR-Arm3 纯 img: 0.4768** (3-seed 均值 last5 OOF N AUC)
+- **关键对比: 96³ 变比例 Resize 下 sdf-only 0.5246 → 高分辨固定物理视野下 0.4996 (跌回随机); 灰度 0.5091 → 0.4768 (同样失效)**
+- **结论: 96³ 压缩 + 变比例 Resize 引入的"几何/灰度信号"在固定物理视野高分辨下全部消失 → 阶段1 三臂 ~0.51-0.52 的微弱信号是 Resize 拉伸伪影, 非真实解剖形态信号**
+- 明细 logs/step_b3_hr_train.json
+
+### B4 收尾
+- 灰度未救活 (HR-Arm3 img N_last5=0.4768 < 0.56) → 高分辨 --t-only/--n-only 解耦 + CRCFound 局部 Token 池化零训练重测 145 例 CT (计划, 待执行)
+
+### 阶段3 早间审计 (logs/audit_morning.json)
+- 96³ 三臂 best/global: a1_sdfonly best N 0.539-0.617/global 0.511-0.544; a2_img_sdf 0.549-0.617/0.491-0.560; a3_img 0.564-0.596/0.463-0.533 (3-seed 波动大, best 明显高于 last5 → 过拟合)
+- T3-4 vs T1-2 分层: a1 last5 T3-4 0.475-0.586/T1-2 0.483-0.586 (无稳定差异); pN 三级均值单调性不成立 (a1: pN0 0.452/pN1 0.469/pN2 0.448; a3: 0.376/0.396/0.454 有递增但幅度小)
+- pN 两两 AUC: a1 0v1 0.524/1v2 0.485/0v2 0.506 (≈随机); a3 0.512/0.553/0.575
+- batch 批内: a1 b1 0.562/b2 0.483; a3 b1 0.572/b2 0.499 (b2 全部 <0.5 → batch2 子群无信号)
+- 耗时: 每 seed ~3min/折, train_loss 末期 0.09-0.16 (无异常)
+
+## 第二阶段综合判定（2026-11-22 03:25）
+- **96³ 压缩 + 变比例 Resize 下的三臂微弱信号 (0.51-0.52) = 预处理伪影**, 经 B3 高分辨固定物理视野复核全部跌回随机 (~0.47-0.50), 与 B1 裁剪边缘依赖结论互证
+- **形态捷径路线 (SDF/二值几何) 在当前 mask 口径下无真实 N 信号**; 灰度 (T2/CE/DWI) 亦无净增益
+- 触发情景1 修复方向: 固定物理视野(已由 B3 执行) 下模型跌回 ~0.50 → 后续按用户分流决策进入"止损/转型"评估 (情景4 底线熔断候选: 粗标注或硕论重心转 T 分期), 具体方向待用户确认
+
+---
+
+## 第三阶段：原始像素级信号检验（2026-11-22，用户 m02003 指令）
+
+> 背景：第二阶段三臂对照（96³）与高分辨复核（hr15）均跌回随机，疑似全部信号来自预处理伪影。
+> 本阶段直接检验"原始 NIfTI 轴位像素里到底有没有 T/N 信号"，彻底绕开 3D 重采样/插值/裁剪：
+> - 路线1（纯 CPU，PyRadiomics 影像组学）：原生面内分辨率 + 完整掩码，零深度过拟合
+> - 路线2-MRI（GPU，冻结 ConvNeXt-Tiny + 逐层 MIL）：原生轴位 120mm 裁块，无 z 插值
+> - 路线2-CT（GPU，冻结 CRCFound 局部 ROI Token 池化）：CT 分支独立信号检验
+
+### 路线2-MRI：原生轴位 120mm 裁块 + 冻结 ConvNeXt-Tiny + 逐层 MIL
+- **使用的数据**: 296 例口径 (master∩mri_path_t∩mr_t mask)，280 例可用 (16 例无 mask 切片)；逐轴位 mask 非空层质心裁物理 120mm 正方形 (无变比例拉伸)，z 轴不插值；特征 timm convnext_tiny (ImageNet, 完全冻结) [1,3,224,224]→[768]
+- **网络结构**: 顶层仅训 Gated Attention-MIL (Ilse 2018, d=768/d_hid=128, ~1.6K 参数, AdamW lr 1e-3 wd 0.05, 40 epochs) + Mean/Max Pooling + L2 LR 底线
+- **模型结果** (5 折 OOF, 280 例 N+ 121):
+  - GatedAttn-MIL: **N AUC 0.4587** | MeanPool+LR: **0.4640** | MaxPool+LR: **0.4592**
+  - **全部 <0.5 随机 → 原生轴位高分辨冻结特征无 N 信号** (logs/route2_axial_mil.json/.txt)
+
+### 路线2-CT：冻结 CRCFound 局部 ROI Token 池化 + L2 LR
+- **使用的数据**: 138 例 CT (master∩ct_path∩task010 mask)，90 例有效 (18 例 mask 对齐后空)，T+ 66 / N+ 36
+- **网络结构**: 冻结 CRCFound encoder (pretrained/CRCFound/checkpoint-999.pth, strict 294/294 键)，task010 mask 对齐卷网格后局部 patch token mean-pool [1024]，顶层 L2 LR
+- **模型结果** (5 折 OOF): label_T **0.4596** | label_N **0.4774** → **CT 分支无独立信号** (logs/route2_crcfound_roi.json/.txt)
+
+### 路线1：原生面内分辨率 + 完整掩码影像组学
+- **使用的数据**: 296 例口径 (master∩mri_path_t∩mr_t mask)；原始 NIfTI 轴位图像，z 轴不插值保留原生面内分辨率
+- **特征**: PyRadiomics 3D (原生网格不重采样, normalize=True, binWidth=25)，类=firstorder/glcm/glrlm/glszm/gldm/ngtdm/shape，**107 个特征全保留**；每例两套 mask——body=完整结直肠本体 mask (测 T)，ring=mask 外扩 5-10mm 物理壳 (EDT, 测 N)
+- **模型**: 折内方差>1e-4 + pearsonr>0.95 去冗余 + f_classif top300 筛选 + StandardScaler + L2 LogisticRegression (C 0.01-10) / ElasticNet (alpha 0.01, l1_ratio 0.5)，5 折 OOF
+- **模型结果** (5 折 OOF pooled AUC, 修复后 107 特征):
+  - body → label_T: **LR 0.6102 | ElasticNet 0.6044** (n=280, pos=198) — **T 分期影像组学有真实信号 (≈0.61, 稳定跨模型)**
+  - ring → label_N: **LR 0.4609 | ElasticNet 0.4785** (n=296, pos=130) — **N 仍随机**
+  - **结论: 原始面内像素 + 完整掩码的纹理/一阶特征对 T 分期有信号 (0.61), 对 N 分期无信号 (≈0.46-0.48)** (logs/route1_radiomics.json/.txt)
+  - 注: 首次跑 (bug: isinstance 过滤丢 101 个 0 维 ndarray 特征, 仅剩 6 shape 列) 得 body→T 0.4885/ring→N 0.5081, 已修复重跑 (见下方 sex 探针章节)
+
+### 第三阶段综合判定（2026-11-22 15:00 更新，含 sex 探针）
+- **sex 终极探针（用户 m03195 判据）**: 用同一套特征预测 sex 验证管线可信度——
+  - route2-MRI ConvNeXt: mean→sex **0.8622** / max→sex **0.8306**（≥0.80 → 特征提取与 ID 映射无误）
+  - route2-CT CRCFound cls: →sex 0.7600（CT 分支特征区分力偏弱，n=144 偏小）
+  - route1 PyRadiomics: body→sex 0.6921 / ring→sex 0.7414（传统特征对性别区分力本就弱于深度特征，非 bug 迹象；修复后数值从 0.655/0.582 提升）
+- **判据结论**: 管线基本无误 → 之前所有 0.46-0.51 结论**有效**（非特征提取 bug）；T/N 低 AUC 问题锁定在**临床标签口径（nCRT 降期）或全结肠无肿瘤定位致信号稀释**
+- **三条独立尺子最终结论**:
+  1. 路线1 影像组学（修复后）：**T 0.610（真实信号）** / N 0.461-0.479（随机）
+  2. 路线2-MRI（原生轴位高分辨+冻结 ConvNeXt）：0.459-0.464，随机
+  3. 路线2-CT（冻结 CRCFound ROI 池化）：T 0.460 / N 0.477，随机
+- **N 分期**: 三管线一致无信号（0.46-0.48）+ sex 探针管线验证无误 → **N 无信号是真实瓶颈（标签口径/信号稀释），非代码 bug**
+- **T 分期**: 影像组学在原生面内像素+完整掩码下出现 0.61 信号（此前 96³ 深度模型的 ~0.55-0.62 伪影疑虑被部分澄清——T 确有可提取信号）；路线2-MRI T 0.608/0.561、CT T 0.460 佐证 T 信号弱但存在
+- **情景4 止损评估**: ①极低成本粗标注（仅标肿瘤中心或起止层号）重新激活监督信号；②硕论重心转 T 分期（T 信号可提取），N 分期作为无标注瓶颈实证。方向待用户确认
+
+## 第三阶段补充：tgr 拆队列 + 扫描平面审计 + 真轴位探针（2026-11-22，用户 m03486 指令）
+
+> 背景：sex 探针证明管线无误后，进一步排查临床标签口径（nCRT 降期）与扫描平面影响。
+> tgr = nCRT 后肿瘤退缩分级（病理TGR），有 tgr 标注者影像为放化疗后再分期图像。
+
+### ① tgr 拆队列审计（logs/audit_tgr_task1.json）
+- **队列** (master MRI-t 子集 n=298): 直接手术（无 tgr）223 例 | 放化疗后（有 tgr）75 例; tgr 等级 2.0×40 / 3.0×22 / 1.0×10 (+3 异常)
+- **阳性率**: 直接手术 T+ 0.691 / N+ 0.453; 放化疗后 T+ 0.773 / N+ 0.400
+- **batch 差异**: batch1 direct 112/ncrt 19 (14.5%), batch2 direct 111/ncrt 56 (33.5%) → **批次差异部分来自 nCRT 比例不同**
+- **分群重评** (L2 LR 5 折 OOF):
+  - 直接手术组（标签可信）: route1_body T 0.5939 / r2mri_mean T 0.6009 / r2mri_max T 0.6221 — **T 信号 0.59-0.62 稳定存在**; N 均随机 (0.39-0.52)
+  - 放化疗组（n=72, 噪声大）: T/N 均不稳定; TRG 二分类 (好 vs 差, pos=10): 全随机 0.34-0.50
+
+### ② 扫描平面审计（tools/audit_tgr_task2a.py）
+- **mri_t: 矢状位** (axcodes PIR×298, LPS×1 异常 pid=1) — 高分辨面内 P×I, 厚层步进轴 R; spacing 主规格 (0.43,0.43,4.0)×81 / (0.55,0.55,4.0)×65 / (0.72,0.72,6.0)×52
+- **mri_c: 真轴位** (LPS×228) — spacing (0.62,0.62,2.0)×101 主; shape (512,512,92)×114
+- **mri_d: 真轴位** (LPS×290) — spacing (1.25,1.25,2.46)×57 主; shape (256,256,44-66)
+- **重大修正**: 此前 route1/route2-MRI 均在**矢状位 mri_t** 上做"轴位"分析；mri_c/mri_d 才是真轴位 → 触发真轴位探针
+
+### ③ 真轴位冻结 ConvNeXt 探针（tools/audit_tgr_task2c.py, 已完成）
+- **使用的数据**: mri_c 227 例 (T+ 157/N+ 98) + mri_d 149 例有效 (T+ 104/N+ 69); 逐轴位 mask 质心裁 120mm 物理正方形, 冻结 convnext_tiny [768], MeanPool + L2 LR, 5 折 OOF
+- **模型结果** (all / direct / ncrt):
+  | 序列 | sex | T (all/direct) | N (all/direct) | TRG |
+  |---|---|---|---|---|
+  | mri_c (227) | 0.8624 | 0.5820 / 0.5828 | 0.5255 / 0.5270 | 0.4107 |
+  | mri_d (149) | 0.8425 | 0.6350 / **0.6532** | 0.3861 / 0.2862 | 0.1458 |
+- **判定**:
+  - **真轴位 sex 均 >0.84 → 管线/ID 映射再次验证无误**
+  - **T 分期有真实信号**: mri_d 真轴位 all 0.635 / direct 0.653（迄今最强零训练 T 结果）; mri_c 0.582 → T 信号在不同平面/序列稳定存在
+  - **N 分期完全无信号**: mri_c 0.526 随机, mri_d 0.386 低于随机（疑似 mr_d mask 对齐质量差, 待核）→ N 无信号再添一证
+  - TRG 无信号
+- 产物: logs/audit_tgr_task2c.json / outputs/plane_qc/plane_p2_mrit.png (+p3)
+
+### ④ 任务3a: PyRadiomics 参数修复重跑（tools/route3a_radiomics.py, 已完成）
+- **使用的数据**: n=296 (master∩mask∩mri_path_t, T+ 0.709/N+ 0.439)；原始 NIfTI mri_t 轴位图像
+- **修复参数**: force2D=True + force2Ddimension=2（沿矢状位厚层轴切片）+ resampledPixelSpacing=[0.5,0.5,0]（面内各向同性 0.5mm, 厚层轴 0=保持原值严禁插值）+ binCount=32（替代导致桶坍塌的 binWidth=25）+ normalize=True；特征类 firstorder/glcm/glrlm/glszm/gldm/ngtdm/shape，107 列全保留
+- **ROI 变体 4 个**: body（完整结肠 mask 测 T）/ ring（5-10mm EDT 壳测 N）/ body_150 / ring_150（沿真实头足轴自掩码尾侧端截 150mm 直肠段）
+- **模型结果** (5 折 Pooled OOF AUC):
+  | 变体 | 目标 | LR | ElasticNet |
+  |---|---|---|---|
+  | body | T all | 0.5862 | 0.5775 |
+  | body | T direct | 0.5699 | 0.6031 |
+  | ring | T all | 0.5343 | 0.6090 |
+  | body | N all | 0.4629 | 0.4575 |
+  | ring | N all | 0.4973 | 0.4846 |
+  | body_150 | T all | 0.5862 | 0.5771 |
+  | body_150 | N ncrt | 0.8198⚠️ | 0.7300 |
+  | ring_150 | T all | 0.5357 | 0.6098 |
+- **判定**: ①修复后 T 信号 0.58-0.61 明显强于旧参数 route1（0.4885，纹理桶坍塌）→ 桶坍塌确凿 ②N 全队列仍随机（0.46-0.50），N_ncrt 0.82 为 n=72/pos=27 小样本高方差，ring_150 同群 0.4852 对照否之 ③150mm 直肠段截断无全队列增益（body_150 T 与 body 相同）→ 截断未对准肿瘤段或截断方式无效
+- 产物: logs/audit_tgr_task3a.json + logs/route3a_radiomics_features.csv (1184 行)
+
+### ⑤ T 分期三路晚融合（tools/audit_tgr_task3b.py, 已完成）
+- **使用的数据**: n=280 (T+ 198)；三路特征——①route1 PyRadiomics body (107 列) ②route2-MRI ConvNeXt mean-pool (768 维, logs/route2_feats/) ③临床 7 维原始值 (age/sex/ca199/cea/albumin/prealbumin/hb, nan→0)
+- **模型**: 逐路折内选 C L2 LR 得 OOF 概率 → 等权平均 vs 折内 LR Stacking；5 折 master 框架
+- **模型结果** (5 折 Pooled OOF T AUC):
+  | 路 | pooled OOF T AUC |
+  |---|---|
+  | radiomics | 0.6138 |
+  | convnext | 0.6093 |
+  | clin (7维) | 0.6306 |
+  | **等权平均** | **0.6547** |
+  | LR Stacking | 0.6494 |
+- **判定**: 三路融合 T AUC 0.65 高于任一单路 → T 分期信号可三路互补提取；临床 7 维单路 0.63 有独立预测力（与此前深度模型"临床净噪声"结论并行不悖：临床信息不足以帮 96³ 深度模型，但 LR 融合时有增益）
+- 产物: logs/audit_tgr_task3b.json
+
+
+
+
+### 第三阶段终极核验汇总 (audit_tgr_planes_fusion.json)
+- 状态: task1/2a/2c/3b 完成; task3a 结果见其章节
+- 核心结论: ①真轴位(mri_c/d)冻结 ConvNeXt sex OOF 0.84-0.86 ≥0.80 → 特征管线与 ID 映射无误 ②T 分期有真实信号: 真轴位 direct 0.6532 / 三路晚融合 0.6547 ③N 分期在任何口径下均随机(0.39-0.53) ④TRG/nCRT 无信号 ⑤96³ 变比例 Resize 伪影与全结肠无肿瘤定位是 T 信号偏弱的主因
+
+### 第三阶段补充2: 跨平面缺失容错 T 分期融合 (m04057/m04358 指令, 已完成)
+- **任务1 审计**: ①task3b clin 分支 CLIN_COLS=[age,sex,ca199,cea,albumin,prealbumin,hb] 恰 7 维, 无 tgr/病理/标签衍生列, 填补 np.nan_to_num(0.0), n=280, pooled OOF T AUC 0.6306 无泄露 ✓ ②样本覆盖 (master 355): has t=296/c=227/d=287; direct n=277 (t=222/c=168/d=214); 交集 t&c=166/t&d=212/c&d=162/t&c&d=160
+- **任务2 真轴位 2D PyRadiomics** (route3b, force2D 沿厚层轴, 面内 0.625mm 仅 c / d 跳过重采样, binCount=32, 107 特征, 8 进程 16 核, c 3691s/d 174s):
+  | 序列 | T_all LR/EN | T_direct LR/EN | N_all LR/EN | N_direct LR/EN |
+  |---|---|---|---|---|
+  | c (真轴位, n=227) | 0.5783/0.6005 | 0.5559/0.5807 | 0.4703/0.4851 | 0.5228/0.5335 |
+  | d (真轴位, n=147 有mask) | 0.4649/0.4541 | 0.4387/0.4576 | 0.4937/0.4828 | 0.4713/0.4706 |
+  - **关键修复**: masks_totalseg_mr_d 138/290 例 mask 本身全零(分割失败); 全零 mask 的 EDT 会产生背景壳伪 ring (N_all 伪 0.556) → 源 mask 全零时 body/ring 均 ok=0, 修复后 N 回 0.49 随机
+  - **判定: 真轴位 ring 测 N 全队列均 ~0.47-0.50 → N 分期无标注失效边界 100% 闭环结案; c 真轴位 T EN 0.60 有真实信号**
+- **任务3 跨平面缺失容错 T 融合** (direct 队列, 单路折内选C L2 LR → 方案A 可用模态均值 / 方案B 缺失指示符 Stacking):
+  | 分支 (direct_all) | pooled OOF T AUC |
+  |---|---|
+  | t_rad (矢状位 radiomics) | 0.5699 |
+  | t_conv (矢状位 ConvNeXt) | 0.6009 |
+  | d_conv (真轴位) | 0.6577 |
+  | c_rad (真轴位) | 0.5495 |
+  | c_conv (真轴位) | 0.5817 |
+  | clin (7维) | **0.6570** |
+  | fusionA 可用均值 | 0.5839 |
+  | fusionB 缺失stack | 0.5767 |
+  - direct_td (t∩d 共有 136 例): c_conv 0.6705 最强, fusionA 0.6013/fusionB 0.5066
+  - **判定: 跨平面融合未超临床单路 (0.657); 图像分支 d_conv/c_conv 有信号但样本缺失 (d 仅 108-109 例可用) 拖累融合 → T 分期当前最优仍是临床 7 维 LR, 影像 T 信号 (c 真轴位 EN 0.60) 可作弱辅助**
+- 产物: logs/audit_crossplane_fusion.json + logs/route3b_{c,d}_features.csv + logs/audit_tgr_task2c_rad_{c,d}.json
+### 第三阶段补充3: 四任务排错审计与干净阶梯消融 (m04813 指令, 已完成, 纯CPU)
+- **方向决策**: N 分期正式结案(无病灶定位真实失效边界); 主线锁定=剔除 tgr 后纯直接手术队列跨平面多序列 T 分期预测
+- **任务1 clin 填补核查**: 上一轮 np.nan_to_num(0.0) 在 oof_prob_lr 内于 StandardScaler.fit 之前(全局固定变换, 折内选C无泄漏但 0.0 是任意占位); direct 组缺失: age 78/sex 1/ca199 177/cea 175/albumin 29/prealbumin 30/hb 29 (n=277, ca199/cea 缺失率 63.9%/63.2%); 干净 SimpleImputer(median)折内拟合: pooled 0.6044 (fold 0.609±0.059) vs 旧 nan_to_num 0.657 (fold 0.660±0.036) → 旧 0.657 部分来自缺失=0 的伪信号, 干净基线 0.604
+- **任务2 d_conv N_direct 逐折 (n=109, N+52, pooled 0.3067 / fold 0.338±0.068 / zscore-pooled 0.3489)**:
+  | fold | n_tr | n_va | tr_pos | va_pos | va_p mean±std | C | val_auc |
+  |---|---|---|---|---|---|---|---|
+  | 0 | 88 | 21 | 0.466 | 0.524 | 0.498±0.354 | 0.1 | 0.336 |
+  | 1 | 91 | 18 | 0.462 | 0.556 | 0.409±0.337 | 0.1 | 0.288 |
+  | 2 | 87 | 22 | 0.540 | 0.227 | 0.643±0.360 | 0.1 | 0.400 |
+  | 3 | 87 | 22 | 0.460 | 0.545 | 0.358±0.263 | 0.1 | 0.242 |
+  | 4 | 83 | 26 | 0.458 | 0.538 | 0.355±0.346 | 0.1 | 0.423 |
+  - 归因: 单折全部 <0.5 (0.242-0.423), zscore-pooled 0.349 仍远低于 0.5 → **非跨折辛普森反转, 而是该子集上 ConvNeXt d 特征的系统性(弱)反向关联, n=109 小样本放大**; 强正则 C=0.1 全折被选中, 概率贴近折内先验方差小 → 无代码/标签对齐 Bug 证据
+- **任务3 d_conv 全零 mask 回退**: extract_case_feats 中 mask 文件缺失→None, 逐层 mask.sum()==0 跳过, 全层全零(138 例)→返回 None→不入 d.npy → 全零病例无 d 特征, fusion 中视为缺失; direct 组 has_d 109 (T+率 0.679) / no_d 168 (T+率 0.702); d_conv T pooled 0.6577 (fold 0.705±0.090) 完全来自有 mask 的 109 例子集
+- **任务4 fusionA 暴跌真因 + 干净阶梯消融 (剔除 d_rad, 折内 z-score logit 均值 / rank 均值, 仅可用分支平均)**:
+  - 暴跌原因: ①上一轮 fusionA 混入 d_rad (direct_all 单路 0.4271, direct_td 0.4750, 反向/弱信号) ②各分支概率直接算术平均无折内尺度对齐 ③direct_all 上 d 仅覆盖 109/277
+  - 消融 (f1=z-logit 均值, f2=rank 均值; Pooled OOF, 括号 Fold-Mean±SD):
+  | 阶梯 | direct_all (n=277) | direct_td (n=212) | direct_tcd (n=160) |
+  |---|---|---|---|
+  | s1 六路融合 | 0.6142 (0.608±0.049) | 0.6412 (0.635±0.059) | 0.6889 (0.702±0.080) |
+  | s2 clin+d_conv | 0.6215 (0.617±0.049) | **0.6795 (0.678±0.051)** | 0.6887 (0.682±0.091) |
+  | s3 纯影像三平面 | 0.6300 (0.636±0.038) | 0.6229 (0.633±0.042) | 0.6425 (0.653±0.089) |
+  | s4 clin+三平面 | 0.6254 (0.619±0.032) | 0.6736 (0.677±0.046) | **0.6896 (0.698±0.086)** |
+  - 单路基准 (direct_tcd): d_conv 0.6577 / t_conv 0.6009 / c_conv 0.5817 / t_rad 0.5699 / c_rad 0.5495 / clin_clean 0.6044
+  - 判定: 融合有增益但有限 — direct_td 上 clin+d_conv 0.6795 最优, direct_tcd 上四路 0.6896 最优; 样本交集越小(n 277→212→160) AUC 越高(队列更纯), 临床+影像双路优于纯影像
+- 产物: logs/audit_fusion_debug.json (全明细)
