@@ -1,0 +1,297 @@
+# -*- coding: utf-8 -*-
+"""DWI 物理坐标掩码借壳救回 (m04879 阶段1/2)。
+三级掩码优先级: self(原 mr_d 有效,体素>=50) → from_c(mr_c 重采样至 mri_d) → from_t(mr_t 重采样) → center_fallback。
+输出 data/masks_dwi_remapped/{pid}/colon.nii.gz (严禁覆盖原掩码) + features/dwi_mask_remap_manifest.csv。
+冒烟: --pids 51,88,46 强制借壳算 Dice/质心偏移并导叠图; --sample-fallback 3 从 direct 全零组随机抽 3 例导图。
+"""
+import os, json, csv, random
+import numpy as np
+import SimpleITK as sitk
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(ROOT)
+MASTER = "data/master_5fold_356.csv"
+RAW = "data/hos_pairs_raw.csv"
+X929 = "data/Hos/结直肠癌多模态患者数据收集表9.29.xlsx"
+XFULL = "data/Hos/结直肠癌多模态患者数据收集表_完整版.xlsx"
+MR_D = "data/masks_totalseg_mr_d"
+MR_C = "data/masks_totalseg_mr_c"
+MR_T = "data/masks_totalseg_mr_t"
+OUT_DIR = "data/masks_dwi_remapped"
+QC_DIR = "outputs/dwi_remap_qc"
+MIN_VOX = 50
+
+
+def load_tgr_map():
+    import pandas as pd
+    m = {}
+    try:
+        d929 = pd.read_excel(X929)
+        for _, r in d929.iterrows():
+            if pd.notna(r.get("病理TGR")):
+                try:
+                    m[int(r["编号"]) + 200] = float(r["病理TGR"])
+                except (ValueError, TypeError):
+                    pass
+    except Exception as e:
+        print("9.29 read warn:", e)
+    try:
+        dfull = pd.read_excel(XFULL)
+        for i, r in dfull.iterrows():
+            if pd.notna(r.get("病理TGR")):
+                try:
+                    m[i + 1] = float(r["病理TGR"])
+                except (ValueError, TypeError):
+                    pass
+    except Exception as e:
+        print("full read warn:", e)
+    return m
+
+
+def mask_ok(mask_path, min_vox=MIN_VOX):
+    if not os.path.exists(mask_path):
+        return False
+    try:
+        arr = sitk.GetArrayFromImage(sitk.ReadImage(mask_path))
+        return int(arr.sum()) >= min_vox
+    except Exception:
+        return False
+
+
+def remap_mask(src_mask_path, target_img_path, out_path):
+    """将 src mask 经物理世界坐标重采样至 target 影像网格 (最近邻, Identity)。"""
+    mimg = sitk.ReadImage(src_mask_path)
+    vimg = sitk.ReadImage(target_img_path)
+    res = sitk.Resample(mimg, vimg.GetSize(), sitk.Transform(), sitk.sitkNearestNeighbor,
+                        vimg.GetOrigin(), vimg.GetSpacing(), vimg.GetDirection(),
+                        0, sitk.sitkUInt8)
+    os.makedirs(os.path.dirname(out_path), exist_ok=True)
+    sitk.WriteImage(res, out_path)
+    return res
+
+
+def centroid_mm(img):
+    arr = sitk.GetArrayFromImage(img)
+    if arr.sum() == 0:
+        return None
+    z, y, x = np.nonzero(arr)
+    phys = img.TransformIndexToPhysicalPoint
+    # 体素索引 (i=x, j=y, k=z) 与 array 轴对应: arr[z,y,x] -> idx (x,y,z)
+    pts = np.array([phys((int(xx), int(yy), int(zz))) for zz, yy, xx in zip(z, y, x)])
+    return pts.mean(axis=0)
+
+
+def dice_arr(a, b):
+    i = float(np.logical_and(a > 0, b > 0).sum())
+    u = float(a.sum() + b.sum())
+    return 2 * i / u if u > 0 else 1.0
+
+
+def draw_qc(pid, mri_path, mask_path, tag, layer_fracs=(0.25, 0.5, 0.75)):
+    """导出上/中/下 3 层 mri_d 叠画 mask 轮廓 PNG (matplotlib 若可用, 否则 PIL 灰度+红点)。"""
+    os.makedirs(QC_DIR, exist_ok=True)
+    vimg = sitk.ReadImage(mri_path)
+    va = sitk.GetArrayFromImage(vimg)
+    mimg = sitk.ReadImage(mask_path)
+    ma = sitk.GetArrayFromImage(mimg)
+    nz = np.nonzero(ma)
+    if len(nz[0]) == 0:
+        zs = np.linspace(0, va.shape[0] - 1, 3, dtype=int)
+    else:
+        zmin, zmax = nz[0].min(), nz[0].max()
+        zs = [int(round(zmin + (zmax - zmin) * f)) for f in layer_fracs]
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+        for ax, z in zip(axes, zs):
+            ax.imshow(va[z], cmap="gray", vmin=np.percentile(va[z], 1), vmax=np.percentile(va[z], 99))
+            mz = ma[z] > 0
+            if mz.any():
+                ax.contour(mz, colors="r", linewidths=1.2)
+            ax.set_title(f"z={z} {tag}")
+            ax.axis("off")
+        fig.suptitle(f"pid={pid} {tag} remap QC")
+        fig.savefig(os.path.join(QC_DIR, f"qc_p{pid}_{tag}.png"), dpi=100, bbox_inches="tight")
+        plt.close(fig)
+        return os.path.join(QC_DIR, f"qc_p{pid}_{tag}.png")
+    except Exception as e:
+        from PIL import Image, ImageDraw
+        print("matplotlib unavailable, PIL fallback:", e)
+        out = []
+        for z in zs:
+            im = va[z].astype(np.float32)
+            im = (im - im.min()) / (im.max() - im.min() + 1e-9) * 255
+            img = Image.fromarray(im.astype(np.uint8)).convert("RGB")
+            d = ImageDraw.Draw(img)
+            mz = np.argwhere(ma[z] > 0)
+            if len(mz):
+                for yy, xx in mz[::max(1, len(mz) // 500)]:
+                    d.point((int(xx), int(yy)), fill=(255, 0, 0))
+            p = os.path.join(QC_DIR, f"qc_p{pid}_{tag}_z{z}.png")
+            img.save(p)
+            out.append(p)
+        return ",".join(out)
+
+
+def process_pid(pid, row, manifest, force_from=None):
+    """force_from: None=按优先级; 'c'/'t'=强制借壳(冒烟用)。返回 (source, ok, note)。"""
+    mri_d = row.get("mri_path_d")
+    if not mri_d or not os.path.exists(mri_d):
+        return None, False, "no_mri_d"
+    out_path = os.path.join(OUT_DIR, str(pid), "colon.nii.gz")
+    self_path = os.path.join(MR_D, str(pid), "colon.nii.gz")
+    c_path = os.path.join(MR_C, str(pid), "colon.nii.gz")
+    t_path = os.path.join(MR_T, str(pid), "colon.nii.gz")
+    self_ok = mask_ok(self_path)
+    c_ok = mask_ok(c_path)
+    t_ok = mask_ok(t_path)
+    source, src_path = None, None
+    if force_from == "c" and c_ok:
+        source, src_path = "from_c", c_path
+    elif force_from == "t" and t_ok:
+        source, src_path = "from_t", t_path
+    elif self_ok:
+        # 原样复制 (保持原掩码不变, 不重采样)
+        os.makedirs(os.path.dirname(out_path), exist_ok=True)
+        import shutil
+        shutil.copyfile(self_path, out_path)
+        source = "self"
+    elif c_ok:
+        source, src_path = "from_c", c_path
+    elif t_ok:
+        source, src_path = "from_t", t_path
+    else:
+        source = "center_fallback"
+    orig_vox, final_vox, has_valid = 0, 0, False
+    if src_path is not None:
+        orig_arr = sitk.GetArrayFromImage(sitk.ReadImage(self_path)) if os.path.exists(self_path) else None
+        orig_vox = int(orig_arr.sum()) if orig_arr is not None else 0
+        remap_mask(src_path, mri_d, out_path)
+        final_vox = int(sitk.GetArrayFromImage(sitk.ReadImage(out_path)).sum())
+        has_valid = final_vox >= MIN_VOX
+    elif source == "self":
+        orig_vox = final_vox = int(sitk.GetArrayFromImage(sitk.ReadImage(out_path)).sum())
+        has_valid = final_vox >= MIN_VOX
+    elif source == "center_fallback":
+        # 兜底: 不写掩码文件, 特征提取时按盆腔几何中心固定物理框
+        orig_vox = final_vox = 0
+        has_valid = False
+    manifest.append({"pid": int(pid), "cohort_direct": int(row.get("cohort_direct", -1)),
+                     "mask_source": source, "orig_voxels": orig_vox, "final_voxels": final_vox,
+                     "has_valid_mask": int(has_valid)})
+    return source, has_valid, "ok"
+
+
+def main():
+    import argparse, pandas as pd
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--pids", help="逗号分隔 pid 列表 (冒烟强制借壳 + 叠图)")
+    ap.add_argument("--sample-fallback", type=int, default=0, help="从 direct 全零组随机抽 N 例导叠图")
+    ap.add_argument("--all", action="store_true", help="全量 (阶段2)")
+    args = ap.parse_args()
+    master = pd.read_csv(MASTER)
+    raw = pd.read_csv(RAW).set_index("patient_id")
+    tgr = load_tgr_map()
+    master["cohort_direct"] = (~master["patient_id"].isin(tgr)).astype(int)
+    os.makedirs(OUT_DIR, exist_ok=True)
+    manifest = []
+    force_pids = [int(x) for x in args.pids.split(",")] if args.pids else []
+
+    if args.sample_fallback:
+        # 找出 direct 且原 mr_d 掩码全零/缺失的病例
+        cand = []
+        for _, r in master.iterrows():
+            pid = int(r["patient_id"])
+            if not r["cohort_direct"]:
+                continue
+            if pid in raw.index and pd.notna(raw.loc[pid, "mri_path_d"]):
+                p = os.path.join(MR_D, str(pid), "colon.nii.gz")
+                if not mask_ok(p):
+                    cand.append(pid)
+        random.seed(0)
+        sel = random.sample(cand, min(args.sample_fallback, len(cand)))
+        print(f"fallback candidates={len(cand)} sampled={sel}")
+        for pid in sel:
+            row = raw.loc[pid]
+            source, ok, note = process_pid(pid, row, manifest)
+            if source in ("from_c", "from_t"):
+                src = os.path.join(MR_C if source == "from_c" else MR_T, str(pid), "colon.nii.gz")
+                outp = os.path.join(OUT_DIR, str(pid), "colon.nii.gz")
+                print(f"  pid{pid}: {source} ok={ok} → {draw_qc(pid, row['mri_path_d'], outp, source)}")
+            else:
+                print(f"  pid{pid}: {source} (skip qc)")
+
+    if force_pids:
+        print("== 强制借壳冒烟 (pid 51/88/46) ==")
+        for pid in force_pids:
+            if pid not in raw.index:
+                print(f"  pid{pid} not in raw, skip")
+                continue
+            row = raw.loc[pid]
+            self_path = os.path.join(MR_D, str(pid), "colon.nii.gz")
+            self_img = sitk.ReadImage(self_path) if os.path.exists(self_path) else None
+            for src in ("c", "t"):
+                src_path = os.path.join(MR_C if src == "c" else MR_T, str(pid), "colon.nii.gz")
+                if not os.path.exists(src_path):
+                    print(f"  pid{pid} from_{src}: src mask missing")
+                    continue
+                out_path = os.path.join(OUT_DIR, str(pid), f"colon_from_{src}.nii.gz")
+                rim = remap_mask(src_path, row["mri_path_d"], out_path)
+                ra = sitk.GetArrayFromImage(rim)
+                if self_img is not None:
+                    sa = sitk.GetArrayFromImage(self_img)
+                    dice = dice_arr(sa, ra)
+                else:
+                    dice = None
+                c_self = centroid_mm(self_img) if self_img is not None else None
+                c_map = centroid_mm(rim)
+                off = None
+                if c_self is not None and c_map is not None:
+                    off = float(np.linalg.norm(c_map - c_self))
+                off_str = "n/a" if off is None else f"{off:.2f}mm"
+                print(f"  pid{pid} from_{src}: dice={dice if dice is None else round(dice,3)} "
+                      f"centroid_off={off_str} vox={int(ra.sum())}")
+                tag = f"from_{src}"
+                print(f"    → {draw_qc(pid, row['mri_path_d'], out_path, tag)}")
+                # 也导出 self 对照图
+                if self_img is not None:
+                    sp = os.path.join(OUT_DIR, str(pid), "colon_self.png")
+                    os.makedirs(os.path.dirname(sp), exist_ok=True)
+                    import shutil
+                    shutil.copyfile(self_path, os.path.join(OUT_DIR, str(pid), "colon_self.nii.gz"))
+                    print(f"    self qc → {draw_qc(pid, row['mri_path_d'], os.path.join(OUT_DIR, str(pid), 'colon_self.nii.gz'), 'self')}")
+            # 冒烟同时写正式 manifest 行
+            source, ok, note = process_pid(pid, row, manifest)
+            print(f"  pid{pid} formal: {source} ok={ok}")
+
+    if args.all:
+        print("== 全量借壳 ==")
+        n_self = n_c = n_t = n_fb = n_no = 0
+        for _, r in master.iterrows():
+            pid = int(r["patient_id"])
+            if pid not in raw.index or pd.isna(raw.loc[pid, "mri_path_d"]):
+                continue
+            row = raw.loc[pid]
+            source, ok, note = process_pid(pid, row, manifest)
+            if source == "self": n_self += 1
+            elif source == "from_c": n_c += 1
+            elif source == "from_t": n_t += 1
+            elif source == "center_fallback": n_fb += 1
+            else: n_no += 1
+        print(f"self={n_self} from_c={n_c} from_t={n_t} center_fallback={n_fb} no_mri_d={n_no}")
+
+    man_path = "features/dwi_mask_remap_manifest.csv"
+    os.makedirs(os.path.dirname(man_path), exist_ok=True)
+    if manifest:
+        with open(man_path, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=["pid", "cohort_direct", "mask_source", "orig_voxels",
+                                              "final_voxels", "has_valid_mask"])
+            w.writeheader()
+            w.writerows(manifest)
+    print(f"manifest → {man_path} ({len(manifest)} rows)")
+
+
+if __name__ == "__main__":
+    main()
