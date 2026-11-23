@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 """DWI 物理坐标掩码借壳救回 (m04879 阶段1/2)。
-三级掩码优先级: self(原 mr_d 有效,体素>=50) → from_c(mr_c 重采样至 mri_d) → from_t(mr_t 重采样) → center_fallback。
-输出 data/masks_dwi_remapped/{pid}/colon.nii.gz (严禁覆盖原掩码) + features/dwi_mask_remap_manifest.csv。
+掩码优先级(方案C, m05840 2026-11-23): self(原 mr_d 有效,体素>=50) → from_t(mr_t 重采样) → center_fallback。
+**from_c 已禁用**: c/d 卷 z-origin 系统性差 -166.8mm 且 d 斜位采集 → c/d 不共享物理坐标系, from_c 借壳系统性错位。
+输出 data/masks_dwi_remapped/{pid}/colon.nii.gz (严禁覆盖原掩码) + features/dwi_mask_remap_manifest.csv + logs/dwi_mask_remap_summary.csv(含质心偏移/mask_ratio)。
 冒烟: --pids 51,88,46 强制借壳算 Dice/质心偏移并导叠图; --sample-fallback 3 从 direct 全零组随机抽 3 例导图。
 """
 import os, json, csv, random
@@ -108,23 +109,47 @@ def draw_qc(pid, mri_path, mask_path, tag, layer_fracs=(0.25, 0.5, 0.75)):
         return ",".join(out)
 
 
+def calc_qc(mask_path, mri_d_path):
+    """mask 质心 vs mri_d 几何中心三轴偏移(mm) + mask 区域 DWI 信号比(mask_ratio)。
+    返回 (dx, dy, dz, mask_ratio); 掩码缺失/异常返回 (None,)*4。"""
+    if not mask_path or not os.path.exists(mask_path):
+        return None, None, None, None
+    try:
+        vimg = sitk.ReadImage(mri_d_path)
+        mimg = sitk.ReadImage(mask_path)
+        if mimg.GetSize() != vimg.GetSize() or mimg.GetSpacing() != vimg.GetSpacing():
+            mimg = sitk.Resample(mimg, vimg.GetSize(), sitk.Transform(), sitk.sitkNearestNeighbor,
+                                 vimg.GetOrigin(), vimg.GetSpacing(), vimg.GetDirection(), 0, sitk.sitkUInt8)
+        c_mask = centroid_mm(mimg)
+        if c_mask is None:
+            return None, None, None, None
+        sz = vimg.GetSize()
+        c_vol = vimg.TransformIndexToPhysicalPoint((sz[0] // 2, sz[1] // 2, sz[2] // 2))
+        d = np.array(c_mask) - np.array(c_vol)
+        va = sitk.GetArrayFromImage(vimg).astype(np.float32)
+        ma = sitk.GetArrayFromImage(mimg)
+        nz = np.nonzero(ma)
+        nz_all = va[va > 0]
+        ratio = float(np.median(va[nz])) / float(np.median(nz_all)) if len(nz[0]) and len(nz_all) else None
+        return float(d[0]), float(d[1]), float(d[2]), ratio
+    except Exception:
+        return None, None, None, None
+
+
 def process_pid(pid, row, manifest, force_from=None, cohort_direct=-1):
-    """force_from: None=按优先级; 'c'/'t'=强制借壳(冒烟用)。返回 (source, ok, note)。
-    P2(1650 审计): from_c/from_t 重采样后 <MIN_VOX 的残片不落盘为有效掩码(删除文件)。"""
+    """force_from: None=按优先级; 't'=强制借壳(冒烟用)。返回 (source, ok, note)。
+    P2(1650 审计): from_t 重采样后 <MIN_VOX 的残片不落盘为有效掩码(删除文件)。
+    方案C(m05840): from_c 禁用, 仅 self → from_t → center_fallback。"""
     mri_d = row.get("mri_path_d")
     if not mri_d or not os.path.exists(mri_d):
         return None, False, "no_mri_d"
     out_path = os.path.join(OUT_DIR, str(pid), "colon.nii.gz")
     self_path = os.path.join(MR_D, str(pid), "colon.nii.gz")
-    c_path = os.path.join(MR_C, str(pid), "colon.nii.gz")
     t_path = os.path.join(MR_T, str(pid), "colon.nii.gz")
     self_ok = mask_ok(self_path)
-    c_ok = mask_ok(c_path)
     t_ok = mask_ok(t_path)
     source, src_path = None, None
-    if force_from == "c" and c_ok:
-        source, src_path = "from_c", c_path
-    elif force_from == "t" and t_ok:
+    if force_from == "t" and t_ok:
         source, src_path = "from_t", t_path
     elif self_ok:
         # 原样复制 (保持原掩码不变, 不重采样)
@@ -132,8 +157,6 @@ def process_pid(pid, row, manifest, force_from=None, cohort_direct=-1):
         import shutil
         shutil.copyfile(self_path, out_path)
         source = "self"
-    elif c_ok:
-        source, src_path = "from_c", c_path
     elif t_ok:
         source, src_path = "from_t", t_path
     else:
@@ -158,9 +181,12 @@ def process_pid(pid, row, manifest, force_from=None, cohort_direct=-1):
         # 兜底: 不写掩码文件, 特征提取时按盆腔几何中心固定物理框
         orig_vox = final_vox = 0
         has_valid = False
+    dx, dy, dz, ratio = calc_qc(out_path if has_valid else None, mri_d)
     manifest.append({"pid": int(pid), "cohort_direct": int(cohort_direct),
                      "mask_source": source, "orig_voxels": orig_vox, "final_voxels": final_vox,
-                     "has_valid_mask": int(has_valid)})
+                     "has_valid_mask": int(has_valid),
+                     "centroid_dx_mm": dx, "centroid_dy_mm": dy, "centroid_dz_mm": dz,
+                     "mask_ratio": ratio})
     return source, has_valid, "ok"
 
 
@@ -199,15 +225,14 @@ def main():
         for pid in sel:
             row = raw.loc[pid]
             source, ok, note = process_pid(pid, row, manifest, cohort_direct=cohort_map.get(pid, -1))
-            if source in ("from_c", "from_t"):
-                src = os.path.join(MR_C if source == "from_c" else MR_T, str(pid), "colon.nii.gz")
+            if source == "from_t":
                 outp = os.path.join(OUT_DIR, str(pid), "colon.nii.gz")
                 print(f"  pid{pid}: {source} ok={ok} → {draw_qc(pid, row['mri_path_d'], outp, source)}")
             else:
                 print(f"  pid{pid}: {source} (skip qc)")
 
     if force_pids:
-        print("== 强制借壳冒烟 (pid 51/88/46) ==")
+        print("== 强制借壳冒烟 (from_t 仅) ==")
         for pid in force_pids:
             if pid not in raw.index:
                 print(f"  pid{pid} not in raw, skip")
@@ -215,12 +240,11 @@ def main():
             row = raw.loc[pid]
             self_path = os.path.join(MR_D, str(pid), "colon.nii.gz")
             self_img = sitk.ReadImage(self_path) if os.path.exists(self_path) else None
-            for src in ("c", "t"):
-                src_path = os.path.join(MR_C if src == "c" else MR_T, str(pid), "colon.nii.gz")
-                if not os.path.exists(src_path):
-                    print(f"  pid{pid} from_{src}: src mask missing")
-                    continue
-                out_path = os.path.join(OUT_DIR, str(pid), f"colon_from_{src}.nii.gz")
+            src_path = os.path.join(MR_T, str(pid), "colon.nii.gz")
+            if not os.path.exists(src_path):
+                print(f"  pid{pid} from_t: src mask missing")
+            else:
+                out_path = os.path.join(OUT_DIR, str(pid), f"colon_from_t.nii.gz")
                 rim = remap_mask(src_path, row["mri_path_d"], out_path)
                 ra = sitk.GetArrayFromImage(rim)
                 if self_img is not None:
@@ -234,10 +258,9 @@ def main():
                 if c_self is not None and c_map is not None:
                     off = float(np.linalg.norm(c_map - c_self))
                 off_str = "n/a" if off is None else f"{off:.2f}mm"
-                print(f"  pid{pid} from_{src}: dice={dice if dice is None else round(dice,3)} "
+                print(f"  pid{pid} from_t: dice={dice if dice is None else round(dice,3)} "
                       f"centroid_off={off_str} vox={int(ra.sum())}")
-                tag = f"from_{src}"
-                print(f"    → {draw_qc(pid, row['mri_path_d'], out_path, tag)}")
+                print(f"    → {draw_qc(pid, row['mri_path_d'], out_path, 'from_t')}")
                 # 也导出 self 对照图
                 if self_img is not None:
                     sp = os.path.join(OUT_DIR, str(pid), "colon_self.png")
@@ -250,11 +273,27 @@ def main():
             print(f"  pid{pid} formal: {source} ok={ok}")
 
     if args.all:
-        print("== 全量借壳 ==")
-        n_self = n_c = n_t = n_fb = n_no = 0
-        # P2(1650 审计): 兜底核实 — 按 direct_all(280) 与 direct_tcd(162) 分层统计
-        n_self_da = n_c_da = n_t_da = n_fb_da = 0
-        n_self_tcd = n_c_tcd = n_t_tcd = n_fb_tcd = 0
+        print("== 全量借壳 (方案C: self → from_t, from_c 禁用) ==")
+        # 方案C(m05840): 清理旧 from_c 写入的掩码, 避免残留
+        old_man = "features/dwi_mask_remap_manifest.csv"
+        if os.path.exists(old_man):
+            om = pd.read_csv(old_man)
+            if "mask_source" in om.columns:
+                fc = om[om["mask_source"] == "from_c"]["pid"].astype(int).tolist()
+                removed = 0
+                for p in fc:
+                    fp = os.path.join(OUT_DIR, str(p), "colon.nii.gz")
+                    if os.path.exists(fp):
+                        try:
+                            os.remove(fp)
+                            removed += 1
+                        except OSError:
+                            pass
+                print(f"cleaned {removed}/{len(fc)} old from_c masks")
+        n_self = n_t = n_fb = n_no = 0
+        # P2(1650 审计): 按 direct_all(280) 与 direct_tcd(162) 分层统计
+        n_self_da = n_t_da = n_fb_da = 0
+        n_self_tcd = n_t_tcd = n_fb_tcd = 0
         for _, r in master.iterrows():
             pid = int(r["patient_id"])
             if pid not in raw.index or pd.isna(raw.loc[pid, "mri_path_d"]):
@@ -265,33 +304,52 @@ def main():
                           for c in ("mri_path_t", "mri_path_c", "mri_path_d"))
             source, ok, note = process_pid(pid, row, manifest, cohort_direct=int(r["cohort_direct"]))
             if source == "self": n_self += 1
-            elif source == "from_c": n_c += 1
             elif source == "from_t": n_t += 1
             elif source == "center_fallback": n_fb += 1
             else: n_no += 1
             if is_direct:
                 if source == "self": n_self_da += 1
-                elif source == "from_c": n_c_da += 1
                 elif source == "from_t": n_t_da += 1
                 elif source == "center_fallback": n_fb_da += 1
             if is_direct and has_tcd:
                 if source == "self": n_self_tcd += 1
-                elif source == "from_c": n_c_tcd += 1
                 elif source == "from_t": n_t_tcd += 1
                 elif source == "center_fallback": n_fb_tcd += 1
-        print(f"all: self={n_self} from_c={n_c} from_t={n_t} center_fallback={n_fb} no_mri_d={n_no}")
-        print(f"direct_all(280): self={n_self_da} from_c={n_c_da} from_t={n_t_da} center_fallback={n_fb_da}")
-        print(f"direct_tcd(162): self={n_self_tcd} from_c={n_c_tcd} from_t={n_t_tcd} center_fallback={n_fb_tcd}")
+        print(f"all: self={n_self} from_t={n_t} center_fallback={n_fb} no_mri_d={n_no}")
+        print(f"direct_all(280): self={n_self_da} from_t={n_t_da} center_fallback={n_fb_da}")
+        print(f"direct_tcd(162): self={n_self_tcd} from_t={n_t_tcd} center_fallback={n_fb_tcd}")
 
     man_path = "features/dwi_mask_remap_manifest.csv"
     os.makedirs(os.path.dirname(man_path), exist_ok=True)
     if manifest:
         with open(man_path, "w", newline="", encoding="utf-8") as f:
             w = csv.DictWriter(f, fieldnames=["pid", "cohort_direct", "mask_source", "orig_voxels",
-                                              "final_voxels", "has_valid_mask"])
+                                              "final_voxels", "has_valid_mask",
+                                              "centroid_dx_mm", "centroid_dy_mm", "centroid_dz_mm",
+                                              "mask_ratio"])
             w.writeheader()
             w.writerows(manifest)
-    print(f"manifest → {man_path} ({len(manifest)} rows)")
+        # 方案C(m05840): 额外导出精简 summary (pid, cohort_direct, mask_source, has_valid_mask, n_vox, centroid_shift_mm, mask_ratio)
+        import numpy as _np
+        sum_rows = []
+        for r in manifest:
+            dx, dy, dz = r.get("centroid_dx_mm"), r.get("centroid_dy_mm"), r.get("centroid_dz_mm")
+            shift = None
+            if dx is not None and dy is not None and dz is not None:
+                shift = round(float(_np.linalg.norm([dx, dy, dz])), 2)
+            sum_rows.append({"pid": r["pid"], "cohort_direct": r["cohort_direct"],
+                             "mask_source": r["mask_source"], "has_valid_mask": r["has_valid_mask"],
+                             "n_vox": r["final_voxels"], "centroid_shift_mm": shift,
+                             "mask_ratio": r.get("mask_ratio")})
+        sum_path = "logs/dwi_mask_remap_summary.csv"
+        os.makedirs(os.path.dirname(sum_path), exist_ok=True)
+        with open(sum_path, "w", newline="", encoding="utf-8") as f:
+            w = csv.DictWriter(f, fieldnames=["pid", "cohort_direct", "mask_source", "has_valid_mask",
+                                              "n_vox", "centroid_shift_mm", "mask_ratio"])
+            w.writeheader()
+            w.writerows(sum_rows)
+        print(f"manifest → {man_path} ({len(manifest)} rows)")
+        print(f"summary → {sum_path} ({len(sum_rows)} rows)")
 
 
 if __name__ == "__main__":

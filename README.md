@@ -2107,3 +2107,25 @@ logits = model(ct, mri, clinical)  # [B, 4]
 - mask_source 验证（2307 npz = 769 组合×3骨干）: t 全 self（840）/ c 全 self（681）/ d self 417 + remapped 369（25 例差异 = P2 残片删除，from 借壳 148→123 落盘，自洽）。
 - 勘误样本覆盖: pid372/pid402 有 t npz；pid395 无任何 MRI 模态（mri_path_t/c/d 全 nan，非漏提取）。
 - 产物: features/slice_feats_v2/{convnext_tiny,dinov2,biomedclip}/{t,c,d}/{pid}.npz（每 npz: feats [L,768] + mask_source + n_layers）
+
+---
+
+## 方案 C: 禁用 from_c 借壳, 改走 self → from_t (2026-11-23, m05840)
+
+### 起因 (同步前只读核查, m05774)
+- 全量借壳后实测 mask 质心 vs DWI 卷中心偏移: self (n=139) 中位 35.9mm, **from_c (n=97) 中位 94.2mm (dy +50.3 / dz -59.9)**; from_t (n=26) 37.4mm。
+- 根因: mri_c 与 mri_d 卷 z-origin 系统性差 **-166.8mm** (中位, range -25~-211) 且 d 卷斜位采集 → c/d 不共享物理坐标系, Identity 物理坐标重采样把 c 掩码放到 d 卷错误位置。
+- DWI 信号量化 (mask_ratio = mask 区 DWI 中位 / 卷非零中位): self 4.47 / from_t 3.04 / **from_c 1.42**; pid89/226 mask_ratio=0.0 (mask 落 z=0 层卷边界外)。
+- 补充必查 (m05893): pid226 原生 c 掩码 7 个 3D 连通域, 其中 cc2(+71.6mm) 与 cc5(-74.0mm) 左右对称游离块为 TotalSegmentator 原生假阳性 (非重采样引入) — 游离块拉偏质心至 94mm 是 mask_ratio=0 的直接原因; 掩码标签均 {0,1} 无多标签。
+
+### 执行 (三步)
+1. **c 序列 K 中位 61 层核查** (step1_check_c_slices.py): c 卷为轴位横断面 (层厚 2mm 典型 / 0.75mm 薄层), masks_totalseg_mr_c 是全结肠分割 (非肿瘤掩码), 结肠沿 z 走向物理跨度天然 118-152mm → K≈物理跨度÷层厚, 无异常; extract 沿 array 轴0 (=z) 遍历, 每层以该层 mask 质心裁 120mm 方框。
+2. **map_mask_to_dwi.py 禁用 from_c**: 仅 self → from_t → center_fallback; 清理 97 个旧 from_c 掩码; 全量重跑后 all: self=139 / from_t=144 / fb=4; direct_all(280) self104 / from_t109 / fb3; direct_tcd(162) self75 / from_t86 / fb1。
+   - from_t 全量质检 (144 例): 质心偏移中位 39.3mm (dx -0.7 / dy +18.1 / dz +12.6), mask_ratio 中位 2.96, <0.8 比例 0%, 0 信号 0 例 → 扩大样本后仍高对齐。
+   - 清单: logs/dwi_mask_remap_summary.csv (pid, cohort_direct, mask_source, has_valid_mask, n_vox, centroid_shift_mm, mask_ratio)。
+3. **d 序列仅重提**: 删全部 786 个 d npz (3 骨干) 后 extract --all 重跑, 228s (0.28s/case), peak 0.59GB, 无 NaN。
+   - **覆盖率代价: from_t 有效仅 62/144 (43%)** — mr_t 矢状位掩码重采样到轴位 d 卷残留不足, 82 例残片被 P2 删除 → 全量 d 262→201 例, direct_all 199→154, direct_tcd 148→105。
+
+### 结论
+- from_t 借壳对齐质量好但覆盖低 (43%), from_c 借壳覆盖高但系统性错位 (不可用)。"宁缺毋滥": d 序列现仅 201 例有效 (self 139 + from_t 62)。
+- 待确认: 覆盖损失是否可接受 → 推 Git + U 盘同步; c 掩码清洗 (保留主段/仅最大连通域) 待决策。
