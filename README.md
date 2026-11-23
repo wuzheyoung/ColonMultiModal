@@ -2085,3 +2085,25 @@ logits = model(ct, mri, clinical)  # [B, 4]
 - 清除 3 例错位 tgr 异常值 (14.92 / '5-38' / 41) → direct_tcd 由 160 修正为 162。
 - 新建 data/direct_cohort_ids.csv (仅 pid/is_tgr 两列): direct_all=280 / ncrt=75 / direct_td=214 / direct_tcd=162。
 - 变更明细(无隐私): logs/data_fix_diff.json
+
+---
+
+## DWI 掩码借壳与逐层特征提取（2026-11-23，1650 端协作审计）
+
+### 背景
+- 目的: mri_d (DWI 真轴位) 原生结肠掩码 138/290 全零，需借壳 (from_c / from_t 重映射到 DWI 空间) 后提取逐层特征（convnext_tiny / dinov2 / biomedclip 三骨干）供 1650 端跨模态训练。
+- 1650 端只读审计脚本后回传五点修复要求（m05504），本机全部落实。
+
+### 五点修复
+- **P0 序列隔离**: extract_slice_feats_v2.py 的 load_mask 按序列隔离——仅 seq=='d' 可读重映射目录（优先原生 mr_d≥50，其次 from_c/from_t）；t/c 严格只读各自原生掩码。修复前 t/c 借壳优先会读 DWI-FOV 受限掩码覆盖原生（覆盖率损失 43-68%）。
+- **P1 口径**: map_mask_to_dwi.py 改读 data/direct_cohort_ids.csv（列=pid,is_tgr）替代旧 tgr xlsx，生成 cohort_direct 分层统计。
+- **P2 阈值统一**: MIN_VOX=50 两端对齐——from_c/from_t 重采样后 <50 体素即删除落盘文件（残片不留有效掩码）。
+- **P2 兜底核实**: 全量借壳统计（287 例有 mri_d）all: self=139 / from_c=119 / from_t=29 / center_fallback=0；direct_all(280) 216 例 self104/c89/t23；direct_tcd(162) self75/c87/t0 → center_fallback=0，无需补 120mm 中心框，标注丢弃。
+- **P3 防溢出**: 写 npz 前 np.isfinite 校验（不落盘标 :nan）；新增 --force 覆写；修复 force 重跑时 nomask/nan 不删旧 npz 的残留伪影 bug（pid46 t 残留修复前 remapped 12sl）。
+
+### 全量结果
+- 借壳产物: features/dwi_mask_remap_manifest.csv（287 行）+ summary.csv（三 scope 分层）；推 Git fbb770e（脚本）+ e5503ff（manifest/summary）。
+- 全量提取（extract_slice_feats_v2.py，--all）: done=810（296t+227c+287d 组合）skipped=0，1054s（1.3s/case），peak_cuda=0.59GB，无 NaN/Inf。
+- mask_source 验证（2307 npz = 769 组合×3骨干）: t 全 self（840）/ c 全 self（681）/ d self 417 + remapped 369（25 例差异 = P2 残片删除，from 借壳 148→123 落盘，自洽）。
+- 勘误样本覆盖: pid372/pid402 有 t npz；pid395 无任何 MRI 模态（mri_path_t/c/d 全 nan，非漏提取）。
+- 产物: features/slice_feats_v2/{convnext_tiny,dinov2,biomedclip}/{t,c,d}/{pid}.npz（每 npz: feats [L,768] + mask_source + n_layers）
