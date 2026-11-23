@@ -1,0 +1,5 @@
+scope,self,from_c,from_t,center_fallback,total
+all,139,119,29,0,287
+direct_all,104,89,23,0,216
+direct_tcd,75,87,0,0,162
+#center_fallback=0 -> discard, no 120mm center-crop needed
