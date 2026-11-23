@@ -12,40 +12,13 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 MASTER = "data/master_5fold_356.csv"
 RAW = "data/hos_pairs_raw.csv"
-X929 = "data/Hos/结直肠癌多模态患者数据收集表9.29.xlsx"
-XFULL = "data/Hos/结直肠癌多模态患者数据收集表_完整版.xlsx"
+COHORT_CSV = "data/direct_cohort_ids.csv"  # P1(1650 审计): 勘误后锁定名单, 弃用 xlsx 逐例解析
 MR_D = "data/masks_totalseg_mr_d"
 MR_C = "data/masks_totalseg_mr_c"
 MR_T = "data/masks_totalseg_mr_t"
 OUT_DIR = "data/masks_dwi_remapped"
 QC_DIR = "outputs/dwi_remap_qc"
 MIN_VOX = 50
-
-
-def load_tgr_map():
-    import pandas as pd
-    m = {}
-    try:
-        d929 = pd.read_excel(X929)
-        for _, r in d929.iterrows():
-            if pd.notna(r.get("病理TGR")):
-                try:
-                    m[int(r["编号"]) + 200] = float(r["病理TGR"])
-                except (ValueError, TypeError):
-                    pass
-    except Exception as e:
-        print("9.29 read warn:", e)
-    try:
-        dfull = pd.read_excel(XFULL)
-        for i, r in dfull.iterrows():
-            if pd.notna(r.get("病理TGR")):
-                try:
-                    m[i + 1] = float(r["病理TGR"])
-                except (ValueError, TypeError):
-                    pass
-    except Exception as e:
-        print("full read warn:", e)
-    return m
 
 
 def mask_ok(mask_path, min_vox=MIN_VOX):
@@ -135,8 +108,9 @@ def draw_qc(pid, mri_path, mask_path, tag, layer_fracs=(0.25, 0.5, 0.75)):
         return ",".join(out)
 
 
-def process_pid(pid, row, manifest, force_from=None):
-    """force_from: None=按优先级; 'c'/'t'=强制借壳(冒烟用)。返回 (source, ok, note)。"""
+def process_pid(pid, row, manifest, force_from=None, cohort_direct=-1):
+    """force_from: None=按优先级; 'c'/'t'=强制借壳(冒烟用)。返回 (source, ok, note)。
+    P2(1650 审计): from_c/from_t 重采样后 <MIN_VOX 的残片不落盘为有效掩码(删除文件)。"""
     mri_d = row.get("mri_path_d")
     if not mri_d or not os.path.exists(mri_d):
         return None, False, "no_mri_d"
@@ -171,6 +145,12 @@ def process_pid(pid, row, manifest, force_from=None):
         remap_mask(src_path, mri_d, out_path)
         final_vox = int(sitk.GetArrayFromImage(sitk.ReadImage(out_path)).sum())
         has_valid = final_vox >= MIN_VOX
+        if not has_valid:
+            # P2: 残片(<50 体素)不留有效掩码, 删除落盘, extract 端将视为 missing
+            try:
+                os.remove(out_path)
+            except OSError:
+                pass
     elif source == "self":
         orig_vox = final_vox = int(sitk.GetArrayFromImage(sitk.ReadImage(out_path)).sum())
         has_valid = final_vox >= MIN_VOX
@@ -178,7 +158,7 @@ def process_pid(pid, row, manifest, force_from=None):
         # 兜底: 不写掩码文件, 特征提取时按盆腔几何中心固定物理框
         orig_vox = final_vox = 0
         has_valid = False
-    manifest.append({"pid": int(pid), "cohort_direct": int(row.get("cohort_direct", -1)),
+    manifest.append({"pid": int(pid), "cohort_direct": int(cohort_direct),
                      "mask_source": source, "orig_voxels": orig_vox, "final_voxels": final_vox,
                      "has_valid_mask": int(has_valid)})
     return source, has_valid, "ok"
@@ -193,8 +173,11 @@ def main():
     args = ap.parse_args()
     master = pd.read_csv(MASTER)
     raw = pd.read_csv(RAW).set_index("patient_id")
-    tgr = load_tgr_map()
-    master["cohort_direct"] = (~master["patient_id"].isin(tgr)).astype(int)
+    # P1(1650 审计): 弃用 xlsx 逐例解析 load_tgr_map, 改读勘误后锁定名单 direct_cohort_ids.csv (列: pid,is_tgr)
+    cohort = pd.read_csv(COHORT_CSV)
+    _cm = dict(zip(cohort["pid"].astype(int), cohort["is_tgr"].astype(int)))
+    cohort_map = {p: (1 - int(t)) for p, t in _cm.items()}  # 1=direct, 0=ncrt
+    master["cohort_direct"] = master["patient_id"].astype(int).map(lambda p: cohort_map.get(p, 0))
     os.makedirs(OUT_DIR, exist_ok=True)
     manifest = []
     force_pids = [int(x) for x in args.pids.split(",")] if args.pids else []
@@ -215,7 +198,7 @@ def main():
         print(f"fallback candidates={len(cand)} sampled={sel}")
         for pid in sel:
             row = raw.loc[pid]
-            source, ok, note = process_pid(pid, row, manifest)
+            source, ok, note = process_pid(pid, row, manifest, cohort_direct=cohort_map.get(pid, -1))
             if source in ("from_c", "from_t"):
                 src = os.path.join(MR_C if source == "from_c" else MR_T, str(pid), "colon.nii.gz")
                 outp = os.path.join(OUT_DIR, str(pid), "colon.nii.gz")
@@ -263,24 +246,42 @@ def main():
                     shutil.copyfile(self_path, os.path.join(OUT_DIR, str(pid), "colon_self.nii.gz"))
                     print(f"    self qc → {draw_qc(pid, row['mri_path_d'], os.path.join(OUT_DIR, str(pid), 'colon_self.nii.gz'), 'self')}")
             # 冒烟同时写正式 manifest 行
-            source, ok, note = process_pid(pid, row, manifest)
+            source, ok, note = process_pid(pid, row, manifest, cohort_direct=cohort_map.get(pid, -1))
             print(f"  pid{pid} formal: {source} ok={ok}")
 
     if args.all:
         print("== 全量借壳 ==")
         n_self = n_c = n_t = n_fb = n_no = 0
+        # P2(1650 审计): 兜底核实 — 按 direct_all(280) 与 direct_tcd(162) 分层统计
+        n_self_da = n_c_da = n_t_da = n_fb_da = 0
+        n_self_tcd = n_c_tcd = n_t_tcd = n_fb_tcd = 0
         for _, r in master.iterrows():
             pid = int(r["patient_id"])
             if pid not in raw.index or pd.isna(raw.loc[pid, "mri_path_d"]):
                 continue
             row = raw.loc[pid]
-            source, ok, note = process_pid(pid, row, manifest)
+            is_direct = bool(r["cohort_direct"])
+            has_tcd = all(isinstance(raw.loc[pid, c], str) and os.path.exists(raw.loc[pid, c])
+                          for c in ("mri_path_t", "mri_path_c", "mri_path_d"))
+            source, ok, note = process_pid(pid, row, manifest, cohort_direct=int(r["cohort_direct"]))
             if source == "self": n_self += 1
             elif source == "from_c": n_c += 1
             elif source == "from_t": n_t += 1
             elif source == "center_fallback": n_fb += 1
             else: n_no += 1
-        print(f"self={n_self} from_c={n_c} from_t={n_t} center_fallback={n_fb} no_mri_d={n_no}")
+            if is_direct:
+                if source == "self": n_self_da += 1
+                elif source == "from_c": n_c_da += 1
+                elif source == "from_t": n_t_da += 1
+                elif source == "center_fallback": n_fb_da += 1
+            if is_direct and has_tcd:
+                if source == "self": n_self_tcd += 1
+                elif source == "from_c": n_c_tcd += 1
+                elif source == "from_t": n_t_tcd += 1
+                elif source == "center_fallback": n_fb_tcd += 1
+        print(f"all: self={n_self} from_c={n_c} from_t={n_t} center_fallback={n_fb} no_mri_d={n_no}")
+        print(f"direct_all(280): self={n_self_da} from_c={n_c_da} from_t={n_t_da} center_fallback={n_fb_da}")
+        print(f"direct_tcd(162): self={n_self_tcd} from_c={n_c_tcd} from_t={n_t_tcd} center_fallback={n_fb_tcd}")
 
     man_path = "features/dwi_mask_remap_manifest.csv"
     os.makedirs(os.path.dirname(man_path), exist_ok=True)

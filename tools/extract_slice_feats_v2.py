@@ -24,6 +24,7 @@ MASK_BASE = {s: f"data/masks_totalseg_mr_{s}" for s in ("t", "c", "d")}
 SIZE_MM = 120.0
 IMG_SIZE = 224
 BATCH = 16
+MIN_VOX = 50  # P2(1650 审计): 与 map_mask_to_dwi 阈值统一, 残片(<50)不入特征
 
 SEQ_COL = {"t": "mri_path_t", "c": "mri_path_c", "d": "mri_path_d"}
 
@@ -55,20 +56,35 @@ def load_backbone(name, device):
 
 
 def load_mask(pid, seq):
-    """优先级: 借壳掩码 → 原掩码。返回 (mask_arr[z,y,x], source)。"""
+    """按序列隔离 (P0, 1650 审计): 仅 seq=='d' 读 DWI 重映射目录(优先有效原生 mr_d, 其次借壳);
+    t/c 严格只读各自原生掩码, 严禁读 DWI 重映射掩码(其 FOV 受限会覆盖原生掩码)。
+    MIN_VOX 阈值统一 (P2): <50 体素残片视为 missing。返回 (mask_arr[z,y,x], source)。"""
+    orig_p = os.path.join(MASK_BASE[seq], str(pid), "colon.nii.gz")
+    if seq in ("t", "c"):
+        if os.path.exists(orig_p):
+            try:
+                a = sitk.GetArrayFromImage(sitk.ReadImage(orig_p))
+                if int(a.sum()) >= MIN_VOX:
+                    return a, "self"
+            except Exception:
+                pass
+        return None, "missing"
+    # seq == 'd': 优先有效原生 mr_d, 其次 DWI 重映射借壳 (from_c/from_t 已重采样至 mri_d 空间)
+    if os.path.exists(orig_p):
+        try:
+            a = sitk.GetArrayFromImage(sitk.ReadImage(orig_p))
+            if int(a.sum()) >= MIN_VOX:
+                return a, "self"
+        except Exception:
+            pass
     remap_p = os.path.join(MASK_REMAP, str(pid), "colon.nii.gz")
     if os.path.exists(remap_p):
         try:
             a = sitk.GetArrayFromImage(sitk.ReadImage(remap_p))
-            if int(a.sum()) > 0:
+            if int(a.sum()) >= MIN_VOX:
                 return a, "remapped"
         except Exception:
             pass
-    orig_p = os.path.join(MASK_BASE[seq], str(pid), "colon.nii.gz")
-    if os.path.exists(orig_p):
-        a = sitk.GetArrayFromImage(sitk.ReadImage(orig_p))
-        if int(a.sum()) > 0:
-            return a, "self"
     return None, "missing"
 
 
@@ -134,19 +150,27 @@ def extract_slices(pid, seq, mri_path, model, mean, std, device):
     return feats_all[:cnt], idx_all[:cnt], relz_all[:cnt], area_all[:cnt], source
 
 
-def process_pid(pid, seq, mri_path, backbones, device):
-    """三骨干各存一个 npz (同一 pid/seq)。返回 (ok, info)。"""
+def process_pid(pid, seq, mri_path, backbones, device, force=False):
+    """三骨干各存一个 npz (同一 pid/seq)。返回 (ok, info)。
+    P3(1650 审计): 写盘前 isfinite 校验, fp16 溢出(NaN/Inf)不落盘并标记, 单例异常不影响全量。"""
     infos = []
     for name, (model, mean, std) in backbones.items():
         out_p = os.path.join(OUT_ROOT, name, seq, f"{pid}.npz")
-        if os.path.exists(out_p) and os.path.getsize(out_p) > 100:
+        if not force and os.path.exists(out_p) and os.path.getsize(out_p) > 100:
             infos.append(f"{name}:skip")
             continue
         r = extract_slices(pid, seq, mri_path, model, mean, std, device)
         if r is None:
+            if force and os.path.exists(out_p):
+                os.remove(out_p)  # force 重跑时清除旧伪影 (如修复前 t/c 误读 remapped 的残留)
             infos.append(f"{name}:nomask")
             continue
         feats, idx, relz, area, source = r
+        if not np.isfinite(feats).all():
+            if force and os.path.exists(out_p):
+                os.remove(out_p)
+            infos.append(f"{name}:nan")
+            continue
         os.makedirs(os.path.dirname(out_p), exist_ok=True)
         tmp = os.path.join(os.path.dirname(out_p), f"{pid}_tmp.npz")
         np.savez_compressed(tmp, feats=feats, slice_idx=idx, rel_z=relz,
@@ -160,6 +184,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--smoke-pids", help="逗号分隔 pid (端到端冒烟)")
     ap.add_argument("--all", action="store_true", help="全量 (阶段2)")
+    ap.add_argument("--force", action="store_true", help="覆盖已存在 npz (审计修复后重跑冒烟用)")
     ap.add_argument("--limit", type=int, default=0, help="调试: 最多处理 pid 数")
     args = ap.parse_args()
     import pandas as pd
@@ -190,7 +215,7 @@ def main():
             mp = raw.loc[pid, col]
             if not (isinstance(mp, str) and os.path.exists(mp)):
                 continue
-            infos = process_pid(pid, seq, mp, backbones, device)
+            infos = process_pid(pid, seq, mp, backbones, device, force=args.force)
             if infos:
                 done += 1
             if device.type == "cuda":
