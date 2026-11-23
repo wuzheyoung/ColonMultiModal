@@ -2069,4 +2069,19 @@ logits = model(ct, mri, clinical)  # [B, 4]
   | s4 clin+三平面 | 0.6254 (0.619±0.032) | 0.6736 (0.677±0.046) | **0.6896 (0.698±0.086)** |
   - 单路基准 (direct_tcd): d_conv 0.6577 / t_conv 0.6009 / c_conv 0.5817 / t_rad 0.5699 / c_rad 0.5495 / clin_clean 0.6044
   - 判定: 融合有增益但有限 — direct_td 上 clin+d_conv 0.6795 最优, direct_tcd 上四路 0.6896 最优; 样本交集越小(n 277→212→160) AUC 越高(队列更纯), 临床+影像双路优于纯影像
-- 产物: logs/audit_fusion_debug.json (全明细)
+- 产物: logs/audit_fusion_debug.json (全明细)### 第三阶段补充4: DWI 物理坐标掩码借壳 + 三骨干冻结逐层特征提取 (m04879 指令, 阶段1 冒烟完成)
+- **目标**: 救回 mr_d 掩码全零(138例)病例的 DWI 特征; 三骨干(convnext_tiny/dinov2/biomedclip)冻结逐层特征离线提取, 为跨平面 T 分期下游做准备
+- **阶段1 已核验** (产物 tools/verify_backbones.py + tools/map_mask_to_dwi.py + tools/extract_slice_feats_v2.py):
+  - 三骨干离线加载: convnext_tiny 768d/27.8M/ImageNet归一化; dinov2 (vit_base_patch14_reg4_dinov2.lvd142m + safetensors 175键 strict) 768d/86.6M; biomedclip (visual.trunk → vit_base_patch16_224, missing=0/unexpected=0, head proj (512,768) 已存 features/slice_feats_v2/biomedclip_head_proj.npy) 768d/85.8M/CLIP归一化
+  - 借壳冒烟: pid51/88 原 mr_d 全零 → from_c 映射 6998/11589 体素; pid46 from_c Dice 0.144/质心偏移 26.2mm; direct 全零组(candidates=112)抽样 67/212/162 全 from_c 成功; 质检图 outputs/dwi_remap_qc/qc_p{pid}_{from_c,from_t,self}.png
+  - 3例端到端冒烟 (51/88/46 × t/c/d × 三骨干): 27 个 npz 全部落盘 features/slice_feats_v2/{backbone}/{seq}/{pid}.npz, feats float16 [K,768] 无 NaN; 峰值显存 0.59GB; 单例 1.07s (含三骨干)
+- **切片基线**: 沿用 route2 (120mm 物理方框 / mask 质心 / zscore / PIL BILINEAR 224 / 单层 3 通道), 掩码优先 data/masks_dwi_remapped (借壳) 回退原掩码
+- **阶段2** (待用户"继续"): 全量 356 例借壳 + 三骨干×三序列逐层特征提取, 原子写 npz, 07:30 硬截断
+## 数据勘误 (2026-11-23)
+- 依据 m05147: 用户手动修正 data/Hos 3 个 excel 后, 阶段1 只读 diff + 阶段2 安全落盘。
+- 病理 T/N 与 master 100% 一致 (0 变更), master_5fold_356.csv 未改动 (5折/标签零变动)。
+- 临床 7 维更新 7 处: pid372 ca199 8.56/cea 1.25, pid395 prealbumin 241.0/hb 139.0, pid402 albumin 41.0/prealbumin 182.0/hb 148.0 (hos_pairs_raw.csv)。
+  - 防污染校验: 10 处 ca199 '<2' 保持解析 2.0, 87 处 age 'XX岁' 保持数值, 无 NaN 误写。
+- 清除 3 例错位 tgr 异常值 (14.92 / '5-38' / 41) → direct_tcd 由 160 修正为 162。
+- 新建 data/direct_cohort_ids.csv (仅 pid/is_tgr 两列): direct_all=280 / ncrt=75 / direct_td=214 / direct_tcd=162。
+- 变更明细(无隐私): logs/data_fix_diff.json
