@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "cohort_source": "data/direct_cohort_ids.csv",
+    "direct_all": 280,
+    "ncrt": 75,
+    "direct_td": 214,
+    "direct_tcd": 162,
+    "master_rows": 355,
+    "fold_counts": {
+      "0": 71,
+      "1": 71,
+      "2": 71,
+      "3": 71,
+      "4": 71
+    },
+    "clin_source": "data/hos_pairs_raw.csv (372/395/402 erratum applied, read directly)",
+    "feature_root": "features/logs",
+    "method": "audit-slice: each single trained on ALL direct patients with that feature (5-fold, fold-internal median impute for clin_clean / nan_to_num for images), evaluated on the exact direct_tcd n=162 intersection; fusions f1=fold-internal train-logit zscore-calibrated mean, f2=rank mean (audit verbatim)."
+  },
+  "eval_set": {
+    "n": 162,
+    "T+": 110,
+    "fold_counts": {
+      "0": 33,
+      "1": 30,
+      "2": 34,
+      "3": 32,
+      "4": 33
+    }
+  },
+  "task1_clin": {
+    "direct_n": 280,
+    "nan_to_num": {
+      "pooled": 0.6775,
+      "fold_mean": 0.6788,
+      "fold_sd": 0.0289
+    },
+    "imputer_median": {
+      "pooled": 0.6218,
+      "fold_mean": 0.6278,
+      "fold_sd": 0.0568
+    }
+  },
+  "singles": {
+    "clin_clean": {
+      "pooled": 0.6469,
+      "fold_mean": 0.6686,
+      "fold_sd": 0.132,
+      "n_train": 280,
+      "n_eval": 162,
+      "T+_eval": 110
+    },
+    "d_conv": {
+      "pooled": 0.6935,
+      "fold_mean": 0.7488,
+      "fold_sd": 0.0433,
+      "n_train": 111,
+      "n_eval": 81,
+      "T+_eval": 51
+    },
+    "t_conv": {
+      "pooled": 0.6309,
+      "fold_mean": 0.6495,
+      "fold_sd": 0.0831,
+      "n_train": 210,
+      "n_eval": 155,
+      "T+_eval": 105
+    },
+    "c_conv": {
+      "pooled": 0.5799,
+      "fold_mean": 0.5833,
+      "fold_sd": 0.0507,
+      "n_train": 170,
+      "n_eval": 162,
+      "T+_eval": 110
+    },
+    "t_rad": {
+      "pooled": 0.5701,
+      "fold_mean": 0.605,
+      "fold_sd": 0.1211,
+      "n_train": 210,
+      "n_eval": 155,
+      "T+_eval": 105
+    },
+    "c_rad": {
+      "pooled": 0.5614,
+      "fold_mean": 0.5669,
+      "fold_sd": 0.0829,
+      "n_train": 170,
+      "n_eval": 162,
+      "T+_eval": 110
+    }
+  },
+  "fusions": {
+    "s1_singles": {
+      "f1": {
+        "pooled": 0.6582,
+        "fold_mean": 0.6614,
+        "fold_sd": 0.1015,
+        "n_valid": 162
+      },
+      "f2": {
+        "pooled": 0.6878,
+        "fold_mean": 0.6887,
+        "fold_sd": 0.0851,
+        "n_valid": 162
+      }
+    },
+    "s2_clin_dconv": {
+      "f1": {
+        "pooled": 0.6881,
+        "fold_mean": 0.6853,
+        "fold_sd": 0.1112,
+        "n_valid": 162
+      },
+      "f2": {
+        "pooled": 0.6675,
+        "fold_mean": 0.6814,
+        "fold_sd": 0.1121,
+        "n_valid": 162
+      }
+    },
+    "s3_img_3plane": {
+      "f1": {
+        "pooled": 0.6577,
+        "fold_mean": 0.6628,
+        "fold_sd": 0.0708,
+        "n_valid": 162
+      },
+      "f2": {
+        "pooled": 0.6476,
+        "fold_mean": 0.6639,
+        "fold_sd": 0.0828,
+        "n_valid": 162
+      }
+    },
+    "s4_clin_3plane": {
+      "f1": {
+        "pooled": 0.7016,
+        "fold_mean": 0.703,
+        "fold_sd": 0.097,
+        "n_valid": 162
+      },
+      "f2": {
+        "pooled": 0.678,
+        "fold_mean": 0.6888,
+        "fold_sd": 0.092,
+        "n_valid": 162
+      }
+    },
+    "s5_six": {
+      "f1": {
+        "pooled": 0.6582,
+        "fold_mean": 0.6614,
+        "fold_sd": 0.1015,
+        "n_valid": 162
+      },
+      "f2": {
+        "pooled": 0.6878,
+        "fold_mean": 0.6887,
+        "fold_sd": 0.0851,
+        "n_valid": 162
+      }
+    }
+  }
+}
