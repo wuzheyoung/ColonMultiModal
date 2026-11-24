@@ -2129,3 +2129,37 @@ logits = model(ct, mri, clinical)  # [B, 4]
 ### 结论
 - from_t 借壳对齐质量好但覆盖低 (43%), from_c 借壳覆盖高但系统性错位 (不可用)。"宁缺毋滥": d 序列现仅 201 例有效 (self 139 + from_t 62)。
 - 待确认: 覆盖损失是否可接受 → 推 Git + U 盘同步; c 掩码清洗 (保留主段/仅最大连通域) 待决策。
+
+---
+
+## 第四阶段：4060 端夜间四任务实验 (2026-11-23, m05965)
+
+用户 m05965 指令: 4060 空闲期间跑四任务夜间挂机实验 (1650 端跑 Round2)。硬约束: 训练集锁死 direct_all n=280, 5 折对齐 master fold; 评估主口径 direct_tcd n=162 (附报 direct_td n=214); Fold-SD ddof=1; 逐样本 OOF 概率 CSV; 汇总 logs/exp_4060_overnight_summary.json + .md。
+
+### 任务1a: d_rad 干净版 PyRadiomics (已完成)
+- 仅 self + 有效 from_t 掩码 (读 features/dwi_mask_remap_manifest.csv), body/ring force2D 107 特征, 落盘 features/d_rad_planC.csv (rows=402 ok=402, 144s)。
+
+### 任务1b: 2.5D 切片特征 (extract_slice_feats_25d.py, 已完成)
+- 每有效掩码层 z 以该层质心裁 120mm, [z-1,z,z+1] 三层拼 3 通道输入 dinov2 → 768; 全量 done=476 skipped=107 nan=0 (252.6s, 0.53s/case); 输出 features/slice_feats_v2_25d/dinov2/{t,d}/<pid>.npz。
+
+### 任务2: label_N 全量基准摸底 (已完成)
+- 嵌套 CV 线性探针 (MeanMax + 训练折 std + L2-LR C 网格), pooled OOF AUC + 95% CI + fold-mean±SD (ddof=1):
+  - clin_clean: tcd(n162) 0.483 [0.390,0.570] / td(n214) 0.479 [0.398,0.558]
+  - d (tcd n105): 0.467 [0.355,0.583] / td(n154) 0.428
+  - t (tcd n155): 0.527 [0.436,0.618] / td(n201) 0.502
+  - clin+d+t (tcd n162): 0.512 [0.424,0.604] / td(n214) 0.476
+- **label_N 结论: 全口径随机 (0.43-0.53), N 无信号实锤 (支持情景4 N 止损)。**
+- 2.5D vs 2D 增益 (label_T): 2.5D d 0.640/td 0.617, t 0.630/0.633; 2D 基线 d 0.629/0.606, t 0.629/0.633 → 2.5D 对 T 增益微小 (d +0.01~+0.02, t 持平); label_N 2.5D 仍随机 (d 0.490/0.487, t 0.571/0.530)。
+
+### 任务3: label_T 深度 MIL 对照 (GatedAttentionMIL, feat_norm=std, h=32/dropout=0.6/wd=0.05/epochs=15/lr=3e-4, seed42, tcd n=162)
+- gated d: 0.551 [0.429,0.666] (n105) | gated t: 0.596 [0.498,0.688] (n155) | gated clin+d+t: 0.543 [0.451,0.631]
+- gated_sp (spatial-prior): d 0.541 / t 0.604 / clin+d+t 0.540
+- **结论: 深度 MIL (0.55-0.60) 未超越线性探针 2D 基线 (d 0.629 / t 0.629), spatial-prior 无增益。**
+- OOF CSV: outputs/exp_4060_overnight/oof_gated_{d,t}.csv / oof_gated_sp_{d,t}.csv / oof_{key}_clin_d_t.csv
+
+### 任务4: 端到端微调 DINOv2 (finetune_dinov2_e2e.py, 已完成)
+- 2.5D [z-1,z,z+1] 三通道切片袋 (max_slices=24, 120mm 肿瘤中心裁剪框) + GatedAttention MIL 直训 label_T; backbone lr=lr*0.1; AdamW wd=0.05; CosineAnnealingLR; K 分桶 batch≤4; params=87.0M。
+- **t 序列 (15 epochs × 5 折, 12145s≈3.4h)**: tcd pooled 0.434 [0.335,0.535] fold 0.531±0.085 (n155) | td 与 tcd 相同 (OOF 范围 bug, 已修: eval_pids=tcd∪td 按影像路径存在性)。prob 挤 0.677-0.699 窄带输出饱和无区分力。
+- **d 序列 (15 epochs × 5 折, 13059s≈3.6h, 修复版)**: tcd pooled 0.599 [0.479,0.712] fold 0.637±0.120 (n105) | td 0.552 [0.452,0.651] fold 0.601±0.099 (n154)。
+- **结论: 端到端微调 (t 0.434 / d 0.599) 均未超越线性探针 2D 基线 (t 0.629 / d 0.629), 与任务3 深度 MIL 结论一致 → 冻结特征线性探针为该数据上限; 情景4 决策数据齐备。**
+- OOF CSV: outputs/exp_4060_overnight/oof_e2e_{t,d}.csv; summary 见 logs/exp_4060_overnight_summary.json task4_e2e_t/task4_e2e_d。
