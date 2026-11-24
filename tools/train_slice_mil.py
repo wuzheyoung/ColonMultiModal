@@ -433,20 +433,26 @@ def meanmax_pool_bags(bags, pids):
 
 
 def linear_probe_plane(master, data_root, backbone, seq, device, seed,
-                       target="label_T", c_grid=PROBE_C_GRID):
+                       target="label_T", c_grid=PROBE_C_GRID, feat_norm="std"):
     """MeanMax 池化 + 折内嵌套 3 折 CV 选 C 的 L2-LogisticRegression 强正则线性探针。
 
     与 MIL 同一数据接口 (features/slice_feats_v2/.npz)、同一 5 折 (master 折列)、
     同一 OOF 输出契约 (patient_id,fold,label_T,prob)。选 C 仅用训练折 (fold%3 内层,
     内层均值 AUC), 全训练侧重拟合后预测验证折 —— 无跨折泄露。C 网格比 audit 更宽
     (1e-4..1.0, 含强正则端), 作为真实 slice_feats_v2 特征上对比深度 MIL 的强正则基线。
+
+    feat_norm (m00964 step2): 'l2' = 逐切片 L2 行归一 (池化前, 无拟合);
+                               'std' = 池化后 1536 维向量折内 StandardScaler
+                                       (fit 严格仅训练折, 原默认行为);
+                               'none' = 均不归一 (对照)。
     """
     m = master.set_index("patient_id")
     pids = np.sort(master["patient_id"].values.astype(np.int64))
     have = collect_plane_pids(master, data_root, backbone, seq, set(pids))
     if len(have) < 12:
         return None, None
-    bags = preload_plane(master, data_root, backbone, seq, have, target, "none", device)
+    pre_norm = "l2" if feat_norm == "l2" else "none"
+    bags = preload_plane(master, data_root, backbone, seq, have, target, pre_norm, device)
     folds = m.loc[have, "fold"].values.astype(int)
     X, y = meanmax_pool_bags(bags, have)
     oof = np.full(len(have), np.nan)
@@ -466,15 +472,22 @@ def linear_probe_plane(master, data_root, backbone, seq, device, seed,
                 itr, iva = inner != g, inner == g
                 if iva.sum() < 2 or len(np.unique(ytr[itr])) < 2:
                     continue
-                sc = StandardScaler().fit(Xtr[itr])
-                mm = LogisticRegression(C=c, max_iter=3000, solver="lbfgs").fit(
-                    sc.transform(Xtr[itr]), ytr[itr])
-                aucs.append(roc_auc_score(ytr[iva], mm.predict_proba(sc.transform(Xtr[iva]))[:, 1]))
+                if feat_norm == "std":
+                    sc = StandardScaler().fit(Xtr[itr])
+                    Xi_tr = sc.transform(Xtr[itr]); Xi_va = sc.transform(Xtr[iva])
+                else:
+                    Xi_tr, Xi_va = Xtr[itr], Xtr[iva]
+                mm = LogisticRegression(C=c, max_iter=3000, solver="lbfgs").fit(Xi_tr, ytr[itr])
+                aucs.append(roc_auc_score(ytr[iva], mm.predict_proba(Xi_va)[:, 1]))
             inner_auc[c] = float(np.mean(aucs)) if aucs else -1.0
         best_c = max(c_grid, key=lambda c: inner_auc[c])
-        sc = StandardScaler().fit(Xtr)
-        mm = LogisticRegression(C=best_c, max_iter=3000, solver="lbfgs").fit(sc.transform(Xtr), ytr)
-        oof[va] = mm.predict_proba(sc.transform(X[va]))[:, 1]
+        if feat_norm == "std":
+            sc = StandardScaler().fit(Xtr)
+            mm = LogisticRegression(C=best_c, max_iter=3000, solver="lbfgs").fit(sc.transform(Xtr), ytr)
+            oof[va] = mm.predict_proba(sc.transform(X[va]))[:, 1]
+        else:
+            mm = LogisticRegression(C=best_c, max_iter=3000, solver="lbfgs").fit(Xtr, ytr)
+            oof[va] = mm.predict_proba(X[va])[:, 1]
         Cs[int(k)] = None if best_c is None else float(best_c)
     rows = [{"patient_id": int(p), "label_T": int(yy), "prob": float(pp)}
             for p, yy, pp in zip(have, y, oof)]
@@ -578,7 +591,7 @@ def main():
     for s in planes:
         if args.linear_probe:
             df, cs = linear_probe_plane(master, args.data_root, args.backbone, s, device,
-                                        args.seed, args.target)
+                                        args.seed, args.target, PROBE_C_GRID, args.feat_norm)
             probe_cs[s] = cs
         else:
             df, curves, pt = oof_for_plane(master, args.data_root, args.backbone, s, args.agg,

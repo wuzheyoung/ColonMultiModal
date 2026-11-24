@@ -1,0 +1,1270 @@
+{
+  "meta": {
+    "task": "exp_v2_final_T (m01323) label_T 收官汇合",
+    "calibers": {
+      "direct_all": 280,
+      "direct_tcd": 162,
+      "direct_td": 214,
+      "d_self_all": 104,
+      "d_self_tcd": 75,
+      "d_self_td": 104
+    }
+  },
+  "step1": {
+    "strategy_choice": {
+      "A_pooled": 0.7335664335664336,
+      "B_pooled": 0.740034965034965,
+      "chosen": "B",
+      "rule": "B if Δ>=0.003 else A (简洁)"
+    },
+    "metrics_162": [
+      {
+        "name": "clin_clean",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.6468531468531469,
+        "boot95_ci": [
+          0.5554,
+          0.7341
+        ],
+        "fold_mean": 0.6686034837838196,
+        "fold_sd": 0.1320385780468116,
+        "youden": {
+          "sensitivity": 0.5818,
+          "specificity": 0.6538,
+          "ppv": 0.7805,
+          "npv": 0.425,
+          "tp": 64.0,
+          "fp": 18.0,
+          "tn": 34.0,
+          "fn": 46.0
+        },
+        "brier": 0.2055
+      },
+      {
+        "name": "d_self_2d(MeanMax)",
+        "n": 75,
+        "n_pos": 46,
+        "pooled_auc": 0.7376311844077961,
+        "boot95_ci": [
+          0.6071,
+          0.8604
+        ],
+        "fold_mean": 0.7821527777777777,
+        "fold_sd": 0.0728776350560172,
+        "youden": {
+          "sensitivity": 0.8261,
+          "specificity": 0.5862,
+          "ppv": 0.76,
+          "npv": 0.68,
+          "tp": 38.0,
+          "fp": 12.0,
+          "tn": 17.0,
+          "fn": 8.0
+        },
+        "brier": 0.2234
+      },
+      {
+        "name": "t_2d(AreaW)",
+        "n": 155,
+        "n_pos": 105,
+        "pooled_auc": 0.6603809523809523,
+        "boot95_ci": [
+          0.5638,
+          0.7488
+        ],
+        "fold_mean": 0.679097558807487,
+        "fold_sd": 0.08891300501090546,
+        "youden": {
+          "sensitivity": 0.6095,
+          "specificity": 0.66,
+          "ppv": 0.7901,
+          "npv": 0.4459,
+          "tp": 64.0,
+          "fp": 17.0,
+          "tn": 33.0,
+          "fn": 41.0
+        },
+        "brier": 0.2361
+      },
+      {
+        "name": "clin+t_2d",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.7216783216783217,
+        "boot95_ci": [
+          0.6332,
+          0.8026
+        ],
+        "fold_mean": 0.7359981223395254,
+        "fold_sd": 0.10607652037832499,
+        "youden": {
+          "sensitivity": 0.6909,
+          "specificity": 0.7115,
+          "ppv": 0.8352,
+          "npv": 0.5211,
+          "tp": 76.0,
+          "fp": 15.0,
+          "tn": 37.0,
+          "fn": 34.0
+        },
+        "brier": 0.2314
+      },
+      {
+        "name": "clin+d_self+t_2d (chosen)",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.740034965034965,
+        "boot95_ci": [
+          0.6583,
+          0.8151
+        ],
+        "fold_mean": 0.7378645824421517,
+        "fold_sd": 0.08717505719387407,
+        "youden": {
+          "sensitivity": 0.6273,
+          "specificity": 0.8077,
+          "ppv": 0.8734,
+          "npv": 0.506,
+          "tp": 69.0,
+          "fp": 10.0,
+          "tn": 42.0,
+          "fn": 41.0
+        },
+        "brier": 0.2269
+      },
+      {
+        "name": "old s4_clin_3plane.f1",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.7015734265734265,
+        "boot95_ci": [
+          0.6219,
+          0.7784
+        ],
+        "fold_mean": 0.7030367860802643,
+        "fold_sd": 0.09698919253702712,
+        "youden": {
+          "sensitivity": 0.4909,
+          "specificity": 0.7692,
+          "ppv": 0.8182,
+          "npv": 0.4167,
+          "tp": 54.0,
+          "fp": 12.0,
+          "tn": 40.0,
+          "fn": 56.0
+        },
+        "brier": 0.2213
+      },
+      {
+        "name": "old s2_clin_dconv.f1",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.6881118881118883,
+        "boot95_ci": [
+          0.6016,
+          0.7709
+        ],
+        "fold_mean": 0.6852709560787625,
+        "fold_sd": 0.11117087519505227,
+        "youden": {
+          "sensitivity": 0.5636,
+          "specificity": 0.6154,
+          "ppv": 0.7561,
+          "npv": 0.4,
+          "tp": 62.0,
+          "fp": 20.0,
+          "tn": 32.0,
+          "fn": 48.0
+        },
+        "brier": 0.2264
+      }
+    ],
+    "delong_162": [
+      {
+        "pair": "chosen_dt vs s4",
+        "n_paired": 162,
+        "auc1": 0.74,
+        "auc2": 0.7016,
+        "diff": 0.0385,
+        "z": 0.9242,
+        "p": 0.3554
+      },
+      {
+        "pair": "chosen_dt vs s2_162",
+        "n_paired": 162,
+        "auc1": 0.74,
+        "auc2": 0.6881,
+        "diff": 0.0519,
+        "z": 1.1787,
+        "p": 0.2385
+      },
+      {
+        "pair": "chosen_dt vs clin_t",
+        "n_paired": 162,
+        "auc1": 0.74,
+        "auc2": 0.7217,
+        "diff": 0.0184,
+        "z": 0.7911,
+        "p": 0.4289
+      }
+    ],
+    "metrics_214": [
+      {
+        "name": "clin_clean",
+        "n": 214,
+        "n_pos": 148,
+        "pooled_auc": 0.6442465192465193,
+        "boot95_ci": [
+          0.5633,
+          0.7195
+        ],
+        "fold_mean": 0.6557935042019387,
+        "fold_sd": 0.08158854288868801,
+        "youden": {
+          "sensitivity": 0.6284,
+          "specificity": 0.5606,
+          "ppv": 0.7623,
+          "npv": 0.4022,
+          "tp": 93.0,
+          "fp": 29.0,
+          "tn": 37.0,
+          "fn": 55.0
+        },
+        "brier": 0.201
+      },
+      {
+        "name": "d_self_2d(MeanMax)",
+        "n": 104,
+        "n_pos": 69,
+        "pooled_auc": 0.6824016563146998,
+        "boot95_ci": [
+          0.5637,
+          0.7917
+        ],
+        "fold_mean": 0.7257314036725802,
+        "fold_sd": 0.09059993930278304,
+        "youden": {
+          "sensitivity": 0.8261,
+          "specificity": 0.5143,
+          "ppv": 0.7703,
+          "npv": 0.6,
+          "tp": 57.0,
+          "fp": 17.0,
+          "tn": 18.0,
+          "fn": 12.0
+        },
+        "brier": 0.2288
+      },
+      {
+        "name": "t_2d(AreaW)",
+        "n": 201,
+        "n_pos": 138,
+        "pooled_auc": 0.6192776627559237,
+        "boot95_ci": [
+          0.5345,
+          0.7047
+        ],
+        "fold_mean": 0.6418528939698295,
+        "fold_sd": 0.09691327913495351,
+        "youden": {
+          "sensitivity": 0.6812,
+          "specificity": 0.5556,
+          "ppv": 0.7705,
+          "npv": 0.443,
+          "tp": 94.0,
+          "fp": 28.0,
+          "tn": 35.0,
+          "fn": 44.0
+        },
+        "brier": 0.2447
+      },
+      {
+        "name": "clin+t_2d",
+        "n": 214,
+        "n_pos": 148,
+        "pooled_auc": 0.6795659295659295,
+        "boot95_ci": [
+          0.5961,
+          0.7557
+        ],
+        "fold_mean": 0.7005165165828725,
+        "fold_sd": 0.0866151973966659,
+        "youden": {
+          "sensitivity": 0.7095,
+          "specificity": 0.5152,
+          "ppv": 0.7664,
+          "npv": 0.4416,
+          "tp": 105.0,
+          "fp": 32.0,
+          "tn": 34.0,
+          "fn": 43.0
+        },
+        "brier": 0.2385
+      },
+      {
+        "name": "clin+d_self+t_2d (chosen)",
+        "n": 214,
+        "n_pos": 148,
+        "pooled_auc": 0.6886773136773138,
+        "boot95_ci": [
+          0.6029,
+          0.7653
+        ],
+        "fold_mean": 0.6953812550716162,
+        "fold_sd": 0.06992843190570476,
+        "youden": {
+          "sensitivity": 0.6486,
+          "specificity": 0.6667,
+          "ppv": 0.8136,
+          "npv": 0.4583,
+          "tp": 96.0,
+          "fp": 22.0,
+          "tn": 44.0,
+          "fn": 52.0
+        },
+        "brier": 0.233
+      },
+      {
+        "name": "old s2_clin_dconv (214)",
+        "n": 214,
+        "n_pos": 148,
+        "pooled_auc": 0.6605241605241605,
+        "boot95_ci": [
+          0.575,
+          0.738
+        ],
+        "fold_mean": 0.6722652484241749,
+        "fold_sd": 0.05728876521973824,
+        "youden": {
+          "sensitivity": 0.7635,
+          "specificity": 0.4545,
+          "ppv": 0.7584,
+          "npv": 0.4615,
+          "tp": 113.0,
+          "fp": 36.0,
+          "tn": 30.0,
+          "fn": 35.0
+        },
+        "brier": 0.2417
+      }
+    ],
+    "delong_214": [
+      {
+        "pair": "chosen_dt_214 vs s2_214",
+        "n_paired": 214,
+        "auc1": 0.6887,
+        "auc2": 0.6605,
+        "diff": 0.0282,
+        "z": 0.6357,
+        "p": 0.525
+      },
+      {
+        "pair": "chosen_dt_214 vs clin_t_214",
+        "n_paired": 214,
+        "auc1": 0.6887,
+        "auc2": 0.6796,
+        "diff": 0.0091,
+        "z": 0.4447,
+        "p": 0.6566
+      }
+    ]
+  },
+  "step2": {
+    "metrics": [
+      {
+        "name": "d_self_25d",
+        "n": 75,
+        "n_pos": 46,
+        "pooled_auc": 0.6199400299850075,
+        "boot95_ci": [
+          0.484,
+          0.7547
+        ],
+        "fold_mean": 0.7152083333333333,
+        "fold_sd": 0.09806504714842199,
+        "youden": {
+          "sensitivity": 0.7174,
+          "specificity": 0.4828,
+          "ppv": 0.6875,
+          "npv": 0.5185,
+          "tp": 33.0,
+          "fp": 15.0,
+          "tn": 14.0,
+          "fn": 13.0
+        },
+        "brier": 0.2406
+      },
+      {
+        "name": "d_self_2d",
+        "n": 75,
+        "n_pos": 46,
+        "pooled_auc": 0.7376311844077961,
+        "boot95_ci": [
+          0.6071,
+          0.8604
+        ],
+        "fold_mean": 0.7821527777777777,
+        "fold_sd": 0.0728776350560172,
+        "youden": {
+          "sensitivity": 0.8261,
+          "specificity": 0.5862,
+          "ppv": 0.76,
+          "npv": 0.68,
+          "tp": 38.0,
+          "fp": 12.0,
+          "tn": 17.0,
+          "fn": 8.0
+        },
+        "brier": 0.2234
+      },
+      {
+        "name": "t_25d",
+        "n": 155,
+        "n_pos": 105,
+        "pooled_auc": 0.6883809523809524,
+        "boot95_ci": [
+          0.6,
+          0.7718
+        ],
+        "fold_mean": 0.6949719382823449,
+        "fold_sd": 0.059547551998415126,
+        "youden": {
+          "sensitivity": 0.6571,
+          "specificity": 0.64,
+          "ppv": 0.7931,
+          "npv": 0.4706,
+          "tp": 69.0,
+          "fp": 18.0,
+          "tn": 32.0,
+          "fn": 36.0
+        },
+        "brier": 0.2253
+      },
+      {
+        "name": "t_2d",
+        "n": 155,
+        "n_pos": 105,
+        "pooled_auc": 0.6603809523809523,
+        "boot95_ci": [
+          0.5638,
+          0.7488
+        ],
+        "fold_mean": 0.679097558807487,
+        "fold_sd": 0.08891300501090546,
+        "youden": {
+          "sensitivity": 0.6095,
+          "specificity": 0.66,
+          "ppv": 0.7901,
+          "npv": 0.4459,
+          "tp": 64.0,
+          "fp": 17.0,
+          "tn": 33.0,
+          "fn": 41.0
+        },
+        "brier": 0.2361
+      },
+      {
+        "name": "clin+d_self+t_25d",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.6937062937062936,
+        "boot95_ci": [
+          0.6066,
+          0.779
+        ],
+        "fold_mean": 0.703318591999422,
+        "fold_sd": 0.10187919513808248,
+        "youden": {
+          "sensitivity": 0.6182,
+          "specificity": 0.5769,
+          "ppv": 0.7556,
+          "npv": 0.4167,
+          "tp": 68.0,
+          "fp": 22.0,
+          "tn": 30.0,
+          "fn": 42.0
+        },
+        "brier": 0.2331
+      },
+      {
+        "name": "clin+d_self+t_2d",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.740034965034965,
+        "boot95_ci": [
+          0.6583,
+          0.8151
+        ],
+        "fold_mean": 0.7378645824421517,
+        "fold_sd": 0.08717505719387407,
+        "youden": {
+          "sensitivity": 0.6273,
+          "specificity": 0.8077,
+          "ppv": 0.8734,
+          "npv": 0.506,
+          "tp": 69.0,
+          "fp": 10.0,
+          "tn": 42.0,
+          "fn": 41.0
+        },
+        "brier": 0.2269
+      }
+    ],
+    "delong_162": [
+      {
+        "pair": "d25 vs d2d",
+        "n_paired": 75,
+        "auc1": 0.6199,
+        "auc2": 0.7376,
+        "diff": -0.1177,
+        "z": -2.1639,
+        "p": 0.0305
+      },
+      {
+        "pair": "t25 vs t2d",
+        "n_paired": 155,
+        "auc1": 0.6884,
+        "auc2": 0.6604,
+        "diff": 0.028,
+        "z": 0.7377,
+        "p": 0.4607
+      },
+      {
+        "pair": "fus25 vs fus2d",
+        "n_paired": 162,
+        "auc1": 0.6937,
+        "auc2": 0.74,
+        "diff": -0.0463,
+        "z": -1.263,
+        "p": 0.2066
+      }
+    ],
+    "delong_214": [
+      {
+        "pair": "fus25_214 vs fus2d_214",
+        "n_paired": 214,
+        "auc1": 0.7122,
+        "auc2": 0.6887,
+        "diff": 0.0235,
+        "z": 0.6549,
+        "p": 0.5125
+      }
+    ],
+    "dino_version_choice": {
+      "fus25_auc": 0.6937062937062936,
+      "fus2d_auc": 0.740034965034965,
+      "chosen": "2d"
+    }
+  },
+  "step3": {
+    "metrics_162": [
+      {
+        "name": "t_rad (stored)",
+        "n": 155,
+        "n_pos": 105,
+        "pooled_auc": 0.5700952380952381,
+        "boot95_ci": [
+          0.474,
+          0.6609
+        ],
+        "fold_mean": 0.6049912833046805,
+        "fold_sd": 0.12109358799592997,
+        "youden": {
+          "sensitivity": 0.3905,
+          "specificity": 0.6,
+          "ppv": 0.6721,
+          "npv": 0.3191,
+          "tp": 41.0,
+          "fp": 20.0,
+          "tn": 30.0,
+          "fn": 64.0
+        },
+        "brier": 0.2896
+      },
+      {
+        "name": "d_rad_self",
+        "n": 75,
+        "n_pos": 46,
+        "pooled_auc": 0.5704647676161919,
+        "boot95_ci": [
+          0.4297,
+          0.7097
+        ],
+        "fold_mean": 0.660625,
+        "fold_sd": 0.11565877884968352,
+        "youden": {
+          "sensitivity": 0.6087,
+          "specificity": 0.4138,
+          "ppv": 0.6222,
+          "npv": 0.4,
+          "tp": 28.0,
+          "fp": 17.0,
+          "tn": 12.0,
+          "fn": 18.0
+        },
+        "brier": 0.2369
+      },
+      {
+        "name": "d_rad_all (planC full)",
+        "n": 105,
+        "n_pos": 70,
+        "pooled_auc": 0.6187755102040817,
+        "boot95_ci": [
+          0.5052,
+          0.7296
+        ],
+        "fold_mean": 0.6604901062989299,
+        "fold_sd": 0.15763096751931768,
+        "youden": {
+          "sensitivity": 0.5714,
+          "specificity": 0.6,
+          "ppv": 0.7407,
+          "npv": 0.4118,
+          "tp": 40.0,
+          "fp": 14.0,
+          "tn": 21.0,
+          "fn": 30.0
+        },
+        "brier": 0.2217
+      },
+      {
+        "name": "clin+t_rad+d_rad_self",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.6314685314685314,
+        "boot95_ci": [
+          0.5434,
+          0.7161
+        ],
+        "fold_mean": 0.6659253139811441,
+        "fold_sd": 0.06582945787709618,
+        "youden": {
+          "sensitivity": 0.5636,
+          "specificity": 0.6923,
+          "ppv": 0.7949,
+          "npv": 0.4286,
+          "tp": 62.0,
+          "fp": 16.0,
+          "tn": 36.0,
+          "fn": 48.0
+        },
+        "brier": 0.2509
+      },
+      {
+        "name": "clin+DINOv2_best",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.740034965034965,
+        "boot95_ci": [
+          0.6565,
+          0.8169
+        ],
+        "fold_mean": 0.7371498796548204,
+        "fold_sd": 0.09556148362138454,
+        "youden": {
+          "sensitivity": 0.6364,
+          "specificity": 0.75,
+          "ppv": 0.8434,
+          "npv": 0.4937,
+          "tp": 70.0,
+          "fp": 13.0,
+          "tn": 39.0,
+          "fn": 40.0
+        },
+        "brier": 0.228
+      },
+      {
+        "name": "clin+Rad+DINOv2_best",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.7043706293706293,
+        "boot95_ci": [
+          0.6192,
+          0.7819
+        ],
+        "fold_mean": 0.7191242582991595,
+        "fold_sd": 0.0838215449139674,
+        "youden": {
+          "sensitivity": 0.5727,
+          "specificity": 0.6923,
+          "ppv": 0.7975,
+          "npv": 0.4337,
+          "tp": 63.0,
+          "fp": 16.0,
+          "tn": 36.0,
+          "fn": 47.0
+        },
+        "brier": 0.2333
+      }
+    ],
+    "metrics_214": [
+      {
+        "name": "t_rad (probe)",
+        "n": 201,
+        "n_pos": 138,
+        "pooled_auc": 0.5308258569128135,
+        "boot95_ci": [
+          0.4416,
+          0.6171
+        ],
+        "fold_mean": 0.5630143713813068,
+        "fold_sd": 0.05935692845810965,
+        "youden": {
+          "sensitivity": 0.1957,
+          "specificity": 0.7937,
+          "ppv": 0.675,
+          "npv": 0.3106,
+          "tp": 27.0,
+          "fp": 13.0,
+          "tn": 50.0,
+          "fn": 111.0
+        },
+        "brier": 0.2501
+      },
+      {
+        "name": "d_rad_self",
+        "n": 104,
+        "n_pos": 69,
+        "pooled_auc": 0.5817805383022774,
+        "boot95_ci": [
+          0.455,
+          0.7046
+        ],
+        "fold_mean": 0.6545946156240274,
+        "fold_sd": 0.09757759321991559,
+        "youden": {
+          "sensitivity": 0.7681,
+          "specificity": 0.3143,
+          "ppv": 0.6883,
+          "npv": 0.4074,
+          "tp": 53.0,
+          "fp": 24.0,
+          "tn": 11.0,
+          "fn": 16.0
+        },
+        "brier": 0.2186
+      },
+      {
+        "name": "clin+t_rad+d_rad_self",
+        "n": 214,
+        "n_pos": 148,
+        "pooled_auc": 0.6195741195741195,
+        "boot95_ci": [
+          0.5405,
+          0.7008
+        ],
+        "fold_mean": 0.65489590747805,
+        "fold_sd": 0.07986068369296673,
+        "youden": {
+          "sensitivity": 0.5405,
+          "specificity": 0.5758,
+          "ppv": 0.7407,
+          "npv": 0.3585,
+          "tp": 80.0,
+          "fp": 28.0,
+          "tn": 38.0,
+          "fn": 68.0
+        },
+        "brier": 0.2532
+      },
+      {
+        "name": "clin+DINOv2_best",
+        "n": 214,
+        "n_pos": 148,
+        "pooled_auc": 0.6894963144963144,
+        "boot95_ci": [
+          0.6053,
+          0.7665
+        ],
+        "fold_mean": 0.701497304658349,
+        "fold_sd": 0.0669304117738091,
+        "youden": {
+          "sensitivity": 0.6622,
+          "specificity": 0.5758,
+          "ppv": 0.7778,
+          "npv": 0.4318,
+          "tp": 98.0,
+          "fp": 28.0,
+          "tn": 38.0,
+          "fn": 50.0
+        },
+        "brier": 0.2357
+      },
+      {
+        "name": "clin+Rad+DINOv2_best",
+        "n": 214,
+        "n_pos": 148,
+        "pooled_auc": 0.6776208026208027,
+        "boot95_ci": [
+          0.5974,
+          0.7516
+        ],
+        "fold_mean": 0.6975383662179354,
+        "fold_sd": 0.07225655882848567,
+        "youden": {
+          "sensitivity": 0.6892,
+          "specificity": 0.6061,
+          "ppv": 0.7969,
+          "npv": 0.4651,
+          "tp": 102.0,
+          "fp": 26.0,
+          "tn": 40.0,
+          "fn": 46.0
+        },
+        "brier": 0.2397
+      }
+    ],
+    "delong_162": [
+      {
+        "pair": "cc162 vs s4",
+        "n_paired": 162,
+        "auc1": 0.7044,
+        "auc2": 0.7016,
+        "diff": 0.0028,
+        "z": 0.0648,
+        "p": 0.9483
+      },
+      {
+        "pair": "cc162 vs ca162",
+        "n_paired": 162,
+        "auc1": 0.7044,
+        "auc2": 0.6315,
+        "diff": 0.0729,
+        "z": 2.0112,
+        "p": 0.0443
+      },
+      {
+        "pair": "cc162 vs cb162",
+        "n_paired": 162,
+        "auc1": 0.7044,
+        "auc2": 0.74,
+        "diff": -0.0357,
+        "z": -1.1072,
+        "p": 0.2682
+      },
+      {
+        "pair": "cc162 vs clin_clean",
+        "n_paired": 162,
+        "auc1": 0.7044,
+        "auc2": 0.6469,
+        "diff": 0.0575,
+        "z": 1.3243,
+        "p": 0.1854
+      }
+    ],
+    "delong_214": [
+      {
+        "pair": "cc214 vs s2_214",
+        "n_paired": 214,
+        "auc1": 0.6776,
+        "auc2": 0.6605,
+        "diff": 0.0171,
+        "z": 0.4207,
+        "p": 0.674
+      },
+      {
+        "pair": "cc214 vs ca214",
+        "n_paired": 214,
+        "auc1": 0.6776,
+        "auc2": 0.6196,
+        "diff": 0.058,
+        "z": 1.8769,
+        "p": 0.0605
+      }
+    ],
+    "boot_ci": [
+      {
+        "pair": "cc162 vs s4",
+        "n_paired": 162,
+        "diff": 0.002797202797202858,
+        "ci95": [
+          -0.0811,
+          0.0879
+        ]
+      },
+      {
+        "pair": "cc162 vs clin_clean",
+        "n_paired": 162,
+        "diff": 0.057517482517482454,
+        "ci95": [
+          -0.0263,
+          0.1474
+        ]
+      }
+    ]
+  },
+  "step4": {
+    "main_table": [
+      {
+        "name": "clin_clean",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.6468531468531469,
+        "boot95_ci": [
+          0.5554,
+          0.7341
+        ],
+        "fold_mean": 0.6686034837838196,
+        "fold_sd": 0.1320385780468116,
+        "youden": {
+          "sensitivity": 0.5818,
+          "specificity": 0.6538,
+          "ppv": 0.7805,
+          "npv": 0.425,
+          "tp": 64.0,
+          "fp": 18.0,
+          "tn": 34.0,
+          "fn": 46.0
+        },
+        "brier": 0.2055
+      },
+      {
+        "name": "d_self_2d",
+        "n": 75,
+        "n_pos": 46,
+        "pooled_auc": 0.7376311844077961,
+        "boot95_ci": [
+          0.6071,
+          0.8604
+        ],
+        "fold_mean": 0.7821527777777777,
+        "fold_sd": 0.0728776350560172,
+        "youden": {
+          "sensitivity": 0.8261,
+          "specificity": 0.5862,
+          "ppv": 0.76,
+          "npv": 0.68,
+          "tp": 38.0,
+          "fp": 12.0,
+          "tn": 17.0,
+          "fn": 8.0
+        },
+        "brier": 0.2234
+      },
+      {
+        "name": "t_2d_aw",
+        "n": 155,
+        "n_pos": 105,
+        "pooled_auc": 0.6603809523809523,
+        "boot95_ci": [
+          0.5638,
+          0.7488
+        ],
+        "fold_mean": 0.679097558807487,
+        "fold_sd": 0.08891300501090546,
+        "youden": {
+          "sensitivity": 0.6095,
+          "specificity": 0.66,
+          "ppv": 0.7901,
+          "npv": 0.4459,
+          "tp": 64.0,
+          "fp": 17.0,
+          "tn": 33.0,
+          "fn": 41.0
+        },
+        "brier": 0.2361
+      },
+      {
+        "name": "d_self_25d",
+        "n": 75,
+        "n_pos": 46,
+        "pooled_auc": 0.6199400299850075,
+        "boot95_ci": [
+          0.484,
+          0.7547
+        ],
+        "fold_mean": 0.7152083333333333,
+        "fold_sd": 0.09806504714842199,
+        "youden": {
+          "sensitivity": 0.7174,
+          "specificity": 0.4828,
+          "ppv": 0.6875,
+          "npv": 0.5185,
+          "tp": 33.0,
+          "fp": 15.0,
+          "tn": 14.0,
+          "fn": 13.0
+        },
+        "brier": 0.2406
+      },
+      {
+        "name": "t_25d",
+        "n": 155,
+        "n_pos": 105,
+        "pooled_auc": 0.6883809523809524,
+        "boot95_ci": [
+          0.6,
+          0.7718
+        ],
+        "fold_mean": 0.6949719382823449,
+        "fold_sd": 0.059547551998415126,
+        "youden": {
+          "sensitivity": 0.6571,
+          "specificity": 0.64,
+          "ppv": 0.7931,
+          "npv": 0.4706,
+          "tp": 69.0,
+          "fp": 18.0,
+          "tn": 32.0,
+          "fn": 36.0
+        },
+        "brier": 0.2253
+      },
+      {
+        "name": "t_rad",
+        "n": 155,
+        "n_pos": 105,
+        "pooled_auc": 0.5700952380952381,
+        "boot95_ci": [
+          0.474,
+          0.6609
+        ],
+        "fold_mean": 0.6049912833046805,
+        "fold_sd": 0.12109358799592997,
+        "youden": {
+          "sensitivity": 0.3905,
+          "specificity": 0.6,
+          "ppv": 0.6721,
+          "npv": 0.3191,
+          "tp": 41.0,
+          "fp": 20.0,
+          "tn": 30.0,
+          "fn": 64.0
+        },
+        "brier": 0.2896
+      },
+      {
+        "name": "d_rad_self",
+        "n": 75,
+        "n_pos": 46,
+        "pooled_auc": 0.5704647676161919,
+        "boot95_ci": [
+          0.4297,
+          0.7097
+        ],
+        "fold_mean": 0.660625,
+        "fold_sd": 0.11565877884968352,
+        "youden": {
+          "sensitivity": 0.6087,
+          "specificity": 0.4138,
+          "ppv": 0.6222,
+          "npv": 0.4,
+          "tp": 28.0,
+          "fp": 17.0,
+          "tn": 12.0,
+          "fn": 18.0
+        },
+        "brier": 0.2369
+      },
+      {
+        "name": "clin+t_2d",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.7216783216783217,
+        "boot95_ci": [
+          0.6332,
+          0.8026
+        ],
+        "fold_mean": 0.7359981223395254,
+        "fold_sd": 0.10607652037832499,
+        "youden": {
+          "sensitivity": 0.6909,
+          "specificity": 0.7115,
+          "ppv": 0.8352,
+          "npv": 0.5211,
+          "tp": 76.0,
+          "fp": 15.0,
+          "tn": 37.0,
+          "fn": 34.0
+        },
+        "brier": 0.2314
+      },
+      {
+        "name": "clin+d_self+t_2d",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.740034965034965,
+        "boot95_ci": [
+          0.6583,
+          0.8151
+        ],
+        "fold_mean": 0.7378645824421517,
+        "fold_sd": 0.08717505719387407,
+        "youden": {
+          "sensitivity": 0.6273,
+          "specificity": 0.8077,
+          "ppv": 0.8734,
+          "npv": 0.506,
+          "tp": 69.0,
+          "fp": 10.0,
+          "tn": 42.0,
+          "fn": 41.0
+        },
+        "brier": 0.2269
+      },
+      {
+        "name": "clin+d_self+t_25d",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.6937062937062936,
+        "boot95_ci": [
+          0.6066,
+          0.779
+        ],
+        "fold_mean": 0.703318591999422,
+        "fold_sd": 0.10187919513808248,
+        "youden": {
+          "sensitivity": 0.6182,
+          "specificity": 0.5769,
+          "ppv": 0.7556,
+          "npv": 0.4167,
+          "tp": 68.0,
+          "fp": 22.0,
+          "tn": 30.0,
+          "fn": 42.0
+        },
+        "brier": 0.2331
+      },
+      {
+        "name": "clin+Rad",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.6314685314685314,
+        "boot95_ci": [
+          0.5434,
+          0.7161
+        ],
+        "fold_mean": 0.6659253139811441,
+        "fold_sd": 0.06582945787709618,
+        "youden": {
+          "sensitivity": 0.5636,
+          "specificity": 0.6923,
+          "ppv": 0.7949,
+          "npv": 0.4286,
+          "tp": 62.0,
+          "fp": 16.0,
+          "tn": 36.0,
+          "fn": 48.0
+        },
+        "brier": 0.2509
+      },
+      {
+        "name": "clin+DINOv2",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.740034965034965,
+        "boot95_ci": [
+          0.6565,
+          0.8169
+        ],
+        "fold_mean": 0.7371498796548204,
+        "fold_sd": 0.09556148362138454,
+        "youden": {
+          "sensitivity": 0.6364,
+          "specificity": 0.75,
+          "ppv": 0.8434,
+          "npv": 0.4937,
+          "tp": 70.0,
+          "fp": 13.0,
+          "tn": 39.0,
+          "fn": 40.0
+        },
+        "brier": 0.228
+      },
+      {
+        "name": "clin+Rad+DINOv2",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.7043706293706293,
+        "boot95_ci": [
+          0.6192,
+          0.7819
+        ],
+        "fold_mean": 0.7191242582991595,
+        "fold_sd": 0.0838215449139674,
+        "youden": {
+          "sensitivity": 0.5727,
+          "specificity": 0.6923,
+          "ppv": 0.7975,
+          "npv": 0.4337,
+          "tp": 63.0,
+          "fp": 16.0,
+          "tn": 36.0,
+          "fn": 47.0
+        },
+        "brier": 0.2333
+      },
+      {
+        "name": "old s4",
+        "n": 162,
+        "n_pos": 110,
+        "pooled_auc": 0.7015734265734265,
+        "boot95_ci": [
+          0.6219,
+          0.7784
+        ],
+        "fold_mean": 0.7030367860802643,
+        "fold_sd": 0.09698919253702712,
+        "youden": {
+          "sensitivity": 0.4909,
+          "specificity": 0.7692,
+          "ppv": 0.8182,
+          "npv": 0.4167,
+          "tp": 54.0,
+          "fp": 12.0,
+          "tn": 40.0,
+          "fn": 56.0
+        },
+        "brier": 0.2213
+      }
+    ],
+    "final_model": "clin+DINOv2_best (2D)",
+    "final_delong": [
+      {
+        "pair": "best vs s4",
+        "n_paired": 162,
+        "auc1": 0.74,
+        "auc2": 0.7016,
+        "diff": 0.0385,
+        "z": 0.9174,
+        "p": 0.3589
+      },
+      {
+        "pair": "best vs clin_clean",
+        "n_paired": 162,
+        "auc1": 0.74,
+        "auc2": 0.6469,
+        "diff": 0.0932,
+        "z": 2.0046,
+        "p": 0.045
+      }
+    ],
+    "final_boot_ci": [
+      {
+        "pair": "best vs s4",
+        "n_paired": 162,
+        "diff": 0.03846153846153855,
+        "ci95": [
+          -0.0462,
+          0.1251
+        ]
+      },
+      {
+        "pair": "best vs clin_clean",
+        "n_paired": 162,
+        "diff": 0.09318181818181814,
+        "ci95": [
+          0.0051,
+          0.1869
+        ]
+      }
+    ],
+    "plots": {
+      "roc_best": "outputs/exp_v2_final_T\\plots\\roc_best.png",
+      "cal_best": "outputs/exp_v2_final_T\\plots\\cal_best.png",
+      "roc_overlay": "outputs/exp_v2_final_T\\plots\\roc_overlay_final.png",
+      "cal_overlay": "outputs/exp_v2_final_T\\plots\\cal_overlay_final.png"
+    }
+  }
+}

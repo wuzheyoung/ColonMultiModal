@@ -1,0 +1,779 @@
+{
+  "m1": {
+    "module": "M1 single-caliber calibration + DCA + subgroups",
+    "calibration_fit_scope": "direct_all train folds (n≈224), NOT tcd train folds",
+    "uncal_sigmoid_tcd": {
+      "n": 162,
+      "n_pos": 110,
+      "pooled_auc": 0.7397,
+      "boot_95ci": [
+        0.6586,
+        0.8159
+      ],
+      "fold_mean": 0.7386,
+      "fold_sd": 0.0798,
+      "brier": 0.2338,
+      "ece10": 0.2027,
+      "youden_oof": {
+        "sensitivity": 0.6364,
+        "specificity": 0.7308,
+        "ppv": 0.8333,
+        "npv": 0.4872,
+        "tp": 70.0,
+        "fp": 14.0,
+        "tn": 38.0,
+        "fn": 40.0
+      }
+    },
+    "platt_tcd": {
+      "n": 162,
+      "n_pos": 110,
+      "pooled_auc": 0.7278,
+      "boot_95ci": [
+        0.6435,
+        0.8074
+      ],
+      "fold_mean": 0.7386,
+      "fold_sd": 0.0798,
+      "brier": 0.1951,
+      "ece10": 0.0739,
+      "youden_oof": {
+        "sensitivity": 0.6364,
+        "specificity": 0.6346,
+        "ppv": 0.7865,
+        "npv": 0.4521,
+        "tp": 70.0,
+        "fp": 19.0,
+        "tn": 33.0,
+        "fn": 40.0
+      }
+    },
+    "bonly_tcd": {
+      "n": 162,
+      "n_pos": 110,
+      "pooled_auc": 0.7302,
+      "boot_95ci": [
+        0.6462,
+        0.8087
+      ],
+      "fold_mean": 0.7386,
+      "fold_sd": 0.0798,
+      "brier": 0.1946,
+      "ece10": 0.0797,
+      "youden_oof": {
+        "sensitivity": 0.6,
+        "specificity": 0.7115,
+        "ppv": 0.8148,
+        "npv": 0.4568,
+        "tp": 66.0,
+        "fp": 15.0,
+        "tn": 37.0,
+        "fn": 44.0
+      }
+    },
+    "platt_params_by_fold": {
+      "0": [
+        0.84182,
+        0.92995
+      ],
+      "1": [
+        1.08565,
+        0.94586
+      ],
+      "2": [
+        0.94,
+        0.93727
+      ],
+      "3": [
+        0.90633,
+        0.84773
+      ],
+      "4": [
+        0.90339,
+        0.86787
+      ]
+    },
+    "bonly_params_by_fold": {
+      "0": [
+        1.0,
+        0.95589
+      ],
+      "1": [
+        1.0,
+        0.93122
+      ],
+      "2": [
+        1.0,
+        0.9466
+      ],
+      "3": [
+        1.0,
+        0.86407
+      ],
+      "4": [
+        1.0,
+        0.87987
+      ]
+    },
+    "selection": {
+      "locked": "bonly",
+      "criterion": "min pooled-AUC loss w/ Brier<0.20 & ECE<0.06",
+      "platt_score": [
+        0.011900000000000022,
+        true,
+        false
+      ],
+      "bonly_score": [
+        0.009500000000000064,
+        true,
+        false
+      ]
+    },
+    "locked_metrics": {
+      "n": 162,
+      "n_pos": 110,
+      "pooled_auc": 0.7302,
+      "boot_95ci": [
+        0.6462,
+        0.8087
+      ],
+      "fold_mean": 0.7386,
+      "fold_sd": 0.0798,
+      "brier": 0.1946,
+      "ece10": 0.0797,
+      "youden_oof": {
+        "sensitivity": 0.6,
+        "specificity": 0.7115,
+        "ppv": 0.8148,
+        "npv": 0.4568,
+        "tp": 66.0,
+        "fp": 15.0,
+        "tn": 37.0,
+        "fn": 44.0
+      }
+    },
+    "delong_locked_vs_s4": {
+      "res": {
+        "auc1": 0.7302,
+        "auc2": 0.7016,
+        "diff": 0.0287,
+        "z": 0.6725,
+        "p": 0.5012
+      },
+      "n_paired": 162
+    },
+    "dca": {
+      "thresholds": [
+        {
+          "threshold": 0.1,
+          "nb_best": 0.6433,
+          "nb_clin": 0.6433,
+          "nb_all": 0.6433,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.15,
+          "nb_best": 0.6224,
+          "nb_clin": 0.6224,
+          "nb_all": 0.6224,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.2,
+          "nb_best": 0.6003,
+          "nb_clin": 0.5988,
+          "nb_all": 0.5988,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.25,
+          "nb_best": 0.5741,
+          "nb_clin": 0.572,
+          "nb_all": 0.572,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.3,
+          "nb_best": 0.5441,
+          "nb_clin": 0.5353,
+          "nb_all": 0.5414,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.35,
+          "nb_best": 0.4972,
+          "nb_clin": 0.5033,
+          "nb_all": 0.5062,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.4,
+          "nb_best": 0.4691,
+          "nb_clin": 0.463,
+          "nb_all": 0.465,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.45,
+          "nb_best": 0.4169,
+          "nb_clin": 0.4029,
+          "nb_all": 0.4164,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.5,
+          "nb_best": 0.358,
+          "nb_clin": 0.3519,
+          "nb_all": 0.358,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.55,
+          "nb_best": 0.3265,
+          "nb_clin": 0.2682,
+          "nb_all": 0.2867,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.6,
+          "nb_best": 0.2963,
+          "nb_clin": 0.2253,
+          "nb_all": 0.1975,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.65,
+          "nb_best": 0.2328,
+          "nb_clin": 0.2116,
+          "nb_all": 0.0829,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.7,
+          "nb_best": 0.2058,
+          "nb_clin": 0.1728,
+          "nb_all": -0.07,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.75,
+          "nb_best": 0.1235,
+          "nb_clin": 0.037,
+          "nb_all": -0.284,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.8,
+          "nb_best": 0.0802,
+          "nb_clin": 0.1173,
+          "nb_all": -0.6049,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.85,
+          "nb_best": 0.0329,
+          "nb_clin": 0.0802,
+          "nb_all": -1.1399,
+          "nb_none": 0.0
+        },
+        {
+          "threshold": 0.9,
+          "nb_best": -0.0,
+          "nb_clin": 0.0556,
+          "nb_all": -2.2099,
+          "nb_none": 0.0
+        }
+      ],
+      "key_intervals": {
+        "0.40": 0.4691,
+        "0.50": 0.358,
+        "0.60": 0.2963,
+        "0.70": 0.2058,
+        "0.80": 0.0802
+      }
+    },
+    "subgroups": {
+      "has_d_self": {
+        "desc": "有 d_self (self DWI)",
+        "n": 75,
+        "n_pos": 46,
+        "pooled_auc": 0.7676,
+        "boot_95ci": [
+          0.6514,
+          0.8689
+        ],
+        "brier": 0.2111
+      },
+      "no_d_self": {
+        "desc": "无 d_self",
+        "n": 87,
+        "n_pos": 64,
+        "pooled_auc": 0.6984,
+        "boot_95ci": [
+          0.5557,
+          0.8294
+        ],
+        "brier": 0.1804
+      },
+      "sex1": {
+        "desc": "sex=1",
+        "n": 99,
+        "n_pos": 75,
+        "pooled_auc": 0.7206,
+        "boot_95ci": [
+          0.5839,
+          0.8437
+        ],
+        "brier": 0.1691
+      },
+      "sex0": {
+        "desc": "sex=0",
+        "n": 63,
+        "n_pos": 35,
+        "pooled_auc": 0.6643,
+        "boot_95ci": [
+          0.5326,
+          0.7929
+        ],
+        "brier": 0.2346
+      },
+      "age_ge_median": {
+        "desc": "age >= median(62)",
+        "n": 63,
+        "n_pos": 43,
+        "pooled_auc": 0.7977,
+        "boot_95ci": [
+          0.6629,
+          0.9083
+        ],
+        "brier": 0.1776
+      },
+      "age_lt_median": {
+        "desc": "age < median(62)",
+        "n": 53,
+        "n_pos": 36,
+        "pooled_auc": 0.6863,
+        "boot_95ci": [
+          0.5202,
+          0.8358
+        ],
+        "brier": 0.2038
+      },
+      "cea_ge_5": {
+        "desc": "CEA >= 5 ng/mL",
+        "n": 21,
+        "n_pos": 21,
+        "pooled_auc": null,
+        "boot_95ci": null,
+        "brier": 0.0476
+      },
+      "cea_lt_5": {
+        "desc": "CEA < 5 ng/mL",
+        "n": 35,
+        "n_pos": 22,
+        "pooled_auc": 0.6818,
+        "boot_95ci": [
+          0.4927,
+          0.8485
+        ],
+        "brier": 0.2153
+      },
+      "tumor_location": {
+        "desc": "临床表 (hos_pairs_raw) 无 高/中/低位 字段 — 无法审计",
+        "available": false
+      }
+    }
+  },
+  "m2": {
+    "module": "M2 10x5 repeated stratified CV (TRIPOD 1b)",
+    "direct_tcd": {
+      "clin": {
+        "repeated_pooled_auc_mean": 0.63,
+        "repeated_pooled_auc_sd_ddof1": 0.0181,
+        "repeated_pooled_auc_min": 0.6056,
+        "repeated_pooled_auc_max": 0.666,
+        "per_seed_aucs": [
+          0.6247,
+          0.6367,
+          0.6166,
+          0.6448,
+          0.6229,
+          0.6208,
+          0.666,
+          0.646,
+          0.6056,
+          0.6163
+        ],
+        "fold50_mean": 0.6363,
+        "fold50_sd": 0.0915
+      },
+      "clin_t": {
+        "repeated_pooled_auc_mean": 0.6782,
+        "repeated_pooled_auc_sd_ddof1": 0.0274,
+        "repeated_pooled_auc_min": 0.642,
+        "repeated_pooled_auc_max": 0.7201,
+        "per_seed_aucs": [
+          0.6913,
+          0.6439,
+          0.642,
+          0.6629,
+          0.7201,
+          0.6801,
+          0.7173,
+          0.6615,
+          0.6934,
+          0.6694
+        ],
+        "fold50_mean": 0.7,
+        "fold50_sd": 0.08
+      },
+      "clin_dt": {
+        "repeated_pooled_auc_mean": 0.6935,
+        "repeated_pooled_auc_sd_ddof1": 0.0357,
+        "repeated_pooled_auc_min": 0.6435,
+        "repeated_pooled_auc_max": 0.7409,
+        "per_seed_aucs": [
+          0.7234,
+          0.6689,
+          0.6619,
+          0.6806,
+          0.7402,
+          0.7049,
+          0.7138,
+          0.6573,
+          0.7409,
+          0.6435
+        ],
+        "fold50_mean": 0.7134,
+        "fold50_sd": 0.0887
+      },
+      "win_rate_best_vs_clin": "10/10",
+      "win_rate_best_vs_clin_t": "7/10",
+      "mean_delta_vs_clin": 0.0635,
+      "mean_delta_vs_clin_t": 0.0154
+    },
+    "direct_td": {
+      "clin": {
+        "repeated_pooled_auc_mean": 0.627,
+        "repeated_pooled_auc_sd_ddof1": 0.0185,
+        "repeated_pooled_auc_min": 0.6087,
+        "repeated_pooled_auc_max": 0.6651,
+        "per_seed_aucs": [
+          0.6244,
+          0.6203,
+          0.6163,
+          0.6396,
+          0.6222,
+          0.6096,
+          0.6651,
+          0.6491,
+          0.6087,
+          0.6143
+        ],
+        "fold50_mean": 0.6407,
+        "fold50_sd": 0.085
+      },
+      "clin_t": {
+        "repeated_pooled_auc_mean": 0.662,
+        "repeated_pooled_auc_sd_ddof1": 0.0282,
+        "repeated_pooled_auc_min": 0.6164,
+        "repeated_pooled_auc_max": 0.711,
+        "per_seed_aucs": [
+          0.6637,
+          0.6164,
+          0.6405,
+          0.6371,
+          0.711,
+          0.6602,
+          0.7009,
+          0.6613,
+          0.6581,
+          0.6705
+        ],
+        "fold50_mean": 0.6912,
+        "fold50_sd": 0.0714
+      },
+      "clin_dt": {
+        "repeated_pooled_auc_mean": 0.6763,
+        "repeated_pooled_auc_sd_ddof1": 0.0302,
+        "repeated_pooled_auc_min": 0.6395,
+        "repeated_pooled_auc_max": 0.7278,
+        "per_seed_aucs": [
+          0.6852,
+          0.6476,
+          0.66,
+          0.6395,
+          0.7278,
+          0.677,
+          0.7159,
+          0.6521,
+          0.7,
+          0.6581
+        ],
+        "fold50_mean": 0.7046,
+        "fold50_sd": 0.0768
+      },
+      "win_rate_best_vs_clin": "9/10",
+      "win_rate_best_vs_clin_t": "8/10",
+      "mean_delta_vs_clin": 0.0494,
+      "mean_delta_vs_clin_t": 0.0144
+    }
+  },
+  "m3": {
+    "module": "M3 temporal extrapolation (TRIPOD 2b)",
+    "clinical_date_check": {
+      "available": false,
+      "reason": "hos_pairs_raw 无任何日期列"
+    },
+    "date_source": "DICOM dicom_meta.json StudyDate (mri_path filename pid_plane join)",
+    "cutoff_date": "20250428",
+    "train_n": 125,
+    "test_n": 54,
+    "missing_date_excluded": 101,
+    "tcd_subset": {
+      "train_n": 89,
+      "test_n": 40
+    },
+    "direct_all": {
+      "clin": {
+        "test_metrics": {
+          "n": 54,
+          "n_pos": 39,
+          "pooled_auc": 0.6171,
+          "boot_95ci": [
+            0.4321,
+            0.7907
+          ],
+          "fold_mean": null,
+          "fold_sd": null,
+          "brier": 0.1897,
+          "ece10": 0.1342,
+          "youden_oof": null
+        },
+        "train_youden_threshold": 0.6853,
+        "train_youden_j": 0.392,
+        "test_at_train_youden": {
+          "sens": 0.6154,
+          "spec": 0.5333,
+          "ppv": 0.7742,
+          "npv": 0.3478
+        },
+        "platt": [
+          1.63105,
+          1.12231
+        ],
+        "train_n": 125,
+        "test_n": 54
+      },
+      "clin_t": {
+        "test_metrics": {
+          "n": 54,
+          "n_pos": 39,
+          "pooled_auc": 0.6598,
+          "boot_95ci": [
+            0.4886,
+            0.8267
+          ],
+          "fold_mean": null,
+          "fold_sd": null,
+          "brier": 0.207,
+          "ece10": 0.1493,
+          "youden_oof": null
+        },
+        "train_youden_threshold": 0.6442,
+        "train_youden_j": 0.9622,
+        "test_at_train_youden": {
+          "sens": 0.7692,
+          "spec": 0.5333,
+          "ppv": 0.8108,
+          "npv": 0.4706
+        },
+        "platt": [
+          4.34546,
+          1.91862
+        ],
+        "train_n": 125,
+        "test_n": 54
+      },
+      "clin_dt": {
+        "test_metrics": {
+          "n": 54,
+          "n_pos": 39,
+          "pooled_auc": 0.7128,
+          "boot_95ci": [
+            0.5386,
+            0.8812
+          ],
+          "fold_mean": null,
+          "fold_sd": null,
+          "brier": 0.1795,
+          "ece10": 0.1086,
+          "youden_oof": null
+        },
+        "train_youden_threshold": 0.7236,
+        "train_youden_j": 0.9622,
+        "test_at_train_youden": {
+          "sens": 0.7179,
+          "spec": 0.6667,
+          "ppv": 0.8485,
+          "npv": 0.4762
+        },
+        "platt": [
+          4.31461,
+          1.86392
+        ],
+        "train_n": 125,
+        "test_n": 54
+      }
+    },
+    "direct_tcd": {
+      "clin": {
+        "test_metrics": {
+          "n": 40,
+          "n_pos": 29,
+          "pooled_auc": 0.674,
+          "boot_95ci": [
+            0.4615,
+            0.872
+          ],
+          "fold_mean": null,
+          "fold_sd": null,
+          "brier": 0.1836,
+          "ece10": 0.1364,
+          "youden_oof": null
+        },
+        "train_youden_threshold": 0.6967,
+        "train_youden_j": 0.4264,
+        "test_at_train_youden": {
+          "sens": 0.5172,
+          "spec": 0.6364,
+          "ppv": 0.7895,
+          "npv": 0.3333
+        },
+        "platt": [
+          1.55944,
+          0.98449
+        ],
+        "train_n": 89,
+        "test_n": 40
+      },
+      "clin_t": {
+        "test_metrics": {
+          "n": 40,
+          "n_pos": 29,
+          "pooled_auc": 0.6552,
+          "boot_95ci": [
+            0.4623,
+            0.8348
+          ],
+          "fold_mean": null,
+          "fold_sd": null,
+          "brier": 0.2354,
+          "ece10": 0.2543,
+          "youden_oof": null
+        },
+        "train_youden_threshold": 0.6916,
+        "train_youden_j": 1.0,
+        "test_at_train_youden": {
+          "sens": 0.5862,
+          "spec": 0.6364,
+          "ppv": 0.8095,
+          "npv": 0.3684
+        },
+        "platt": [
+          4.04543,
+          1.6094
+        ],
+        "train_n": 89,
+        "test_n": 40
+      },
+      "clin_dt": {
+        "test_metrics": {
+          "n": 40,
+          "n_pos": 29,
+          "pooled_auc": 0.6834,
+          "boot_95ci": [
+            0.491,
+            0.8602
+          ],
+          "fold_mean": null,
+          "fold_sd": null,
+          "brier": 0.2077,
+          "ece10": 0.1403,
+          "youden_oof": null
+        },
+        "train_youden_threshold": 0.6756,
+        "train_youden_j": 1.0,
+        "test_at_train_youden": {
+          "sens": 0.6897,
+          "spec": 0.6364,
+          "ppv": 0.8333,
+          "npv": 0.4375
+        },
+        "platt": [
+          4.02887,
+          1.53198
+        ],
+        "train_n": 89,
+        "test_n": 40
+      }
+    }
+  },
+  "m4": {
+    "module": "M4 ncrt (n=75) post-CRT domain-shift stress test",
+    "direct_train_n": 280,
+    "direct_oof_youden_threshold": 0.6915,
+    "ncrt_overall": {
+      "n": 75,
+      "n_pos": 58,
+      "pooled_auc": 0.5923,
+      "boot_95ci": [
+        0.4462,
+        0.7345
+      ],
+      "fold_mean": null,
+      "fold_sd": null,
+      "brier": 0.1809,
+      "ece10": 0.0712,
+      "youden_oof": null,
+      "mean_pred": 0.7021,
+      "true_t_rate": 0.7733
+    },
+    "over_staging": {
+      "ypT2_n": 17,
+      "ypT2_over50_rate": 1.0,
+      "ypT2_over_youden_rate": 0.5294,
+      "ypT2_median_prob": 0.6978,
+      "ypT2_iqr": [
+        0.6159,
+        0.7297
+      ],
+      "ypT34_n": 58,
+      "ypT34_median_prob": 0.7187,
+      "ypT34_iqr": [
+        0.6508,
+        0.7746
+      ]
+    },
+    "cross_modal_paired_n34": {
+      "ncrt_paired_n": 34,
+      "direct_paired_n": 92,
+      "t_auc_direct": 0.651,
+      "t_auc_ncrt": 0.6058,
+      "d_auc_direct": 0.6703,
+      "d_auc_ncrt": 0.601,
+      "t_attenuation": 0.0453,
+      "d_attenuation": 0.0694,
+      "note": "exploratory small-n (n=34); no significance claims"
+    },
+    "platt_deploy": [
+      0.94108,
+      0.90588
+    ]
+  },
+  "locked_calibration_mode": "bonly",
+  "redlines": {
+    "no_old_oof_reuse": true,
+    "refit_from_raw": "all modules recompute clin/d_self/t from raw features; s4 CSV only used as DeLong comparator (not feature)"
+  }
+}
