@@ -1,0 +1,12 @@
+{
+  "mode": "120mm_clean",
+  "done": 419,
+  "skipped": 0,
+  "nomask": 0,
+  "total_s": 97.0,
+  "per_case_s": 0.23,
+  "peak_cuda_gb": 0.35,
+  "n_files": 419,
+  "size_mb": 8.95,
+  "size_mm": 120.0
+}

@@ -1,0 +1,12 @@
+{
+  "mode": "tight60_m10",
+  "done": 419,
+  "skipped": 0,
+  "nomask": 0,
+  "total_s": 82.5,
+  "per_case_s": 0.2,
+  "peak_cuda_gb": 0.35,
+  "n_files": 419,
+  "size_mb": 8.96,
+  "size_mm": 60.0
+}

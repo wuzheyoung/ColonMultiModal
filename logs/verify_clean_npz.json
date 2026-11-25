@@ -1,0 +1,86 @@
+{
+  "120mm_clean": {
+    "t": {
+      "n": 280,
+      "k_match_old": 280,
+      "K_cur": {
+        "min": 1,
+        "p50": 11,
+        "p95": 18,
+        "max": 33
+      },
+      "nan_files": 0,
+      "ratio_bad": 0,
+      "mm2_bad": 0,
+      "crop_bad": 0,
+      "crop_size_mm": {
+        "min": 120.0,
+        "p50": 120.0,
+        "p90": 120.0,
+        "max": 120.0
+      }
+    },
+    "d": {
+      "n": 139,
+      "k_match_old": 139,
+      "K_cur": {
+        "min": 2,
+        "p50": 18,
+        "p95": 38,
+        "max": 54
+      },
+      "nan_files": 0,
+      "ratio_bad": 0,
+      "mm2_bad": 0,
+      "crop_bad": 0,
+      "crop_size_mm": {
+        "min": 120.0,
+        "p50": 120.0,
+        "p90": 120.0,
+        "max": 120.0
+      }
+    }
+  },
+  "tight60_m10": {
+    "t": {
+      "n": 280,
+      "k_match_old": 280,
+      "K_cur": {
+        "min": 1,
+        "p50": 11,
+        "p95": 18,
+        "max": 33
+      },
+      "nan_files": 0,
+      "ratio_bad": 0,
+      "mm2_bad": 0,
+      "crop_bad": 0,
+      "crop_size_mm": {
+        "min": 60.0,
+        "p50": 72.5,
+        "p90": 115.43252716064455,
+        "max": 159.46099853515625
+      }
+    },
+    "d": {
+      "n": 139,
+      "k_match_old": 139,
+      "K_cur": {
+        "min": 2,
+        "p50": 18,
+        "p95": 38,
+        "max": 54
+      },
+      "nan_files": 0,
+      "ratio_bad": 0,
+      "mm2_bad": 0,
+      "crop_bad": 0,
+      "crop_size_mm": {
+        "min": 60.0,
+        "p50": 60.0,
+        "p90": 121.29166412353516,
+        "max": 268.8304138183594
+      }
+    }
+  }
+}

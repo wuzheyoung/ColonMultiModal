@@ -1,0 +1,11 @@
+{
+  "done": 416,
+  "skipped": 3,
+  "nomask": 0,
+  "total_s": 80.9,
+  "per_case_s": 0.19,
+  "peak_cuda_gb": 0.35,
+  "n_files": 419,
+  "size_mb": 8.76,
+  "size_mm": 60.0
+}
