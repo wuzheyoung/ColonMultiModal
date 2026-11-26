@@ -1,0 +1,163 @@
+{
+  "module": "stage0 reproduce baseline (10x5, bonly)",
+  "lock_mode": "bonly",
+  "reproduced": {
+    "direct_td": {
+      "clin": {
+        "repeated_pooled_auc_mean": 0.627,
+        "repeated_pooled_auc_sd_ddof1": 0.0185,
+        "repeated_pooled_auc_min": 0.6087,
+        "repeated_pooled_auc_max": 0.6651,
+        "per_seed_aucs": [
+          0.6244,
+          0.6203,
+          0.6163,
+          0.6396,
+          0.6222,
+          0.6096,
+          0.6651,
+          0.6491,
+          0.6087,
+          0.6143
+        ],
+        "fold50_mean": 0.6407,
+        "fold50_sd": 0.085
+      },
+      "clin_t": {
+        "repeated_pooled_auc_mean": 0.662,
+        "repeated_pooled_auc_sd_ddof1": 0.0282,
+        "repeated_pooled_auc_min": 0.6164,
+        "repeated_pooled_auc_max": 0.711,
+        "per_seed_aucs": [
+          0.6637,
+          0.6164,
+          0.6405,
+          0.6371,
+          0.711,
+          0.6602,
+          0.7009,
+          0.6613,
+          0.6581,
+          0.6705
+        ],
+        "fold50_mean": 0.6912,
+        "fold50_sd": 0.0714
+      },
+      "clin_dt": {
+        "repeated_pooled_auc_mean": 0.6763,
+        "repeated_pooled_auc_sd_ddof1": 0.0302,
+        "repeated_pooled_auc_min": 0.6395,
+        "repeated_pooled_auc_max": 0.7278,
+        "per_seed_aucs": [
+          0.6852,
+          0.6476,
+          0.66,
+          0.6395,
+          0.7278,
+          0.677,
+          0.7159,
+          0.6521,
+          0.7,
+          0.6581
+        ],
+        "fold50_mean": 0.7046,
+        "fold50_sd": 0.0768
+      }
+    },
+    "direct_tcd": {
+      "clin": {
+        "repeated_pooled_auc_mean": 0.63,
+        "repeated_pooled_auc_sd_ddof1": 0.0181,
+        "repeated_pooled_auc_min": 0.6056,
+        "repeated_pooled_auc_max": 0.666,
+        "per_seed_aucs": [
+          0.6247,
+          0.6367,
+          0.6166,
+          0.6448,
+          0.6229,
+          0.6208,
+          0.666,
+          0.646,
+          0.6056,
+          0.6163
+        ],
+        "fold50_mean": 0.6363,
+        "fold50_sd": 0.0915
+      },
+      "clin_t": {
+        "repeated_pooled_auc_mean": 0.6782,
+        "repeated_pooled_auc_sd_ddof1": 0.0274,
+        "repeated_pooled_auc_min": 0.642,
+        "repeated_pooled_auc_max": 0.7201,
+        "per_seed_aucs": [
+          0.6913,
+          0.6439,
+          0.642,
+          0.6629,
+          0.7201,
+          0.6801,
+          0.7173,
+          0.6615,
+          0.6934,
+          0.6694
+        ],
+        "fold50_mean": 0.7,
+        "fold50_sd": 0.08
+      },
+      "clin_dt": {
+        "repeated_pooled_auc_mean": 0.6935,
+        "repeated_pooled_auc_sd_ddof1": 0.0357,
+        "repeated_pooled_auc_min": 0.6435,
+        "repeated_pooled_auc_max": 0.7409,
+        "per_seed_aucs": [
+          0.7234,
+          0.6689,
+          0.6619,
+          0.6806,
+          0.7402,
+          0.7049,
+          0.7138,
+          0.6573,
+          0.7409,
+          0.6435
+        ],
+        "fold50_mean": 0.7134,
+        "fold50_sd": 0.0887
+      }
+    }
+  },
+  "vs_locked_json": {
+    "direct_td.clin": {
+      "reproduced": 0.627,
+      "locked_json": 0.627,
+      "match": true
+    },
+    "direct_td.clin_t": {
+      "reproduced": 0.662,
+      "locked_json": 0.662,
+      "match": true
+    },
+    "direct_td.clin_dt": {
+      "reproduced": 0.6763,
+      "locked_json": 0.6763,
+      "match": true
+    },
+    "direct_tcd.clin": {
+      "reproduced": 0.63,
+      "locked_json": 0.63,
+      "match": true
+    },
+    "direct_tcd.clin_t": {
+      "reproduced": 0.6782,
+      "locked_json": 0.6782,
+      "match": true
+    },
+    "direct_tcd.clin_dt": {
+      "reproduced": 0.6935,
+      "locked_json": 0.6935,
+      "match": true
+    }
+  },
+  "baseline_definition": "clin_clean + d_self(MeanMax) + t(AWM), features/slice_feats_v2/dinov2, strategy B + bonly calib"
+}

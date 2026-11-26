@@ -1,0 +1,93 @@
+{
+  "td_n": 214,
+  "auc": 0.716,
+  "youden_threshold": 0.72,
+  "confusion": {
+    "TP": 62,
+    "FP": 6,
+    "FN": 86,
+    "TN": 60
+  },
+  "fn": {
+    "n": 86,
+    "max_area_mm2_med/mean/n": [
+      1977.8,
+      1918.1,
+      78
+    ],
+    "total_area_mm2_med/mean/n": [
+      9680.1,
+      10529.7,
+      78
+    ],
+    "dwi_missing_rate": 0.442,
+    "clin_median": {
+      "age": 62.0,
+      "sex": 1.0,
+      "ca199": 9.3,
+      "cea": 3.8,
+      "albumin": 39.0,
+      "prealbumin": 188.0,
+      "hb": 127.0
+    }
+  },
+  "fp": {
+    "n": 6,
+    "max_area_mm2_med/mean/n": [
+      2023.3,
+      1691.7,
+      6
+    ],
+    "total_area_mm2_med/mean/n": [
+      6367.6,
+      7106.1,
+      6
+    ],
+    "dwi_missing_rate": 0.667,
+    "clin_median": {
+      "age": 72.0,
+      "sex": 1.0,
+      "ca199": 18.79,
+      "cea": 8.48,
+      "albumin": 36.5,
+      "prealbumin": 198.5,
+      "hb": 130.0
+    }
+  },
+  "tp": {
+    "n": 62,
+    "max_area_mm2_med/mean/n": [
+      2344.1,
+      2217.9,
+      60
+    ],
+    "dwi_missing_rate": 0.661,
+    "clin_median": {
+      "age": 68.0,
+      "sex": 1.0,
+      "ca199": 15.08,
+      "cea": 7.04,
+      "albumin": 39.0,
+      "prealbumin": 184.0,
+      "hb": 127.0
+    }
+  },
+  "tn": {
+    "n": 60,
+    "max_area_mm2_med/mean/n": [
+      1813.9,
+      1757.7,
+      57
+    ],
+    "dwi_missing_rate": 0.45,
+    "clin_median": {
+      "age": 62.0,
+      "sex": 0.0,
+      "ca199": 4.52,
+      "cea": 2.52,
+      "albumin": 38.0,
+      "prealbumin": 183.5,
+      "hb": 127.0
+    }
+  }
+}

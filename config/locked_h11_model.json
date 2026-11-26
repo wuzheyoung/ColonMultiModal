@@ -1,0 +1,39 @@
+{
+  "model": "H1.1 (locked production & submission candidate)",
+  "locked_at": "2026-11-26",
+  "authority": "m08246 (TRIPOD 1b 最终验证授权) + m08389 (正式锁定生产与投稿模型)",
+  "task": "label_T 术前分期 (T3-4 vs T1-2)",
+  "hetero_feature_paths": {
+    "t_sequence": {
+      "path": "features/slice_feats_v2_tight60_m10/dinov2/t",
+      "pool": "AreaWeightedMean",
+      "note": "tight60_m10: 自适应边长 max(60mm, max(W_mm,H_mm)+2*10mm), 2D bbox 中点定心 + 真对称补黑"
+    },
+    "d_self_sequence": {
+      "path": "features/slice_feats_v2/dinov2/d",
+      "pool": "MeanMax",
+      "note": "严格保留 120mm_old 特征目录 (slice_feats_v2, 禁止指向 tight60_m10); d_self = manifest mask_source=='self' & has_valid==1, 排除 from_t"
+    },
+    "clinical": {
+      "path": "hos_pairs_raw.csv (7 维: age/sex/ca199/cea/albumin/prealbumin/hb)",
+      "preprocess": "折内 median impute + StandardScaler"
+    }
+  },
+  "fusion": {
+    "strategy": "B (fuse_zlogit_strategy)",
+    "weight": "0.5 * z_clin + 0.5 * mean(z_t, z_d) (可用模态 z 等权; 无 clin 或无损影像时退化为可用均值)",
+    "z_norm": "logit_clip → 训练折 mu/sd 标准化"
+  },
+  "calibration": {
+    "mode": "bonly",
+    "settings": "a=1, b 由 minimize_scalar NLL 在 (-5,5) 内拟合训练折 z (platt_fit_bonly); 验证折 sigmoid(z+b)",
+    "note": "全链路统一 bonly (锁定校准模式, exp_v2_validation_suite 锁定列)"
+  },
+  "training_framework": "锁定 5-fold master fold (master_5fold_356.csv); 折内嵌套 3 折选 C 的 L2-LR 线性探针 (PROBE_C_GRID=1e-4..1.0)",
+  "evaluation": {
+    "development": "direct_td n=214 (决策口径), 10x5 repeated CV: td 0.7003±0.0298 / tcd 0.7099±0.0323",
+    "locked_5fold": "td Pooled OOF AUC 0.723 [0.6485,0.7956] / tcd 0.7385 [0.6591,0.8142]",
+    "temporal_20250428": "direct_all test n=54 AUC 0.6991 [0.5299,0.8547] / tcd 40 AUC 0.6834",
+    "ncrt_domainshift": "n=75 零样本 AUC 0.6105 [0.4746,0.7535] ECE 0.218 Brier 0.2233"
+  },
+  "git_caliber": "本文件随 commit 记录; 特征 npz 不入 Git (*.npz 全局忽略); 特征路径指向仓库内目录 features/ (本地)

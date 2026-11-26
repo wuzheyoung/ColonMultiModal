@@ -1,0 +1,107 @@
+{
+  "section1_h11_vs_base": {
+    "baseline_0": {
+      "td": {
+        "pooled_auc_cal": 0.6747,
+        "ece_pre": 0.1936,
+        "ece_post": 0.0438,
+        "brier_pre": 0.2372,
+        "brier_post": 0.1987,
+        "n": 2140,
+        "n_pos": 1480
+      },
+      "tcd": {
+        "pooled_auc_cal": 0.6917,
+        "ece_pre": 0.1932,
+        "ece_post": 0.0556,
+        "brier_pre": 0.2384,
+        "brier_post": 0.2004,
+        "n": 1620,
+        "n_pos": 1100
+      }
+    },
+    "h11": {
+      "td": {
+        "pooled_auc_cal": 0.6998,
+        "ece_pre": 0.1963,
+        "ece_post": 0.0407,
+        "brier_pre": 0.2318,
+        "brier_post": 0.1928,
+        "n": 2140,
+        "n_pos": 1480
+      },
+      "tcd": {
+        "pooled_auc_cal": 0.7087,
+        "ece_pre": 0.193,
+        "ece_post": 0.052,
+        "brier_pre": 0.2332,
+        "brier_post": 0.1954,
+        "n": 1620,
+        "n_pos": 1100
+      }
+    },
+    "td_fold_winrate_h11_vs_base": {
+      "valid_folds": 50,
+      "h11_wins": 30,
+      "ties": 1,
+      "h11_win_rate": 0.6
+    }
+  },
+  "section2_h12_attribution": {
+    "h12_base_code": "Baseline_0 + 物理尺度标量 (t 侧, tight60)",
+    "h12_base_uses_t120_for_t": true,
+    "h12_base_uses_t60_for_scalars": true,
+    "h12_base_fuse_channels": [
+      "clin",
+      "t",
+      "d",
+      "sc"
+    ],
+    "scalar_feature_cols": [
+      "max_area_mm2",
+      "total_area_mm2",
+      "z_span_slices",
+      "area_concentration"
+    ],
+    "scalar_preprocessing": "log1p(前3列) + z_span 不 log + fillna(median) + 折内 OOF L2-LR probe → sc 概率通道",
+    "fuse_strategy_B_with_sc": "sc 作为独立影像类通道参与 mean(z_t,z_d,z_sc) 后 0.5*z_clin+0.5*mean(z_imgs)",
+    "conclusion": "H1.2 AUC=0.6767(td) 是加在 Baseline_0(t=120mm) 上(而非 H1.1); 物理标量经独立 probe→zlogit 通道接入, 与 t/d 等权平均进影像侧, 不直接拼 z_clin"
+  },
+  "section3_dself_groups": {
+    "has_d_self_n": 104,
+    "no_d_self_n": 110,
+    "groups": {
+      "has_d_self": {
+        "n": 104,
+        "pos_rate": 0.6635,
+        "prob_mean": 0.7034,
+        "prob_std": 0.0961,
+        "auc_pooled": 0.7370600414078675
+      },
+      "no_d_self": {
+        "n": 110,
+        "pos_rate": 0.7182,
+        "prob_mean": 0.6915,
+        "prob_std": 0.0984,
+        "auc_pooled": 0.7411188240097999
+      }
+    },
+    "z_variance": {
+      "has_d_self": {
+        "mean_z_t_std": 1.1268,
+        "mean_z_im_std": 0.9424,
+        "mean_z_im_mean": 0.0467
+      },
+      "no_d_self": {
+        "mean_z_t_std": 1.1864,
+        "mean_z_im_std": 1.1864,
+        "mean_z_im_mean": 0.0351
+      }
+    }
+  },
+  "meta": {
+    "generated": "2026-11-26T12:10:41",
+    "note": "cal=策略B融合+bonly校准; pre=z→sigmoid未校准; AUC 为 Pooled OOF; 折级胜率仅 td 口径",
+    "h12_note": "AUC=0.6767(td) 是 h12_base=Baseline_0(t=120mm)+物理标量(T60 npz 读取), 非 H1.1 上加标量"
+  }
+}
